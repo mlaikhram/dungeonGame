@@ -52,3 +52,13 @@ void DrawSpriteSheetSprite(ShaderProgram *program, int index, int spriteCountX, 
 float lerp(float v0, float v1, float t) {
 	return (1.0f - t)*v0 + t*v1;
 }
+
+void worldToTileCoordinates(float worldX, float worldY, int &gridX, int &gridY) {
+	gridX = (int)(worldX / TILE_SIZE);
+	gridY = (int)(-(worldY) / TILE_SIZE);
+}
+
+void tileToWorldCoordinates(int gridX, int gridY, float &worldX, float &worldY) {
+	worldX = (float)(gridX * TILE_SIZE);
+	worldY = (float)(-gridX * TILE_SIZE);
+}

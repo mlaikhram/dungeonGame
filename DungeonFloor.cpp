@@ -1,7 +1,7 @@
 #include "Util.h"
 #include "DungeonFloor.h"
 
-DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, int numx, int numy) : mapSize(mapSize), tileSize(tileSize), numx(numx), numy(numy) {
+DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, int numx, int numy, Entity *player) : mapSize(mapSize), tileSize(tileSize), numx(numx), numy(numy), player(player) {
 	tileMap = new unsigned char*[mapSize];
 	for (int i = 0; i < mapSize; ++i) {
 		tileMap[i] = new unsigned char[mapSize];

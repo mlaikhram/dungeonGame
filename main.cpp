@@ -48,7 +48,6 @@ int main(int argc, char *argv[])
 
 	int mapHeight = 10;
 	int mapWidth = mapHeight;
-	float TILE_SIZE = 0.5f;
 	unsigned char **levelData;
 	//GLuint spriteSheet = LoadTexture("tilemap_dungeon1.png");
 
@@ -85,10 +84,10 @@ int main(int argc, char *argv[])
 	}
 
 	std::ofstream ofs("output.txt");
-	DungeonFloor floor(10, 0.5f, levelData, "tilemap_dungeon1.png", 10, 10);
-	//DungeonFloor floor(10, 0.2f, levelData, "tiles.png", 20, 20);
 
-	Entity player("tiles.png", 52, 20, 20, Vector3(0.0f, 0.0f, 0.0f), 0.5f);
+	Entity player("tiles.png", 52, 20, 20, Vector3(0.0f, 0.0f, 0.0f), TILE_SIZE);
+
+	DungeonFloor floor(10, TILE_SIZE, levelData, "tilemap_dungeon1.png", 10, 10, &player);
 
 	SDL_Event event;
 	bool done = false;

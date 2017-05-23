@@ -6,10 +6,11 @@
 #include <SDL_image.h>
 #include "Matrix.h"
 #include "ShaderProgram.h"
+#include "Entity.h"
 
 class DungeonFloor {
 public:
-	DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, int numx, int numy);
+	DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, int numx, int numy, Entity *player);
 	void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
 
 	int getMapSize() const;
@@ -24,6 +25,7 @@ private:
 	GLuint spriteSheet;
 	int numx;
 	int numy;
+	Entity *player;
 };
 
 
