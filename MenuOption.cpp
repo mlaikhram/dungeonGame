@@ -24,7 +24,7 @@ float MenuOption::getHeight() {
 	return height;
 }
 
-bool MenuOption::pointCollision(float mousex, float mousey) {
+bool MenuOption::pointCollision(float mousex, float mousey) { // TODO: IDK IF THIS WORKS
 	return (position.x < mousex < position.x + width && position.y < mousey < position.y + height);
 }
 
