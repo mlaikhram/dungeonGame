@@ -3,6 +3,7 @@
 #include "Util.h"
 #include "DungeonFloor.h"
 #include "Entity.h"
+#include "MenuOption.h"
 
 #ifdef _WINDOWS
 #define RESOURCE_FOLDER ""
@@ -80,6 +81,7 @@ int main(int argc, char *argv[])
 
 	Entity player("tiles.png", 52, 20, 20, Vector3(0.0f, 0.0f, 0.0f), TILE_SIZE);
 	DungeonFloor floor(10, TILE_SIZE, levelData, "tilemap_dungeon1.png", 10, 10, &player);
+	MenuOption menu("Hello", Vector3(0, 0, 0), "letters.png", 16, 16, 0.5f);
 
 	tileToWorldCoordinates(2, 2, player.position.x, player.position.y, floor);
 
@@ -134,6 +136,7 @@ int main(int argc, char *argv[])
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		floor.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+		menu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 		player.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 		viewMatrix.identity();
 		viewMatrix.Translate(-player.position.x, (-1.0 * (player.position.y + 0.0*mapHeight*TILE_SIZE)), 0);
