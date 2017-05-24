@@ -5,6 +5,7 @@
 #include <SDL_opengl.h>
 #include <SDL_image.h>
 #include "Util.h"
+#include "DungeonFloor.h"
 
 GLuint LoadTexture(const char *image_path)
 {
@@ -53,12 +54,13 @@ float lerp(float v0, float v1, float t) {
 	return (1.0f - t)*v0 + t*v1;
 }
 
-void worldToTileCoordinates(float worldX, float worldY, int &gridX, int &gridY) {
+void worldToTileCoordinates(float worldX, float worldY, int &gridX, int &gridY, DungeonFloor &floor) {
 	gridX = (int)(worldX / TILE_SIZE);
-	gridY = (int)(-(worldY) / TILE_SIZE);
+	//gridY = (int)(-(worldY) / TILE_SIZE);
+	gridY = (int)(-((worldY / TILE_SIZE) - (floor.getMapSize() - 1)));
 }
 
-void tileToWorldCoordinates(int gridX, int gridY, float &worldX, float &worldY) {
+void tileToWorldCoordinates(int gridX, int gridY, float &worldX, float &worldY, DungeonFloor &floor) {
 	worldX = (float)(gridX * TILE_SIZE);
-	worldY = (float)(-gridX * TILE_SIZE);
+	worldY = (float)((-gridY + floor.getMapSize() - 1) * TILE_SIZE);
 }

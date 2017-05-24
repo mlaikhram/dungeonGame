@@ -79,8 +79,10 @@ int main(int argc, char *argv[])
 	std::ofstream ofs("output.txt");
 
 	Entity player("tiles.png", 52, 20, 20, Vector3(0.0f, 0.0f, 0.0f), TILE_SIZE);
-
 	DungeonFloor floor(10, TILE_SIZE, levelData, "tilemap_dungeon1.png", 10, 10, &player);
+
+	tileToWorldCoordinates(2, 2, player.position.x, player.position.y, floor);
+
 
 	SDL_Event event;
 	bool done = false;
@@ -123,8 +125,10 @@ int main(int argc, char *argv[])
 		while (fixedElapsed >= FIXED_TIMESTEP) {
 			fixedElapsed -= FIXED_TIMESTEP;
 			player.update(&program, FIXED_TIMESTEP);
+			floor.mapCollision(player, &program);
 		}
 		player.update(&program, fixedElapsed);
+		floor.mapCollision(player, &program);
 
 		// draw ///////////////////////////////////////////////////////////////////////////////////////////////////
 		glClear(GL_COLOR_BUFFER_BIT);

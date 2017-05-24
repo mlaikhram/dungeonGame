@@ -11,6 +11,8 @@
 class DungeonFloor {
 public:
 	DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, int numx, int numy, Entity *player);
+	bool testOutOfBounds(int gridX, int gridY);
+	void mapCollision(Entity &entity, ShaderProgram *program);
 	void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
 
 	int getMapSize() const;
