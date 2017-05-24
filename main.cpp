@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 
 	Entity player("tiles.png", 52, 20, 20, Vector3(0.0f, 0.0f, 0.0f), TILE_SIZE);
 	DungeonFloor floor(10, TILE_SIZE, levelData, "tilemap_dungeon1.png", 10, 10, &player);
-	MenuOption menu("Hello", Vector3(0, 0, 0), "letters.png", 16, 16, 0.5f);
+	MenuOption menu("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG.", Vector3(0, 0, 0), "letters.png", 16, 16, 0.2f);
 
 	tileToWorldCoordinates(2, 2, player.position.x, player.position.y, floor);
 

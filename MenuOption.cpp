@@ -31,7 +31,7 @@ bool MenuOption::pointCollision(float mousex, float mousey) {
 void MenuOption::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix) {
 	for (int i = 0; i < lengthOfPhrase; ++i) {
 		modelMatrix.identity();
-		modelMatrix.Translate(position.x + i*tileSize, position.y, 0.0f);
+		modelMatrix.Translate((position.x + i*tileSize) * 0.6f, position.y, 0.0f);
 		program->setModelMatrix(modelMatrix);
 		program->setProjectionMatrix(projectionMatrix);
 		program->setViewMatrix(viewMatrix);
