@@ -67,6 +67,7 @@ void DungeonFloorGenerator::generateMap() {
 }
 
 void DungeonFloorGenerator::findOpenTiles() {
+	openTiles.clear();
 	for (int y = 0; y < mapSize; ++y) {
 		for (int x = 0; x < mapSize; ++x) {
 			if (tileMap[y][x] == O)
@@ -105,8 +106,13 @@ bool DungeonFloorGenerator::spawnEntity(Entity *entity) {
 
 DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, int numx, int numy) {
 	generateMap();
+	//fix tile connections
 	findOpenTiles();
-	spawnEntity(player);
+	//spawn exit
+	//spawn chests
+	//spawn enemies
+	//delete tiles in radius form exit tile
+	spawnEntity(player); //if no suitable, replace enemy with player
 	DungeonFloor *floor = new DungeonFloor(mapSize, tileSize, tileMap, spriteSheetName, numx, numy, player);
 	return floor;
 }
