@@ -1,7 +1,8 @@
 #include "Util.h"
 #include "DungeonFloor.h"
 
-DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, int numx, int numy, Entity *player) : mapSize(mapSize), tileSize(tileSize), numx(numx), numy(numy), player(player) {
+DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, int numx, int numy, Entity *player) : 
+	mapSize(mapSize), tileSize(tileSize), numx(numx), numy(numy), player(player) {
 	tileMap = new unsigned char*[mapSize];
 	for (int i = 0; i < mapSize; ++i) {
 		tileMap[i] = new unsigned char[mapSize];
@@ -11,8 +12,20 @@ DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap
 			tileMap[y][x] = _tileMap[y][x];
 		}
 	}
-
 	spriteSheet = LoadTexture(spriteSheetName);
+}
+
+DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, GLuint spriteSheet, int numx, int numy, Entity *player) : 
+	mapSize(mapSize), tileSize(tileSize), spriteSheet(spriteSheet), numx(numx), numy(numy), player(player) {
+	tileMap = new unsigned char*[mapSize];
+	for (int i = 0; i < mapSize; ++i) {
+		tileMap[i] = new unsigned char[mapSize];
+	}
+	for (int y = 0; y < mapSize; ++y) {
+		for (int x = 0; x < mapSize; ++x) {
+			tileMap[y][x] = _tileMap[y][x];
+		}
+	}
 }
 
 bool DungeonFloor::testOutOfBounds(int gridX, int gridY) {
@@ -26,7 +39,7 @@ void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 	int gridX, gridY;
 
 	//check left
-	worldToTileCoordinates(entity.position.x, entity.position.y - 0.008f, gridX, gridY, *this);
+	worldToTileCoordinates(entity.position.x, entity.position.y - 0.008f, gridX, gridY, mapSize);
 	if (testOutOfBounds(gridX, gridY)) {
 		//handleOOB(entity);
 		return;
@@ -38,7 +51,7 @@ void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 		//entity.acceleration.x = 0;
 		entity.collidedLeft = true;
 	}
-	worldToTileCoordinates(entity.position.x, entity.position.y - TILE_SIZE + 0.008f, gridX, gridY, *this);
+	worldToTileCoordinates(entity.position.x, entity.position.y - TILE_SIZE + 0.008f, gridX, gridY, mapSize);
 	if (testOutOfBounds(gridX, gridY)) {
 		//handleOOB(entity);
 		return;
@@ -51,7 +64,7 @@ void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 		entity.collidedLeft = true;
 	}
 	//check right
-	worldToTileCoordinates(entity.position.x + TILE_SIZE, entity.position.y - 0.008f, gridX, gridY, *this);
+	worldToTileCoordinates(entity.position.x + TILE_SIZE, entity.position.y - 0.008f, gridX, gridY, mapSize);
 	if (testOutOfBounds(gridX, gridY)) {
 		//handleOOB(entity);
 		return;
@@ -63,7 +76,7 @@ void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 		//entity.acceleration.x = 0;
 		entity.collidedRight = true;
 	}
-	worldToTileCoordinates(entity.position.x + TILE_SIZE, entity.position.y - TILE_SIZE + 0.008f, gridX, gridY, *this);
+	worldToTileCoordinates(entity.position.x + TILE_SIZE, entity.position.y - TILE_SIZE + 0.008f, gridX, gridY, mapSize);
 	if (testOutOfBounds(gridX, gridY)) {
 		//handleOOB(entity);
 		return;
@@ -76,7 +89,7 @@ void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 		entity.collidedRight = true;
 	}
 	//check bottom
-	worldToTileCoordinates(entity.position.x + 0.008f, entity.position.y - TILE_SIZE, gridX, gridY, *this);
+	worldToTileCoordinates(entity.position.x + 0.008f, entity.position.y - TILE_SIZE, gridX, gridY, mapSize);
 	if (testOutOfBounds(gridX, gridY)) {
 		//handleOOB(entity);
 		return;
@@ -88,7 +101,7 @@ void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 		//entity.acceleration.y = 0;
 		entity.collidedBottom = true;
 	}
-	worldToTileCoordinates(entity.position.x + TILE_SIZE - 0.008f, entity.position.y - TILE_SIZE, gridX, gridY, *this);
+	worldToTileCoordinates(entity.position.x + TILE_SIZE - 0.008f, entity.position.y - TILE_SIZE, gridX, gridY, mapSize);
 	if (testOutOfBounds(gridX, gridY)) {
 		//handleOOB(entity);
 		return;
@@ -101,7 +114,7 @@ void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 		entity.collidedBottom = true;
 	}
 	//check top
-	worldToTileCoordinates(entity.position.x + 0.008f, entity.position.y, gridX, gridY, *this);
+	worldToTileCoordinates(entity.position.x + 0.008f, entity.position.y, gridX, gridY, mapSize);
 	if (testOutOfBounds(gridX, gridY)) {
 		//handleOOB(entity);
 		return;
@@ -113,7 +126,7 @@ void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 		//entity.acceleration.y = 0;
 		entity.collidedTop = true;
 	}
-	worldToTileCoordinates(entity.position.x + TILE_SIZE - 0.008f, entity.position.y, gridX, gridY, *this);
+	worldToTileCoordinates(entity.position.x + TILE_SIZE - 0.008f, entity.position.y, gridX, gridY, mapSize);
 	if (testOutOfBounds(gridX, gridY)) {
 		//handleOOB(entity);
 		return;
@@ -148,3 +161,5 @@ int DungeonFloor::getMapSize() const { return mapSize; }
 float DungeonFloor::getTileSize() const { return tileSize; }
 unsigned char** DungeonFloor::getTileMap() const { return tileMap; }
 GLuint DungeonFloor::getSpriteSheet() const { return spriteSheet; }
+
+void DungeonFloor::setSpriteSheet(const char* name) { spriteSheet = LoadTexture(name); }

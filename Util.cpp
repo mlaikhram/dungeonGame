@@ -54,13 +54,13 @@ float lerp(float v0, float v1, float t) {
 	return (1.0f - t)*v0 + t*v1;
 }
 
-void worldToTileCoordinates(float worldX, float worldY, int &gridX, int &gridY, DungeonFloor &floor) {
+void worldToTileCoordinates(float worldX, float worldY, int &gridX, int &gridY, int mapSize) {
 	gridX = (int)(worldX / TILE_SIZE);
 	//gridY = (int)(-(worldY) / TILE_SIZE);
-	gridY = (int)(-((worldY / TILE_SIZE) - (floor.getMapSize() - 1)));
+	gridY = (int)(-((worldY / TILE_SIZE) - (mapSize - 1)));
 }
 
-void tileToWorldCoordinates(int gridX, int gridY, float &worldX, float &worldY, DungeonFloor &floor) {
+void tileToWorldCoordinates(int gridX, int gridY, float &worldX, float &worldY, int mapSize) {
 	worldX = (float)(gridX * TILE_SIZE);
-	worldY = (float)((-gridY + floor.getMapSize() - 1) * TILE_SIZE);
+	worldY = (float)((-gridY + mapSize - 1) * TILE_SIZE);
 }

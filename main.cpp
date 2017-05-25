@@ -2,6 +2,7 @@
 #include "TierList.h"
 #include "Util.h"
 #include "DungeonFloor.h"
+#include "DungeonFloorGenerator.h"
 #include "Entity.h"
 #include "MenuOption.h"
 
@@ -10,9 +11,6 @@
 #else
 #define RESOURCE_FOLDER "dungeonGame.app/Contents/Resources/"
 #endif
-
-enum maptiles { O, WE, WEFS, WEFN, NS, NSFE, NSFW, NSWE, NSW, NSWFE, NSE, NSEFW, SWE, SWEFN, NWE, NWEFS, NWF, NW, NEF, NE, SWF, SW, SEF, SE, X };
-
 
 
 SDL_Window* displayWindow;
@@ -40,7 +38,7 @@ int main(int argc, char *argv[])
 	projectionMatrix.setOrthoProjection(-3.55f, 3.55f, -2.0f, 2.0f, -1.0f, 1.0f);
 	glUseProgram(program.programID);
 
-	int mapHeight = 10;
+	int mapHeight = 100;
 	int mapWidth = mapHeight;
 	unsigned char **levelData;
 	//GLuint spriteSheet = LoadTexture("tilemap_dungeon1.png");
@@ -72,18 +70,29 @@ int main(int argc, char *argv[])
 
 	for (int y = 0; y < mapHeight; ++y) {
 		for (int x = 0; x < mapWidth; ++x) {
-			levelData[y][x] = data[y][x];
-			//levelData[y][x] = 4;
+			//levelData[y][x] = data[y][x];
+			levelData[y][x] = O;
 		}
 	}
 
+	//generate pseudorandom seed
+	time_t time;
+	std::time(&time);
+	unsigned int seed = unsigned int(time);
+	srand(seed);
+	//output file for debugging
 	std::ofstream ofs("output.txt");
 
 	Entity player("tiles.png", 52, 20, 20, Vector3(0.0f, 0.0f, 0.0f), TILE_SIZE);
-	DungeonFloor floor(10, TILE_SIZE, levelData, "tilemap_dungeon1.png", 10, 10, &player);
+	//DungeonFloor *floor = new DungeonFloor(100, TILE_SIZE, levelData, "tilemap_dungeon1.png", 10, 10, &player);
+	DungeonFloorGenerator dfg(25, 5, TILE_SIZE, &player);
+	DungeonFloor *floor = dfg.generate("tilemap_dungeon1.png", 10, 10);
+
 	MenuOption menu("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG.", Vector3(0, 0, 0), "letters.png", 16, 16, 0.2f);
 
-	tileToWorldCoordinates(2, 2, player.position.x, player.position.y, floor);
+	//floor->setSpriteSheet("tilemap_dungeon1.png");
+
+	//tileToWorldCoordinates(2, 2, player.position.x, player.position.y, floor->getMapSize());
 
 
 	SDL_Event event;
@@ -107,7 +116,7 @@ int main(int argc, char *argv[])
 			player.acceleration.y += -5.0f;
 		}
 		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE) {
+			if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE || event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
 				done = true;
 			}
 		}
@@ -127,19 +136,19 @@ int main(int argc, char *argv[])
 		while (fixedElapsed >= FIXED_TIMESTEP) {
 			fixedElapsed -= FIXED_TIMESTEP;
 			player.update(&program, FIXED_TIMESTEP);
-			floor.mapCollision(player, &program);
+			floor->mapCollision(player, &program);
 		}
 		player.update(&program, fixedElapsed);
-		floor.mapCollision(player, &program);
+		floor->mapCollision(player, &program);
 
 		// draw ///////////////////////////////////////////////////////////////////////////////////////////////////
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		floor.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+		floor->draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 		menu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 		player.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 		viewMatrix.identity();
-		viewMatrix.Translate(-player.position.x, (-1.0 * (player.position.y + 0.0*mapHeight*TILE_SIZE)), 0);
+		viewMatrix.Translate(-player.position.x, (-1.0f * (player.position.y + 0.0f*mapHeight*TILE_SIZE)), 0);
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
