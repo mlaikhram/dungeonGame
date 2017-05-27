@@ -81,6 +81,11 @@ int main(int argc, char *argv[])
 		if (keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S] || keys[SDL_SCANCODE_L]) {
 			player.acceleration.y += -5.0f;
 		}
+		// TESTING KEYBIND ONLY //
+		if (keys[SDL_SCANCODE_R]) {
+			delete floor;
+			floor = dfg.generate("tilemap_dungeon1.png", 10, 10);
+		}
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE || event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
 				done = true;

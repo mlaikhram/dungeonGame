@@ -108,14 +108,57 @@ void DungeonFloorGenerator::generateMap() {
 	}
 
 	//split!
-	recursiveSplitX(1, 1, mapSize - 2, mapSize - 2);
+	if (rand() % 2 == 0)
+		recursiveSplitX(1, 1, mapSize - 2, mapSize - 2);
+	else
+		recursiveSplitY(1, 1, mapSize - 2, mapSize - 2);
+}
+
+void DungeonFloorGenerator::fixTileConnections() {
+	//fix border tiles
+	for (int x = 1; x < mapSize - 2; ++x) {
+		if (!floorTile(x, 1)) tileMap[0][x] = SWEFN;
+		if (!floorTile(x, mapSize - 2)) tileMap[mapSize - 1][x] = NWEFS;
+	}
+	for (int y = 1; y < mapSize - 2; ++y) {
+		if (!floorTile(1, y)) tileMap[y][0] = NSEFW;
+		if (!floorTile(mapSize - 2, y)) tileMap[y][mapSize - 1] = NSWFE;
+	}
+
+	//fix all inner connections
+	for (int x = 1; x < mapSize - 2; ++x) {
+		for (int y = 1; y < mapSize - 2; ++y) {
+			if (!floorTile(x, y) && !floorTile(x, y - 1) && !floorTile(x, y + 1) && !floorTile(x - 1, y) && !floorTile(x + 1, y))
+				tileMap[y][x] = NSWE;
+			else if (!floorTile(x, y) && !floorTile(x, y - 1) && !floorTile(x, y + 1) && !floorTile(x - 1, y))
+				tileMap[y][x] = NSW;
+			else if (!floorTile(x, y) && !floorTile(x, y - 1) && !floorTile(x, y + 1) && !floorTile(x + 1, y))
+				tileMap[y][x] = NSE;
+			else if (!floorTile(x, y) && !floorTile(x, y - 1) && !floorTile(x - 1, y) && !floorTile(x + 1, y))
+				tileMap[y][x] = NWE;
+			else if (!floorTile(x, y) && !floorTile(x, y + 1) && !floorTile(x - 1, y) && !floorTile(x + 1, y))
+				tileMap[y][x] = SWE;
+			else if (!floorTile(x, y) && !floorTile(x, y - 1) && !floorTile(x - 1, y))
+				tileMap[y][x] = NW;
+			else if (!floorTile(x, y) && !floorTile(x, y - 1) && !floorTile(x + 1, y))
+				tileMap[y][x] = NE;
+			else if (!floorTile(x, y) && !floorTile(x, y + 1) && !floorTile(x - 1, y))
+				tileMap[y][x] = SW;
+			else if (!floorTile(x, y) && !floorTile(x, y + 1) && !floorTile(x + 1, y))
+				tileMap[y][x] = SE;
+		}
+	}
+}
+
+bool DungeonFloorGenerator::floorTile(int x, int y) {
+	return tileMap[y][x] == O || tileMap[y][x] == X || tileMap[y][x] == enter;
 }
 
 void DungeonFloorGenerator::findOpenTiles() {
 	openTiles.clear();
 	for (int y = 0; y < mapSize; ++y) {
 		for (int x = 0; x < mapSize; ++x) {
-			if (tileMap[y][x] == O)
+			if (floorTile(x, y))
 				openTiles.insert(Pair<int, int>(x, y));
 		}
 	}
@@ -151,7 +194,7 @@ bool DungeonFloorGenerator::spawnEntity(Entity *entity) {
 
 DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, int numx, int numy) {
 	generateMap();
-	//fix tile connections
+	fixTileConnections();
 	findOpenTiles();
 	//spawn exit
 	//spawn chests

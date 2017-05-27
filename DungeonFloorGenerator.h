@@ -16,6 +16,8 @@ public:
 	bool recursiveSplitY(int x, int y, int width, int height);
 	//bool recursiveSplitY(int x, int y, int width, int height);
 	void generateMap();
+	void fixTileConnections();
+	bool floorTile(int x, int y);
 	void findOpenTiles();
 	bool spawnEntity(Entity *entity);
 
