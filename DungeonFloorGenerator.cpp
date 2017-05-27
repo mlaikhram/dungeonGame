@@ -13,7 +13,7 @@ DungeonFloorGenerator::DungeonFloorGenerator(int mapSize, int minRoomSize, float
 
 bool DungeonFloorGenerator::recursiveSplitX(int x, int y, int width, int height) {
 	//check if room is too small to split
-	if (height < 2 * minRoomSize) return false;
+	if (height <= 2 * minRoomSize) return false;
 
 	int splitRange = height - 2 * minRoomSize;
 
@@ -25,7 +25,7 @@ bool DungeonFloorGenerator::recursiveSplitX(int x, int y, int width, int height)
 		if (tries > maxTries) return false;
 		splitAxis = y + minRoomSize + (int)(rand() % splitRange);
 		++tries;
-	} while (tileMap[splitAxis][x-1] != O && tileMap[splitAxis][width] != O);
+	} while (tileMap[splitAxis][x - 1] == O || tileMap[splitAxis][x + width] == O);
 	
 	//we have to build a wall
 	for (int i = x; i < x + width; ++i) {
@@ -33,11 +33,56 @@ bool DungeonFloorGenerator::recursiveSplitX(int x, int y, int width, int height)
 	}
 
 	//create a random opening on the wall
-	int door = (int)(rand() % width);
+	int door = (int)(rand() % width) + x;
 	tileMap[splitAxis][door] = O;
+	if (tileMap[splitAxis][door - 1] != NS && tileMap[splitAxis][door - 1] != NSFW && tileMap[splitAxis][door - 1] != N && tileMap[splitAxis][door - 1] != S)
+		tileMap[splitAxis][door - 1] = W;
+	if (tileMap[splitAxis][door + 1] != NS && tileMap[splitAxis][door + 1] != NSFE && tileMap[splitAxis][door + 1] != N && tileMap[splitAxis][door + 1] != S)
+		tileMap[splitAxis][door + 1] = E;
+
+	//recursively split
+	if (!recursiveSplitY(x, y, width, splitAxis - y)) recursiveSplitX(x, y, width, splitAxis - y);
+	if (!recursiveSplitY(x, splitAxis + 1, width, height - splitAxis + y - 1)) recursiveSplitX(x, splitAxis + 1, width, height - splitAxis + y - 1);
 
 	return true;
 }
+
+bool DungeonFloorGenerator::recursiveSplitY(int x, int y, int width, int height) {
+	//check if room is too small to split
+	if (width <= 2 * minRoomSize) return false;
+
+	int splitRange = width - 2 * minRoomSize;
+
+	int splitAxis;
+	int tries = 0;
+
+	//attempt to choose an axis to split on that doesn't interfere with any doors
+	do {
+		if (tries > maxTries) return false;
+		splitAxis = x + minRoomSize + (int)(rand() % splitRange);
+		++tries;
+	} while (tileMap[y - 1][splitAxis] == O || tileMap[y + height][splitAxis] == O);
+
+	//we have to build a wall
+	for (int i = y; i < y + height; ++i) {
+		tileMap[i][splitAxis] = NS;
+	}
+
+	//create a random opening on the wall
+	int door = (int)(rand() % height) + y;
+	tileMap[door][splitAxis] = O;
+	if (tileMap[door - 1][splitAxis] != WE && tileMap[door - 1][splitAxis] != WEFN && tileMap[door - 1][splitAxis] != W && tileMap[door - 1][splitAxis] != E)
+		tileMap[door - 1][splitAxis] = N;
+	if (tileMap[door + 1][splitAxis] != WE && tileMap[door + 1][splitAxis] != WEFS && tileMap[door + 1][splitAxis] != W && tileMap[door + 1][splitAxis] != E)
+		tileMap[door + 1][splitAxis] = S;
+
+	//recursively split
+	if (!recursiveSplitX(x, y, splitAxis - x, height)) recursiveSplitY(x, y, splitAxis - x, height);
+	if (!recursiveSplitX(splitAxis + 1, y, width - splitAxis + x - 1, height)) recursiveSplitY(splitAxis + 1, y, width - splitAxis + x - 1, height);
+
+	return true;
+}
+
 
 void DungeonFloorGenerator::generateMap() {
 

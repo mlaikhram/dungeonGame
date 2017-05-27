@@ -13,6 +13,7 @@ public:
 	//y: y pos of the top left FLOOR TILE
 	//width/height of room EXCLUDING BORDERING WALL TILES
 	bool recursiveSplitX(int x, int y, int width, int height);
+	bool recursiveSplitY(int x, int y, int width, int height);
 	//bool recursiveSplitY(int x, int y, int width, int height);
 	void generateMap();
 	void findOpenTiles();

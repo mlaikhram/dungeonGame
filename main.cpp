@@ -38,42 +38,12 @@ int main(int argc, char *argv[])
 	projectionMatrix.setOrthoProjection(-3.55f, 3.55f, -2.0f, 2.0f, -1.0f, 1.0f);
 	glUseProgram(program.programID);
 
-	int mapHeight = 100;
-	int mapWidth = mapHeight;
-	unsigned char **levelData;
 	//GLuint spriteSheet = LoadTexture("tilemap_dungeon1.png");
 
 	float elapsed = 0.0f;
 	float lastFrameTicks = 0.0f;
 	float ticks = 0.0f;
 	float fixedElapsed = 0.0f;
-
-	levelData = new unsigned char*[mapHeight];
-	for (int i = 0; i < mapHeight; ++i) {
-		levelData[i] = new unsigned char[mapWidth];
-	}
-	
-
-
-	unsigned char data[10][10] = {
-		{ SEFNW, WEFN, WEFN, WEFN, WEFN, WEFN, WEFN, WEFN, WEFN, SWFNE },
-		{ NSFW, O, O, O, O, O, O, O, O, NSFE },
-		{ NSFW, O, O, O, O, O, O, O, O, NSFE },
-		{ NSFW, O, O, O, O, O, O, O, O, NSFE },
-		{ NSFW, O, O, O, O, O, O, O, O, NSFE },
-		{ NSFW, O, O, O, O, O, O, O, O, NSFE },
-		{ NSFW, O, O, O, O, O, O, O, O, NSFE },
-		{ NSFW, O, O, O, O, O, O, O, O, NSFE },
-		{ NSFW, O, O, O, O, O, O, O, O, NSFE },
-		{ NEFSW, WEFS, WEFS, WEFS, WEFS, WEFS, WEFS, WEFS, WEFS, NWFSE }
-	};
-
-	for (int y = 0; y < mapHeight; ++y) {
-		for (int x = 0; x < mapWidth; ++x) {
-			//levelData[y][x] = data[y][x];
-			levelData[y][x] = O;
-		}
-	}
 
 	//generate pseudorandom seed
 	time_t time;
@@ -89,10 +59,6 @@ int main(int argc, char *argv[])
 	DungeonFloor *floor = dfg.generate("tilemap_dungeon1.png", 10, 10);
 
 	MenuOption menu("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG.", Vector3(0, 0, 0), "letters.png", 16, 16, 0.2f);
-
-	//floor->setSpriteSheet("tilemap_dungeon1.png");
-
-	//tileToWorldCoordinates(2, 2, player.position.x, player.position.y, floor->getMapSize());
 
 
 	SDL_Event event;
@@ -148,7 +114,7 @@ int main(int argc, char *argv[])
 		menu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 		player.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 		viewMatrix.identity();
-		viewMatrix.Translate(-player.position.x, (-1.0f * (player.position.y + 0.0f*mapHeight*TILE_SIZE)), 0);
+		viewMatrix.Translate(-player.position.x, (-1.0f * (player.position.y + TILE_SIZE)), 0);
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

@@ -35,6 +35,10 @@ bool DungeonFloor::testOutOfBounds(int gridX, int gridY) {
 	return false;
 }
 
+bool DungeonFloor::floorTile(int x, int y) {
+	return tileMap[y][x] == O || tileMap[y][x] == X || tileMap[y][x] == enter;
+}
+
 void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 	int gridX, gridY;
 
@@ -44,7 +48,7 @@ void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 		//handleOOB(entity);
 		return;
 	}
-	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] > 0)
+	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && !floorTile(gridX, gridY))
 	{
 		entity.position.x += 0.008f;
 		entity.velocity.x = 0.0f;
@@ -56,7 +60,7 @@ void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 		//handleOOB(entity);
 		return;
 	}
-	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] > 0)
+	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && !floorTile(gridX, gridY))
 	{
 		entity.position.x += 0.008f;
 		entity.velocity.x = 0.0f;
@@ -69,7 +73,7 @@ void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 		//handleOOB(entity);
 		return;
 	}
-	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] > 0)
+	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && !floorTile(gridX, gridY))
 	{
 		entity.position.x -= 0.008f;
 		entity.velocity.x = 0.0f;
@@ -81,7 +85,7 @@ void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 		//handleOOB(entity);
 		return;
 	}
-	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] > 0)
+	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && !floorTile(gridX, gridY))
 	{
 		entity.position.x -= 0.008f;
 		entity.velocity.x = 0.0f;
@@ -94,7 +98,7 @@ void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 		//handleOOB(entity);
 		return;
 	}
-	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] > 0)
+	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && !floorTile(gridX, gridY))
 	{
 		entity.position.y += 0.008f;
 		entity.velocity.y = 0.0f;
@@ -106,7 +110,7 @@ void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 		//handleOOB(entity);
 		return;
 	}
-	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] > 0)
+	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && !floorTile(gridX, gridY))
 	{
 		entity.position.y += 0.008f;
 		entity.velocity.y = 0.0f;
@@ -119,7 +123,7 @@ void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 		//handleOOB(entity);
 		return;
 	}
-	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] > 0)
+	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && !floorTile(gridX, gridY))
 	{
 		entity.position.y -= 0.008f;
 		entity.velocity.y = 0.0f;
@@ -131,7 +135,7 @@ void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 		//handleOOB(entity);
 		return;
 	}
-	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] > 0)
+	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && !floorTile(gridX, gridY))
 	{
 		entity.position.y -= 0.008f;
 		entity.velocity.y = 0.0f;
