@@ -7,7 +7,7 @@
 #define MAX_TIMESTEPS 8
 #define TILE_SIZE 0.5f
 
-enum maptiles { O, WE, WEFS, WEFN, NS, NSFE, NSFW, NSWE, NSW, NSWFE, NSE, NSEFW, SWE, SWEFN, NWE, NWEFS, NWF, NW, NEF, NE, SWF, SW, SEF, SE, enter, exit, chest1 };
+enum maptiles { O, WE, WEFS, WEFN, NS, NSFE, NSFW, NSWE, NSW, NSWFE, NSE, NSEFW, SWE, SWEFN, NWE, NWEFS, NWF, NW, NEF, NE, SWF, SW, SEF, SE, enter, X, chest1 };
 
 class DungeonFloor;
 

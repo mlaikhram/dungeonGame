@@ -113,6 +113,11 @@ DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, int n
 	//spawn enemies
 	//delete tiles in radius form exit tile
 	spawnEntity(player); //if no suitable, replace enemy with player
+	//spawn entrance tile
+	int x, y;
+	worldToTileCoordinates(player->position.x, player->position.y, x, y, mapSize);
+	tileMap[y][x] = enter;
+
 	DungeonFloor *floor = new DungeonFloor(mapSize, tileSize, tileMap, spriteSheetName, numx, numy, player);
 	return floor;
 }
