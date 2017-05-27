@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 
 
 	unsigned char data[10][10] = {
-		{ SEF, WEFN, WEFN, WEFN, WEFN, WEFN, WEFN, WEFN, WEFN, SWF },
+		{ SEFNW, WEFN, WEFN, WEFN, WEFN, WEFN, WEFN, WEFN, WEFN, SWFNE },
 		{ NSFW, O, O, O, O, O, O, O, O, NSFE },
 		{ NSFW, O, O, O, O, O, O, O, O, NSFE },
 		{ NSFW, O, O, O, O, O, O, O, O, NSFE },
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 		{ NSFW, O, O, O, O, O, O, O, O, NSFE },
 		{ NSFW, O, O, O, O, O, O, O, O, NSFE },
 		{ NSFW, O, O, O, O, O, O, O, O, NSFE },
-		{ NEF, WEFS, WEFS, WEFS, WEFS, WEFS, WEFS, WEFS, WEFS, NWF }
+		{ NEFSW, WEFS, WEFS, WEFS, WEFS, WEFS, WEFS, WEFS, WEFS, NWFSE }
 	};
 
 	for (int y = 0; y < mapHeight; ++y) {

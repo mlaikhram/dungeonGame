@@ -42,10 +42,10 @@ bool DungeonFloorGenerator::recursiveSplitX(int x, int y, int width, int height)
 void DungeonFloorGenerator::generateMap() {
 
 	//init corners
-	tileMap[0][0] = SEF;
-	tileMap[0][mapSize - 1] = SWF;
-	tileMap[mapSize - 1][0] = NEF;
-	tileMap[mapSize - 1][mapSize - 1] = NWF;
+	tileMap[0][0] = SEFNW;
+	tileMap[0][mapSize - 1] = SWFNE;
+	tileMap[mapSize - 1][0] = NEFSW;
+	tileMap[mapSize - 1][mapSize - 1] = NWFSE;
 
 	//init otpe and bottom rows
 	for (int x = 1; x < mapSize-1; ++x) {
