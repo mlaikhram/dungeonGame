@@ -164,6 +164,17 @@ void DungeonFloorGenerator::findOpenTiles() {
 	}
 }
 
+void DungeonFloorGenerator::deleteOpenTilesR(int x, int y, int radius) {
+	std::ofstream ofs("output.txt");
+	for (int i = x - radius; i <= x + radius; ++i) {
+		for (int j = y - radius; j <= y + radius; ++j) {
+			if (openTiles.find(Pair<int, int>(i, j)) != openTiles.end())
+				openTiles.erase(openTiles.find(Pair<int, int>(i, j)));
+			ofs << "hit!" << std::endl;
+		}
+	}
+}
+
 bool DungeonFloorGenerator::spawnEntity(Entity *entity) {
 	if (openTiles.size() == 0) return false;
 
@@ -180,14 +191,22 @@ bool DungeonFloorGenerator::spawnEntity(Entity *entity) {
 	openTiles.erase(itr);
 
 	//also remove any surrounding tiles, if they exist !!!!!! MIGHT NOT WORK !!!!!!!
-	openTiles.erase(Pair<int, int>(coords.x + 1, coords.y));
-	openTiles.erase(Pair<int, int>(coords.x - 1, coords.y));
-	openTiles.erase(Pair<int, int>(coords.x, coords.y + 1));
-	openTiles.erase(Pair<int, int>(coords.x, coords.y - 1));
-	openTiles.erase(Pair<int, int>(coords.x + 1, coords.y + 1));
-	openTiles.erase(Pair<int, int>(coords.x + 1, coords.y - 1));
-	openTiles.erase(Pair<int, int>(coords.x - 1, coords.y + 1));
-	openTiles.erase(Pair<int, int>(coords.x - 1, coords.y - 1));
+	if (openTiles.find(Pair<int, int>(coords.x + 1, coords.y)) != openTiles.end())
+		openTiles.erase(openTiles.find(Pair<int, int>(coords.x + 1, coords.y)));
+	if (openTiles.find(Pair<int, int>(coords.x - 1, coords.y)) != openTiles.end())
+		openTiles.erase(openTiles.find(Pair<int, int>(coords.x - 1, coords.y)));
+	if (openTiles.find(Pair<int, int>(coords.x, coords.y + 1)) != openTiles.end())
+		openTiles.erase(openTiles.find(Pair<int, int>(coords.x, coords.y + 1)));
+	if (openTiles.find(Pair<int, int>(coords.x, coords.y - 1)) != openTiles.end())
+		openTiles.erase(openTiles.find(Pair<int, int>(coords.x, coords.y - 1)));
+	if (openTiles.find(Pair<int, int>(coords.x + 1, coords.y + 1)) != openTiles.end())
+		openTiles.erase(openTiles.find(Pair<int, int>(coords.x + 1, coords.y + 1)));
+	if (openTiles.find(Pair<int, int>(coords.x + 1, coords.y - 1)) != openTiles.end())
+		openTiles.erase(openTiles.find(Pair<int, int>(coords.x + 1, coords.y - 1)));
+	if (openTiles.find(Pair<int, int>(coords.x - 1, coords.y + 1)) != openTiles.end())
+		openTiles.erase(openTiles.find(Pair<int, int>(coords.x - 1, coords.y + 1)));
+	if (openTiles.find(Pair<int, int>(coords.x - 1, coords.y - 1)) != openTiles.end())
+		openTiles.erase(openTiles.find(Pair<int, int>(coords.x - 1, coords.y - 1)));
 
 	return true;
 }
@@ -197,9 +216,19 @@ DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, int n
 	fixTileConnections();
 	findOpenTiles();
 	//spawn exit
+	//select random open tile
+	int index = (int)(rand() % openTiles.size());
+	Pair<int, int> exitCoords(0, 0);
+	std::set<Pair<int, int>>::const_iterator itr(openTiles.begin());
+	advance(itr, index);
+	exitCoords.x = itr->x;
+	exitCoords.y = itr->y;
+	tileMap[exitCoords.y][exitCoords.x] = X;
+	openTiles.erase(itr);
 	//spawn chests
 	//spawn enemies
 	//delete tiles in radius form exit tile
+	deleteOpenTilesR(exitCoords.x, exitCoords.y, 2.5 * minRoomSize);
 	spawnEntity(player); //if no suitable, replace enemy with player
 	//spawn entrance tile
 	int x, y;

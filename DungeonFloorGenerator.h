@@ -19,6 +19,7 @@ public:
 	void fixTileConnections();
 	bool floorTile(int x, int y);
 	void findOpenTiles();
+	void deleteOpenTilesR(int x, int y, int radius);
 	bool spawnEntity(Entity *entity);
 
 	DungeonFloor* generate(const char *spriteSheetName, int numx, int numy);

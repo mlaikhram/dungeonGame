@@ -16,6 +16,7 @@ public:
 	bool testOutOfBounds(int gridX, int gridY);
 	bool floorTile(int x, int y);
 	void mapCollision(Entity &entity, ShaderProgram *program);
+	bool exitCollision(ShaderProgram *program);
 	void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
 
 	int getMapSize() const;

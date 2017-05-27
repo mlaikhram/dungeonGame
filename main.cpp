@@ -81,6 +81,10 @@ int main(int argc, char *argv[])
 		if (keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S] || keys[SDL_SCANCODE_L]) {
 			player.acceleration.y += -5.0f;
 		}
+		if (keys[SDL_SCANCODE_SPACE] && floor->exitCollision(&program)) {
+			delete floor;
+			floor = dfg.generate("tilemap_dungeon1.png", 10, 10);
+		}
 		// TESTING KEYBIND ONLY //
 		if (keys[SDL_SCANCODE_R]) {
 			delete floor;
