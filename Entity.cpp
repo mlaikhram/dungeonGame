@@ -20,7 +20,9 @@ void Entity::update(ShaderProgram *program, float time) {
 
 void Entity::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix) {
 	modelMatrix.identity();
+	//modelMatrix.Scale(0.5f, 0.5f, 1.0f);
 	modelMatrix.Translate(position.x, position.y, position.z);
+	//modelMatrix.Scale(size, size, 1.0f);
 	program->setModelMatrix(modelMatrix);
 	program->setProjectionMatrix(projectionMatrix);
 	program->setViewMatrix(viewMatrix);
