@@ -8,8 +8,8 @@ Entity::Entity(const char *spriteSheetName, int index, int numx, int numy, Vecto
 }
 
 void Entity::update(ShaderProgram *program, float time) {
-	velocity.x = lerp(velocity.x, 0.0f, time * 5);
-	velocity.y = lerp(velocity.y, 0.0f, time * 5);
+	velocity.x = lerp(velocity.x, 0.0f, time * 7);
+	velocity.y = lerp(velocity.y, 0.0f, time * 7);
 
 	velocity.x += acceleration.x * time;
 	velocity.y += acceleration.y * time;

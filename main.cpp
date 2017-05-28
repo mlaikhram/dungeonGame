@@ -45,6 +45,8 @@ int main(int argc, char *argv[])
 	float ticks = 0.0f;
 	float fixedElapsed = 0.0f;
 
+	float accel = 10.0f;
+
 	//generate pseudorandom seed
 	time_t time;
 	std::time(&time);
@@ -70,16 +72,16 @@ int main(int argc, char *argv[])
 		player.acceleration.y = 0.0f;
 		const Uint8 *keys = SDL_GetKeyboardState(NULL);
 		if (keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_A] || keys[SDL_SCANCODE_K]) {
-			player.acceleration.x += -5.0f;
+			player.acceleration.x -= accel;
 		}
 		if (keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D] || keys[SDL_SCANCODE_SEMICOLON]) {
-			player.acceleration.x += 5.0f;
+			player.acceleration.x += accel;
 		}
 		if (keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W] || keys[SDL_SCANCODE_O]) {
-			player.acceleration.y += 5.0f;
+			player.acceleration.y += accel;
 		}
 		if (keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S] || keys[SDL_SCANCODE_L]) {
-			player.acceleration.y += -5.0f;
+			player.acceleration.y -= accel;
 		}
 		if (keys[SDL_SCANCODE_SPACE] && floor->exitCollision(&program)) {
 			delete floor;
