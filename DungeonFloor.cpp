@@ -1,8 +1,8 @@
 #include "Util.h"
 #include "DungeonFloor.h"
 
-DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, int numx, int numy, Entity *player) : 
-	mapSize(mapSize), tileSize(tileSize), numx(numx), numy(numy), player(player) {
+DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, int numx, int numy, Entity *player, std::vector<Chest> chests) : 
+	mapSize(mapSize), tileSize(tileSize), numx(numx), numy(numy), player(player), chests(chests) {
 	tileMap = new unsigned char*[mapSize];
 	for (int i = 0; i < mapSize; ++i) {
 		tileMap[i] = new unsigned char[mapSize];
@@ -13,19 +13,6 @@ DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap
 		}
 	}
 	spriteSheet = LoadTexture(spriteSheetName);
-}
-
-DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, GLuint spriteSheet, int numx, int numy, Entity *player) : 
-	mapSize(mapSize), tileSize(tileSize), spriteSheet(spriteSheet), numx(numx), numy(numy), player(player) {
-	tileMap = new unsigned char*[mapSize];
-	for (int i = 0; i < mapSize; ++i) {
-		tileMap[i] = new unsigned char[mapSize];
-	}
-	for (int y = 0; y < mapSize; ++y) {
-		for (int x = 0; x < mapSize; ++x) {
-			tileMap[y][x] = _tileMap[y][x];
-		}
-	}
 }
 
 bool DungeonFloor::testOutOfBounds(int gridX, int gridY) {
@@ -267,6 +254,9 @@ void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix
 			DrawSpriteSheetSprite(program, tileMap[y][x], numx, numy, spriteSheet, tileSize);
 		}
 	}
+
+	for (Chest &chest : chests)
+		chest.draw(program, projectionMatrix, modelMatrix, viewMatrix);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

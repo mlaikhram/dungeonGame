@@ -20,7 +20,8 @@ public:
 	bool floorTile(int x, int y);
 	void findOpenTiles();
 	void deleteOpenTilesR(int x, int y, int radius);
-	bool spawnEntity(Entity *entity);
+	int countNearbyObstructions(int x, int y);
+	bool spawnEntity(Entity *entity, int radius = 0, int maxObstructions = 8);
 
 	DungeonFloor* generate(const char *spriteSheetName, int numx, int numy);
 

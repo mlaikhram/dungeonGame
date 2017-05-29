@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 	//output file for debugging
 	std::ofstream ofs("output.txt");
 
-	Entity player("tiles.png", 52, 20, 20, Vector3(0.0f, 0.0f, 0.0f), 0.75 * TILE_SIZE);
+	Entity player("tiles.png", 52, 20, 20, Vector3(), 0.75 * TILE_SIZE);
 	//DungeonFloor *floor = new DungeonFloor(100, TILE_SIZE, levelData, "tilemap_dungeon1.png", 10, 10, &player);
 	DungeonFloorGenerator dfg(25, 5, TILE_SIZE, &player);
 	DungeonFloor *floor = dfg.generate("tilemap_dungeon1.png", 10, 10);

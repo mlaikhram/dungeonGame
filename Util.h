@@ -13,7 +13,7 @@ class DungeonFloor;
 
 class Vector3 {
 public:
-	Vector3() { Vector3(0, 0, 0); }
+	Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
 	Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
 	float x;
 	float y;
