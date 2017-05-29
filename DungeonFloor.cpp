@@ -145,7 +145,7 @@ void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
 	}
 }
 
-bool DungeonFloor::exitCollision(ShaderProgram *program) {
+bool DungeonFloor::tileCollision(ShaderProgram *program, int index) {
 	int gridX, gridY;
 	float offset = (tileSize - player->size) / 2;
 
@@ -155,7 +155,7 @@ bool DungeonFloor::exitCollision(ShaderProgram *program) {
 		//handleOOB(entity);
 		return false;
 	}
-	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] == X)
+	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] == index)
 	{
 		return true;
 	}
@@ -164,7 +164,7 @@ bool DungeonFloor::exitCollision(ShaderProgram *program) {
 		//handleOOB(entity);
 		return false;
 	}
-	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] == X)
+	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] == index)
 	{
 		return true;
 	}
@@ -174,7 +174,7 @@ bool DungeonFloor::exitCollision(ShaderProgram *program) {
 		//handleOOB(entity);
 		return false;
 	}
-	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] == X)
+	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] == index)
 	{
 		return true;
 	}
@@ -183,7 +183,7 @@ bool DungeonFloor::exitCollision(ShaderProgram *program) {
 		//handleOOB(entity);
 		return false;
 	}
-	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] == X)
+	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] == index)
 	{
 		return true;
 	}
@@ -193,7 +193,7 @@ bool DungeonFloor::exitCollision(ShaderProgram *program) {
 		//handleOOB(entity);
 		return false;
 	}
-	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] == X)
+	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] == index)
 	{
 		return true;
 	}
@@ -202,7 +202,7 @@ bool DungeonFloor::exitCollision(ShaderProgram *program) {
 		//handleOOB(entity);
 		return false;
 	}
-	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] == X)
+	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] == index)
 	{
 		return true;
 	}
@@ -212,7 +212,7 @@ bool DungeonFloor::exitCollision(ShaderProgram *program) {
 		//handleOOB(entity);
 		return false;
 	}
-	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] == X)
+	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] == index)
 	{
 		return true;
 	}
@@ -221,13 +221,39 @@ bool DungeonFloor::exitCollision(ShaderProgram *program) {
 		//handleOOB(entity);
 		return false;
 	}
-	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] == X)
+	if (!(gridX < 0 || gridX > mapSize || gridY < 0 || gridY > mapSize) && tileMap[gridY][gridX] == index)
 	{
 		return true;
 	}
 	return false;
 }
 
+bool DungeonFloor::tileCollision(ShaderProgram *program, int x, int y) {
+	int gridX, gridY;
+	float offset = (tileSize - player->size) / 2;
+
+	//check left
+	worldToTileCoordinates(player->position.x + offset, player->position.y - 0.008f - offset, gridX, gridY, mapSize);
+	if (x == gridX && y == gridY) return true;
+	worldToTileCoordinates(player->position.x + offset, player->position.y - player->size + 0.008f - offset, gridX, gridY, mapSize);
+	if (x == gridX && y == gridY) return true;
+	//check right
+	worldToTileCoordinates(player->position.x + player->size + offset, player->position.y - 0.008f - offset, gridX, gridY, mapSize);
+	if (x == gridX && y == gridY) return true;
+	worldToTileCoordinates(player->position.x + player->size + offset, player->position.y - player->size + 0.008f - offset, gridX, gridY, mapSize);
+	if (x == gridX && y == gridY) return true;
+	//check bottom
+	worldToTileCoordinates(player->position.x + 0.008f + offset, player->position.y - player->size - offset, gridX, gridY, mapSize);
+	if (x == gridX && y == gridY) return true;
+	worldToTileCoordinates(player->position.x + player->size - 0.008f + offset, player->position.y - player->size - offset, gridX, gridY, mapSize);
+	if (x == gridX && y == gridY) return true;
+	//check top
+	worldToTileCoordinates(player->position.x + 0.008f + offset, player->position.y - offset, gridX, gridY, mapSize);
+	if (x == gridX && y == gridY) return true;
+	worldToTileCoordinates(player->position.x + player->size - 0.008f + offset, player->position.y - offset, gridX, gridY, mapSize);
+	if (x == gridX && y == gridY) return true;
+	return false;
+}
 
 void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix) {
 

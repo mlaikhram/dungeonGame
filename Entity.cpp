@@ -1,8 +1,8 @@
 #include "Util.h"
 #include "Entity.h"
 
-Entity::Entity(const char *spriteSheetName, int index, int numx, int numy, Vector3 position, float size, bool isStatic, Vector3 velocity, Vector3 acceleration, float rotation) :
-	index(index), numx(numx), numy(numy), isStatic(isStatic), position(position), velocity(velocity), acceleration(acceleration), size(size), rotation(rotation), exists(true),
+Entity::Entity(const char *spriteSheetName, int index, int numx, int numy, Vector3 position, float size, Vector3 velocity, Vector3 acceleration, float rotation) :
+	index(index), numx(numx), numy(numy), position(position), velocity(velocity), acceleration(acceleration), size(size), rotation(rotation),
 	collidedTop(false), collidedBottom(false), collidedLeft(false), collidedRight(false), cliffLeft(false), cliffRight(false), cliffDown(false) {
 	spriteSheet = LoadTexture(spriteSheetName);
 }
