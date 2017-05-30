@@ -119,16 +119,18 @@ int main(int argc, char *argv[])
 		while (fixedElapsed >= FIXED_TIMESTEP) {
 			fixedElapsed -= FIXED_TIMESTEP;
 			player.update(&program, FIXED_TIMESTEP);
-			floor->mapCollision(player, &program);
+			//floor->mapCollision(player, &program);
+			floor->update(&program);
 		}
 		player.update(&program, fixedElapsed);
+		floor->update(&program);
 
-		for (int i = 0; i < floor->getChests().size(); ++i) {
+		/*for (int i = 0; i < floor->getChests().size(); ++i) {
 			while (player.collidesWith(floor->getChests()[i]))
 				player.nudge(floor->getChests()[i], 0.0f);
 		}
 
-		floor->mapCollision(player, &program);
+		floor->mapCollision(player, &program);*/
 
 		// draw ///////////////////////////////////////////////////////////////////////////////////////////////////
 		glClear(GL_COLOR_BUFFER_BIT);

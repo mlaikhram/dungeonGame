@@ -242,6 +242,21 @@ bool DungeonFloor::tileCollision(ShaderProgram *program, int x, int y) {
 	return false;
 }
 
+void DungeonFloor::update(ShaderProgram *program, int maxTries) {
+	int tries = 0;
+	for (int i = 0; i < chests.size(); ++i) {
+		while (player->collidesWith(chests[i])) {
+			if (tries > maxTries) break;
+			player->nudge(chests[i], 0.0f);
+			++tries;
+		}
+	}
+	mapCollision(*player, program);
+	for (int i = 0; i < chests.size(); ++i) {
+		mapCollision(chests[i], program);
+	}
+}
+
 void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix) {
 
 	for (int y = 0; y < mapSize; ++y) {
