@@ -25,7 +25,7 @@ public:
 	float getTileSize() const;
 	unsigned char** getTileMap() const;
 	GLuint getSpriteSheet() const;
-	std::vector<Chest> getChests() const;
+	std::vector<Chest>& getChests();
 
 	void setSpriteSheet(const char* name);
 

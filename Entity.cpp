@@ -47,9 +47,9 @@ void Entity::nudge(Entity &entity, float nudgePercent) {
 	if (abs(responseVector.x) > abs(responseVector.y)) responseVector.y = 0;
 	else responseVector.x = 0;
 
-	position.x += responseVector.x * 0.002f * (1.0f - nudgePercent);
-	position.y += responseVector.y * 0.002f * (1.0f - nudgePercent);
+	position.x += responseVector.x * 0.008f * (1.0f - nudgePercent);
+	position.y += responseVector.y * 0.008f * (1.0f - nudgePercent);
 
-	entity.position.x -= responseVector.x * 0.002f * nudgePercent;
-	entity.position.y -= responseVector.y * 0.002f * nudgePercent;
+	entity.position.x -= responseVector.x * 0.008f * nudgePercent;
+	entity.position.y -= responseVector.y * 0.008f * nudgePercent;
 }
