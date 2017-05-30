@@ -9,6 +9,9 @@ public:
 	void update(ShaderProgram *program, float time);
 	void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
 
+	bool collidesWith(Entity &entity);
+	void nudge(Entity &entity, float nudgePercent);
+
 	Vector3 position;
 	Vector3 velocity;
 	Vector3 acceleration;

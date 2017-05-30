@@ -31,3 +31,25 @@ void Entity::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &mode
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
+
+bool Entity::collidesWith(Entity &entity) {
+	return (!(
+		position.x - size / 2 > entity.position.x + entity.size / 2 ||
+		position.x + size / 2 < entity.position.x - entity.size / 2 ||
+		position.y - size / 2 > entity.position.y + entity.size / 2 ||
+		position.y + size / 2 < entity.position.y - entity.size / 2));
+}
+
+void Entity::nudge(Entity &entity, float nudgePercent) {
+	Vector3 responseVector = Vector3(position.x - entity.position.x, position.y - entity.position.y, 0.0f);
+	responseVector.normalize2d();
+
+	if (abs(responseVector.x) > abs(responseVector.y)) responseVector.y = 0;
+	else responseVector.x = 0;
+
+	position.x += responseVector.x * 0.002f * (1.0f - nudgePercent);
+	position.y += responseVector.y * 0.002f * (1.0f - nudgePercent);
+
+	entity.position.x -= responseVector.x * 0.002f * nudgePercent;
+	entity.position.y -= responseVector.y * 0.002f * nudgePercent;
+}

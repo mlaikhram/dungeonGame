@@ -266,5 +266,6 @@ int DungeonFloor::getMapSize() const { return mapSize; }
 float DungeonFloor::getTileSize() const { return tileSize; }
 unsigned char** DungeonFloor::getTileMap() const { return tileMap; }
 GLuint DungeonFloor::getSpriteSheet() const { return spriteSheet; }
+std::vector<Chest> DungeonFloor::getChests() const { return chests; }
 
 void DungeonFloor::setSpriteSheet(const char* name) { spriteSheet = LoadTexture(name); }

@@ -57,10 +57,10 @@ int main(int argc, char *argv[])
 
 	Entity player("tiles.png", 52, 20, 20, Vector3(), 0.75 * TILE_SIZE);
 	//DungeonFloor *floor = new DungeonFloor(100, TILE_SIZE, levelData, "tilemap_dungeon1.png", 10, 10, &player);
-	DungeonFloorGenerator dfg(25, 5, TILE_SIZE, &player);
+	DungeonFloorGenerator dfg(50, 5, TILE_SIZE, &player);
 	DungeonFloor *floor = dfg.generate("tilemap_dungeon1.png", 10, 10);
 
-	MenuOption menu("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG.", Vector3(0, 0, 0), "letters.png", 16, 16, 0.2f);
+	MenuOption menu("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG.", Vector3(), "letters.png", 16, 16, 0.2f);
 
 
 	SDL_Event event;
@@ -122,6 +122,12 @@ int main(int argc, char *argv[])
 			floor->mapCollision(player, &program);
 		}
 		player.update(&program, fixedElapsed);
+
+		for (int i = 0; i < floor->getChests().size(); ++i) {
+			while (player.collidesWith(floor->getChests()[i]))
+				player.nudge(floor->getChests()[i], 0.0f);
+		}
+
 		floor->mapCollision(player, &program);
 
 		// draw ///////////////////////////////////////////////////////////////////////////////////////////////////
