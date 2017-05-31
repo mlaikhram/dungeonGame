@@ -232,7 +232,7 @@ DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, int n
 	std::vector<Chest> chests = std::vector<Chest>();
 	std::ofstream ofs("output.txt");
 	for (int i = 0; i < 10; ++i) {
-		Chest *chest = new Chest("tilemap_dungeon1.png", chest1, 10, 10, Vector3(), 0.5f * TILE_SIZE);
+		Chest *chest = new Chest("tilemap_dungeon1.png", chestc, 10, 10, Vector3(), 0.7f * TILE_SIZE);
 		if (spawnEntity(chest, 0, 1)) {
 			/*int gridX, gridY;
 			worldToTileCoordinates(chest->position.x, chest->position.y, gridX, gridY, mapSize);
