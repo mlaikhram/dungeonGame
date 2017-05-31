@@ -9,7 +9,7 @@ void Chest::update(ShaderProgram *program, float time) {
 	if (open && index == chestc) {
 		if (openTime < 0.5f) {
 			openTime += time;
-			rotation = 0.1 * PI * sin(2 * PI * openTime * 7.0f);
+			rotation = 0.025f * PI * sin(2 * PI * openTime * 7.0f);
 		}
 		else {
 			rotation = 0.0f;

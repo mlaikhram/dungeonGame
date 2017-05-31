@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
 		menu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 		player.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 		viewMatrix.identity();
-		viewMatrix.Translate(-player.position.x, (-1.0f * (player.position.y + TILE_SIZE)), 0);
+		viewMatrix.Translate(-player.position.x, (-1.0f * player.position.y), 0);
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
