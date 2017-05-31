@@ -22,7 +22,7 @@ void Entity::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &mode
 	modelMatrix.identity();
 	//modelMatrix.Scale(0.5f, 0.5f, 1.0f);
 	modelMatrix.Translate(position.x, position.y, position.z);
-	//modelMatrix.Scale(size, size, 1.0f);
+	modelMatrix.Rotate(rotation);
 	program->setModelMatrix(modelMatrix);
 	program->setProjectionMatrix(projectionMatrix);
 	program->setViewMatrix(viewMatrix);

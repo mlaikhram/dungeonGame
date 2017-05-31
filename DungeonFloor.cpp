@@ -242,7 +242,7 @@ bool DungeonFloor::tileCollision(ShaderProgram *program, int x, int y) {
 	return false;
 }
 
-void DungeonFloor::update(ShaderProgram *program, int maxTries) {
+void DungeonFloor::update(ShaderProgram *program, float time, int maxTries) {
 	int tries = 0;
 	for (int i = 0; i < chests.size(); ++i) {
 		while (player->collidesWith(chests[i])) {
@@ -253,6 +253,7 @@ void DungeonFloor::update(ShaderProgram *program, int maxTries) {
 	}
 	mapCollision(*player, program);
 	for (int i = 0; i < chests.size(); ++i) {
+		chests[i].update(program, time);
 		mapCollision(chests[i], program);
 	}
 }

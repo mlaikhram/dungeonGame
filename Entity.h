@@ -6,8 +6,8 @@
 class Entity {
 public:
 	Entity(const char *spriteSheetName, int index, int numx, int numy, Vector3 position, float size = 1.0f, Vector3 velocity = Vector3(0, 0, 0), Vector3 acceleration = Vector3(0, 0, 0), float rotation = 0.0f);
-	void update(ShaderProgram *program, float time);
-	void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
+	virtual void update(ShaderProgram *program, float time);
+	virtual void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
 
 	bool collidesWith(Entity &entity);
 	void nudge(Entity &entity, float nudgePercent);

@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 				int gridX, gridY;
 				worldToTileCoordinates(chest.position.x, chest.position.y, gridX, gridY, floor->getMapSize());
 				if (floor->tileCollision(&program, gridX, gridY)) {
-					chest.openedBy(player);
+					chest.startOpen(player);
 				}
 			}
 		}
@@ -114,7 +114,6 @@ int main(int argc, char *argv[])
 		elapsed = ticks - lastFrameTicks;
 		lastFrameTicks = ticks;
 
-		// 60 FPS (1.0f/60.0f)
 		fixedElapsed = elapsed;
 		if (fixedElapsed > FIXED_TIMESTEP * MAX_TIMESTEPS) {
 			fixedElapsed = FIXED_TIMESTEP * MAX_TIMESTEPS;
@@ -123,10 +122,10 @@ int main(int argc, char *argv[])
 			fixedElapsed -= FIXED_TIMESTEP;
 			player.update(&program, FIXED_TIMESTEP);
 			//floor->mapCollision(player, &program);
-			floor->update(&program);
+			floor->update(&program, FIXED_TIMESTEP);
 		}
 		player.update(&program, fixedElapsed);
-		floor->update(&program);
+		floor->update(&program, fixedElapsed);
 
 		/*for (int i = 0; i < floor->getChests().size(); ++i) {
 			while (player.collidesWith(floor->getChests()[i]))

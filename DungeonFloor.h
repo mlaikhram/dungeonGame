@@ -19,7 +19,7 @@ public:
 	void mapCollision(Entity &entity, ShaderProgram *program);
 	bool tileCollision(ShaderProgram *program, int index);
 	bool tileCollision(ShaderProgram *program, int x, int y);
-	void update(ShaderProgram *program, int maxTries = 10);
+	void update(ShaderProgram *program, float time, int maxTries = 10);
 	void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
 
 	int getMapSize() const;
