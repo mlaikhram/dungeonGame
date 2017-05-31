@@ -88,9 +88,12 @@ int main(int argc, char *argv[])
 				delete floor;
 				floor = dfg.generate("tilemap_dungeon1.png", 10, 10);
 			}
-			if (floor->tileCollision(&program, 1, 1)) {
-				delete floor;
-				floor = dfg.generate("tilemap_dungeon1.png", 10, 10);
+			for (Chest& chest : floor->getChests()) {
+				int gridX, gridY;
+				worldToTileCoordinates(chest.position.x, chest.position.y, gridX, gridY, floor->getMapSize());
+				if (floor->tileCollision(&program, gridX, gridY)) {
+					chest.openedBy(player);
+				}
 			}
 		}
 		// TESTING KEYBIND ONLY //

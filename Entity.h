@@ -25,7 +25,7 @@ public:
 	bool cliffRight;
 	bool cliffDown;
 
-private:
+protected:
 	GLuint spriteSheet;
 	int index;
 	int numx;

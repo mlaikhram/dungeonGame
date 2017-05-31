@@ -3,8 +3,8 @@
 
 #include "ShaderProgram.h"
 
-#define FIXED_TIMESTEP 0.0066666f
-#define MAX_TIMESTEPS 8
+#define FIXED_TIMESTEP 0.0166666f
+#define MAX_TIMESTEPS 6
 #define TILE_SIZE 0.5f
 
 enum maptiles { O, WE, WEFS, WEFN, NS, NSFE, NSFW, NSWE, NSW, NSWFE, NSE, NSEFW, SWE, SWEFN, NWE, NWEFS, NWFSE, NW, NEFSW, NE, SWFNE, SW, SEFNW, SE, N, S, W, E, enter, X, chestc, chesto };
