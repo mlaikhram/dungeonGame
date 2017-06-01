@@ -23,7 +23,7 @@ bool DungeonFloor::testOutOfBounds(int gridX, int gridY) {
 }
 
 bool DungeonFloor::floorTile(int x, int y) {
-	return tileMap[y][x] == O || tileMap[y][x] == X || tileMap[y][x] == enter;
+	return tileMap[y][x] == O1 || tileMap[y][x] == O2 || tileMap[y][x] == O3 || tileMap[y][x] == O4 || tileMap[y][x] == O5 || tileMap[y][x] == X || tileMap[y][x] == enter;
 }
 
 void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {

@@ -26,7 +26,7 @@ bool DungeonFloorGenerator::recursiveSplitX(int x, int y, int width, int height)
 		if (tries > maxTries) return false;
 		splitAxis = y + minRoomSize + (int)(rand() % splitRange);
 		++tries;
-	} while (tileMap[splitAxis][x - 1] == O || tileMap[splitAxis][x + width] == O);
+	} while (tileMap[splitAxis][x - 1] == O1 || tileMap[splitAxis][x + width] == O1);
 	
 	//we have to build a wall
 	for (int i = x; i < x + width; ++i) {
@@ -35,7 +35,7 @@ bool DungeonFloorGenerator::recursiveSplitX(int x, int y, int width, int height)
 
 	//create a random opening on the wall
 	int door = (int)(rand() % width) + x;
-	tileMap[splitAxis][door] = O;
+	tileMap[splitAxis][door] = O1;
 	if (tileMap[splitAxis][door - 1] != NS && tileMap[splitAxis][door - 1] != NSFW && tileMap[splitAxis][door - 1] != N && tileMap[splitAxis][door - 1] != S)
 		tileMap[splitAxis][door - 1] = W;
 	if (tileMap[splitAxis][door + 1] != NS && tileMap[splitAxis][door + 1] != NSFE && tileMap[splitAxis][door + 1] != N && tileMap[splitAxis][door + 1] != S)
@@ -62,7 +62,7 @@ bool DungeonFloorGenerator::recursiveSplitY(int x, int y, int width, int height)
 		if (tries > maxTries) return false;
 		splitAxis = x + minRoomSize + (int)(rand() % splitRange);
 		++tries;
-	} while (tileMap[y - 1][splitAxis] == O || tileMap[y + height][splitAxis] == O);
+	} while (tileMap[y - 1][splitAxis] == O1 || tileMap[y + height][splitAxis] == O1);
 
 	//we have to build a wall
 	for (int i = y; i < y + height; ++i) {
@@ -71,7 +71,7 @@ bool DungeonFloorGenerator::recursiveSplitY(int x, int y, int width, int height)
 
 	//create a random opening on the wall
 	int door = (int)(rand() % height) + y;
-	tileMap[door][splitAxis] = O;
+	tileMap[door][splitAxis] = O1;
 	if (tileMap[door - 1][splitAxis] != WE && tileMap[door - 1][splitAxis] != WEFN && tileMap[door - 1][splitAxis] != W && tileMap[door - 1][splitAxis] != E)
 		tileMap[door - 1][splitAxis] = N;
 	if (tileMap[door + 1][splitAxis] != WE && tileMap[door + 1][splitAxis] != WEFS && tileMap[door + 1][splitAxis] != W && tileMap[door + 1][splitAxis] != E)
@@ -104,7 +104,7 @@ void DungeonFloorGenerator::generateMap() {
 		tileMap[y][0] = NSFW;
 		tileMap[y][mapSize - 1] = NSFE;
 		for (int x = 1; x < mapSize - 1; ++x) {
-			tileMap[y][x] = O;
+			tileMap[y][x] = O1;
 		}
 	}
 
@@ -152,7 +152,7 @@ void DungeonFloorGenerator::fixTileConnections() {
 }
 
 bool DungeonFloorGenerator::floorTile(int x, int y) {
-	return tileMap[y][x] == O || tileMap[y][x] == X || tileMap[y][x] == enter;
+	return tileMap[y][x] == O1 || tileMap[y][x] == O2 || tileMap[y][x] == O3 || tileMap[y][x] == O4 || tileMap[y][x] == O5 || tileMap[y][x] == X || tileMap[y][x] == enter;
 }
 
 void DungeonFloorGenerator::findOpenTiles() {
