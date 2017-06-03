@@ -120,11 +120,11 @@ int main(int argc, char *argv[])
 		}
 		while (fixedElapsed >= FIXED_TIMESTEP) {
 			fixedElapsed -= FIXED_TIMESTEP;
-			player.update(&program, FIXED_TIMESTEP);
+			//player.update(&program, FIXED_TIMESTEP);
 			//floor->mapCollision(player, &program);
 			floor->update(&program, FIXED_TIMESTEP);
 		}
-		player.update(&program, fixedElapsed);
+		//player.update(&program, fixedElapsed);
 		floor->update(&program, fixedElapsed);
 
 		/*for (int i = 0; i < floor->getChests().size(); ++i) {
@@ -143,8 +143,8 @@ int main(int argc, char *argv[])
 		viewMatrix.identity();
 		viewMatrix.Translate(-player.position.x, (-1.0f * player.position.y), 0);
 
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		//glEnable(GL_BLEND);
+		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		SDL_GL_SwapWindow(displayWindow);
 	}

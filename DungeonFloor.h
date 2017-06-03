@@ -34,6 +34,7 @@ private:
 	int mapSize;
 	float tileSize;
 	unsigned char **tileMap;
+	bool **miniMap;
 	GLuint spriteSheet;
 	GLuint miniMapSheet;
 	int numx;

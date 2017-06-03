@@ -7,9 +7,16 @@ DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap
 	for (int i = 0; i < mapSize; ++i) {
 		tileMap[i] = new unsigned char[mapSize];
 	}
+
+	miniMap = new bool*[mapSize];
+	for (int i = 0; i < mapSize; ++i) {
+		miniMap[i] = new bool[mapSize];
+	}
+
 	for (int y = 0; y < mapSize; ++y) {
 		for (int x = 0; x < mapSize; ++x) {
 			tileMap[y][x] = _tileMap[y][x];
+			miniMap[y][x] = false;
 		}
 	}
 	spriteSheet = LoadTexture(spriteSheetName);
@@ -245,6 +252,7 @@ bool DungeonFloor::tileCollision(ShaderProgram *program, int x, int y) {
 
 void DungeonFloor::update(ShaderProgram *program, float time, int maxTries) {
 	int tries = 0;
+	player->update(program, time);
 	for (int i = 0; i < chests.size(); ++i) {
 		while (player->collidesWith(chests[i])) {
 			if (tries > maxTries) break;
@@ -256,6 +264,16 @@ void DungeonFloor::update(ShaderProgram *program, float time, int maxTries) {
 	for (int i = 0; i < chests.size(); ++i) {
 		chests[i].update(program, time);
 		mapCollision(chests[i], program);
+	}
+
+	//minimap
+	int radius = 3;
+	int x, y;
+	worldToTileCoordinates(player->position.x, player->position.y, x, y, mapSize);
+	for (int i = x - radius; i <= x + radius; ++i) {
+		for (int j = y - radius; j <= y + radius; ++j) {
+			if (i >= 0 && j >= 0 && i < mapSize && j < mapSize && !miniMap[j][i]) miniMap[j][i] = true;
+		}
 	}
 }
 
@@ -281,7 +299,7 @@ void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix
 	//minimap tiles
 	for (int y = 0; y < mapSize; ++y) {
 		for (int x = 0; x < mapSize; ++x) {
-			if (!floorTile(x, y) || tileMap[y][x] == X || tileMap[y][x] == enter) {
+			if ((!floorTile(x, y) || tileMap[y][x] == X || tileMap[y][x] == enter) && miniMap[y][x]) {
 				modelMatrix.identity();
 				modelMatrix.Translate(float(x)*0.05f*tileSize + player->position.x - 3.0f, (mapSize - float(y) - 1.0f)*0.05f*tileSize + player->position.y + 0.6f, 0.0f);
 				program->setModelMatrix(modelMatrix);
@@ -292,13 +310,17 @@ void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix
 		}
 	}
 
+	int x, y;
 	for (Chest &chest : chests) {
-		modelMatrix.identity();
-		modelMatrix.Translate(0.05f*chest.position.x + player->position.x - 3.0f, 0.05f*chest.position.y + player->position.y + 0.6f, 0.0f);
-		program->setModelMatrix(modelMatrix);
-		program->setProjectionMatrix(projectionMatrix);
-		program->setViewMatrix(viewMatrix);
-		DrawSpriteSheetSprite(program, chestc, numx, numy, miniMapSheet, 0.05f*tileSize);
+		worldToTileCoordinates(chest.position.x, chest.position.y, x, y, mapSize);
+		if (miniMap[y][x]) {
+			modelMatrix.identity();
+			modelMatrix.Translate(0.05f*chest.position.x + player->position.x - 3.0f, 0.05f*chest.position.y + player->position.y + 0.6f, 0.0f);
+			program->setModelMatrix(modelMatrix);
+			program->setProjectionMatrix(projectionMatrix);
+			program->setViewMatrix(viewMatrix);
+			DrawSpriteSheetSprite(program, chestc, numx, numy, miniMapSheet, 0.05f*tileSize);
+		}
 	}
 
 	modelMatrix.identity();
