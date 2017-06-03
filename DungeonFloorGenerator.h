@@ -19,6 +19,7 @@ public:
 	void fixTileConnections();
 	bool floorTile(int x, int y);
 	void findOpenTiles();
+	void randomizeOpenTiles(int maxTiles = 20);
 	void deleteOpenTilesR(int x, int y, int radius);
 	int countNearbyObstructions(int x, int y);
 	bool spawnEntity(Entity *entity, int radius = 0, int maxObstructions = 8);

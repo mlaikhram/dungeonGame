@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
 	SDL_GLContext context = SDL_GL_CreateContext(displayWindow);
 	//SDL_SetWindowFullscreen(displayWindow, SDL_WINDOW_FULLSCREEN);
 	SDL_GL_MakeCurrent(displayWindow, context);
+	SDL_ShowCursor(SDL_DISABLE);
 #ifdef _WINDOWS
 	glewInit();
 #endif
