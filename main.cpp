@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 	//displayWindow = SDL_CreateWindow("MAGNETIC MAN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 360, SDL_WINDOW_OPENGL);
 	displayWindow = SDL_CreateWindow("Dungeon Thing", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_OPENGL);
 	SDL_GLContext context = SDL_GL_CreateContext(displayWindow);
-	SDL_SetWindowFullscreen(displayWindow, SDL_WINDOW_FULLSCREEN);
+	//SDL_SetWindowFullscreen(displayWindow, SDL_WINDOW_FULLSCREEN);
 	SDL_GL_MakeCurrent(displayWindow, context);
 #ifdef _WINDOWS
 	glewInit();

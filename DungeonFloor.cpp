@@ -281,12 +281,14 @@ void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix
 	//minimap tiles
 	for (int y = 0; y < mapSize; ++y) {
 		for (int x = 0; x < mapSize; ++x) {
-			modelMatrix.identity();
-			modelMatrix.Translate(float(x)*0.05f*tileSize + player->position.x - 3.0f, (mapSize - float(y) - 1.0f)*0.05f*tileSize + player->position.y + 0.6f, 0.0f);
-			program->setModelMatrix(modelMatrix);
-			program->setProjectionMatrix(projectionMatrix);
-			program->setViewMatrix(viewMatrix);
-			DrawSpriteSheetSprite(program, tileMap[y][x], numx, numy, miniMapSheet, 0.05f*tileSize);
+			if (!floorTile(x, y) || tileMap[y][x] == X || tileMap[y][x] == enter) {
+				modelMatrix.identity();
+				modelMatrix.Translate(float(x)*0.05f*tileSize + player->position.x - 3.0f, (mapSize - float(y) - 1.0f)*0.05f*tileSize + player->position.y + 0.6f, 0.0f);
+				program->setModelMatrix(modelMatrix);
+				program->setProjectionMatrix(projectionMatrix);
+				program->setViewMatrix(viewMatrix);
+				DrawSpriteSheetSprite(program, tileMap[y][x], numx, numy, miniMapSheet, 0.05f*tileSize);
+			}
 		}
 	}
 
@@ -304,7 +306,7 @@ void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix
 	program->setModelMatrix(modelMatrix);
 	program->setProjectionMatrix(projectionMatrix);
 	program->setViewMatrix(viewMatrix);
-	DrawSpriteSheetSprite(program, chestc, numx, numy, miniMapSheet, 0.05f*tileSize);
+	DrawSpriteSheetSprite(program, playerm, numx, numy, miniMapSheet, 0.05f*tileSize);
 		
 
 	glEnable(GL_BLEND);
