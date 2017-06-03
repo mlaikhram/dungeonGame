@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 	//displayWindow = SDL_CreateWindow("MAGNETIC MAN", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 360, SDL_WINDOW_OPENGL);
 	displayWindow = SDL_CreateWindow("Dungeon Thing", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_OPENGL);
 	SDL_GLContext context = SDL_GL_CreateContext(displayWindow);
-	//SDL_SetWindowFullscreen(displayWindow, SDL_WINDOW_FULLSCREEN);
+	SDL_SetWindowFullscreen(displayWindow, SDL_WINDOW_FULLSCREEN);
 	SDL_GL_MakeCurrent(displayWindow, context);
 #ifdef _WINDOWS
 	glewInit();
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 	Entity player("tiles.png", 52, 20, 20, Vector3(), 0.75 * TILE_SIZE);
 	//DungeonFloor *floor = new DungeonFloor(100, TILE_SIZE, levelData, "tilemap_dungeon1.png", 10, 10, &player);
 	DungeonFloorGenerator dfg(50, 5, TILE_SIZE, &player);
-	DungeonFloor *floor = dfg.generate("tilemap_dungeon1.png", 10, 10);
+	DungeonFloor *floor = dfg.generate("tilemap_dungeon1.png", "tilemap_minimap.png", 10, 10);
 
 	MenuOption menu("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG.", Vector3(), "letters.png", 16, 16, 0.2f);
 
@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
 		if (keys[SDL_SCANCODE_SPACE]) {
 			if (floor->tileCollision(&program, X)) {
 				delete floor;
-				floor = dfg.generate("tilemap_dungeon1.png", 10, 10);
+				floor = dfg.generate("tilemap_dungeon1.png", "tilemap_minimap.png", 10, 10);
 			}
 			for (Chest& chest : floor->getChests()) {
 				int gridX, gridY;
@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
 		// TESTING KEYBIND ONLY //
 		if (keys[SDL_SCANCODE_R]) {
 			delete floor;
-			floor = dfg.generate("tilemap_dungeon1.png", 10, 10);
+			floor = dfg.generate("tilemap_dungeon1.png", "tilemap_minimap.png", 10, 10);
 		}
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE || event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
 
 		floor->draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 		menu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-		player.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+		//player.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 		viewMatrix.identity();
 		viewMatrix.Translate(-player.position.x, (-1.0f * player.position.y), 0);
 

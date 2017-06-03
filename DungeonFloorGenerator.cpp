@@ -214,7 +214,7 @@ bool DungeonFloorGenerator::spawnEntity(Entity *entity, int radius, int maxObstr
 	return true;
 }
 
-DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, int numx, int numy) {
+DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, const char *miniMapSheetName, int numx, int numy) {
 	generateMap();
 	fixTileConnections();
 	findOpenTiles();
@@ -228,7 +228,7 @@ DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, int n
 	exitCoords.y = itr->y;
 	tileMap[exitCoords.y][exitCoords.x] = X;
 	openTiles.erase(itr);
-	//spawn chests
+	//spawn chests (not REAL)
 	std::vector<Chest> chests = std::vector<Chest>();
 	std::ofstream ofs("output.txt");
 	for (int i = 0; i < 10; ++i) {
@@ -251,6 +251,6 @@ DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, int n
 	worldToTileCoordinates(player->position.x, player->position.y, x, y, mapSize);
 	tileMap[y][x] = enter;
 
-	DungeonFloor *floor = new DungeonFloor(mapSize, tileSize, tileMap, spriteSheetName, numx, numy, player, chests);
+	DungeonFloor *floor = new DungeonFloor(mapSize, tileSize, tileMap, spriteSheetName, miniMapSheetName, numx, numy, player, chests);
 	return floor;
 }

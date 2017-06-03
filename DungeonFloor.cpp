@@ -1,7 +1,7 @@
 #include "Util.h"
 #include "DungeonFloor.h"
 
-DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, int numx, int numy, Entity *player, std::vector<Chest> chests) : 
+DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, const char *miniMapSheetName, int numx, int numy, Entity *player, std::vector<Chest> chests) :
 	mapSize(mapSize), tileSize(tileSize), numx(numx), numy(numy), player(player), chests(chests) {
 	tileMap = new unsigned char*[mapSize];
 	for (int i = 0; i < mapSize; ++i) {
@@ -13,6 +13,7 @@ DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap
 		}
 	}
 	spriteSheet = LoadTexture(spriteSheetName);
+	miniMapSheet = LoadTexture(miniMapSheetName);
 }
 
 bool DungeonFloor::testOutOfBounds(int gridX, int gridY) {
@@ -260,6 +261,7 @@ void DungeonFloor::update(ShaderProgram *program, float time, int maxTries) {
 
 void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix) {
 
+	//floor tiles
 	for (int y = 0; y < mapSize; ++y) {
 		for (int x = 0; x < mapSize; ++x) {
 			modelMatrix.identity();
@@ -273,6 +275,37 @@ void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix
 
 	for (Chest &chest : chests)
 		chest.draw(program, projectionMatrix, modelMatrix, viewMatrix);
+
+	player->draw(program, projectionMatrix,	modelMatrix, viewMatrix);
+
+	//minimap tiles
+	for (int y = 0; y < mapSize; ++y) {
+		for (int x = 0; x < mapSize; ++x) {
+			modelMatrix.identity();
+			modelMatrix.Translate(float(x)*0.05f*tileSize + player->position.x - 3.0f, (mapSize - float(y) - 1.0f)*0.05f*tileSize + player->position.y + 0.6f, 0.0f);
+			program->setModelMatrix(modelMatrix);
+			program->setProjectionMatrix(projectionMatrix);
+			program->setViewMatrix(viewMatrix);
+			DrawSpriteSheetSprite(program, tileMap[y][x], numx, numy, miniMapSheet, 0.05f*tileSize);
+		}
+	}
+
+	for (Chest &chest : chests) {
+		modelMatrix.identity();
+		modelMatrix.Translate(0.05f*chest.position.x + player->position.x - 3.0f, 0.05f*chest.position.y + player->position.y + 0.6f, 0.0f);
+		program->setModelMatrix(modelMatrix);
+		program->setProjectionMatrix(projectionMatrix);
+		program->setViewMatrix(viewMatrix);
+		DrawSpriteSheetSprite(program, chestc, numx, numy, miniMapSheet, 0.05f*tileSize);
+	}
+
+	modelMatrix.identity();
+	modelMatrix.Translate(0.05f*player->position.x + player->position.x - 3.0f, 0.05f*player->position.y + player->position.y + 0.6f, 0.0f);
+	program->setModelMatrix(modelMatrix);
+	program->setProjectionMatrix(projectionMatrix);
+	program->setViewMatrix(viewMatrix);
+	DrawSpriteSheetSprite(program, chestc, numx, numy, miniMapSheet, 0.05f*tileSize);
+		
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
