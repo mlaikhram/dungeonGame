@@ -50,9 +50,8 @@ void ChaseAI::move(DungeonFloor *floor, Vector3 &accel, Vector3 &pos, Vector3 &d
 					obstructed = true;
 					break;
 				}
-				float dx = TILE_SIZE / 5;
-				step.x += dx;
-				step.y += dx * m;
+				float dy = TILE_SIZE / 5;
+				step.y += dy;
 			}
 		}
 		else {
