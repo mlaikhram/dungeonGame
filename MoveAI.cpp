@@ -16,45 +16,8 @@ void MoveAI::wander(Vector3 &accel) {
 	case 0:
 		accel.x = moveAccel * cos(angle);
 		accel.y = moveAccel * sin(angle);
-		//accel.x = -moveAccel;
-		//accel.y = moveAccel;
 		break;
 
-	/*case 1:
-		accel.x = 0.0f;
-		accel.y = moveAccel;
-		break;
-
-	case 2:
-		accel.x = moveAccel;
-		accel.y = moveAccel;
-		break;
-
-	case 3:
-		accel.x = -moveAccel;
-		accel.y = 0.0f;
-		break;
-
-	case 4:
-		accel.x = moveAccel;
-		accel.y = 0.0f;
-		break;
-
-	case 5:
-		accel.x = -moveAccel;
-		accel.y = -moveAccel;
-		break;
-
-	case 6:
-		accel.x = 0.0f;
-		accel.y = -moveAccel;
-		break;
-
-	case 7:
-		accel.x = moveAccel;
-		accel.y = -moveAccel;
-		break;
-	*/
 	default:
 		accel.x = 0.0f;
 		accel.y = 0.0f;

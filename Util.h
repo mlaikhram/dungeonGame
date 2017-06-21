@@ -29,6 +29,11 @@ public:
 			y /= mag;
 		}
 	}
+	void operator*=(float rhs) {
+		x = rhs * x;
+		y = rhs * y;
+		z = rhs * z;
+	}
 	float x;
 	float y;
 	float z;

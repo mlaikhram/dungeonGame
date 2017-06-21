@@ -3,6 +3,7 @@
 #include "DungeonFloor.h"
 #include "Enemy.h"
 #include "WanderAI.h"
+#include "ChaseAI.h"
 
 DungeonFloorGenerator::DungeonFloorGenerator(int mapSize, int minRoomSize, float tileSize, Entity *player, int maxTries) : 
 	mapSize(mapSize), minRoomSize(minRoomSize), tileSize(tileSize), player(player), maxTries(maxTries) {
@@ -264,10 +265,10 @@ DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, const
 	}
 	//spawn enemies (not REAL)
 	std::vector<Enemy> enemies = std::vector<Enemy>();
-	MoveAI *wander = new WanderAI();
-	for (int i = 0; i < 10; ++i) {
+	MoveAI *wander = new ChaseAI(-10.0f);
+	for (int i = 0; i < 20; ++i) {
 		Enemy *enemy = new Enemy("tiles.png", 52, 20, 20, wander, player, Vector3(), 0.75 * TILE_SIZE);
-		if (spawnEntity(enemy, 0, 0)) {
+		if (spawnEntity(enemy, 1)) {
 			int gridX, gridY;
 			worldToTileCoordinates(enemy->position.x, enemy->position.y, gridX, gridY, mapSize);
 			//ofs << "count: " << countNearbyObstructions(gridX, gridY) << std::endl;

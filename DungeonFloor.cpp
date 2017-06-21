@@ -284,7 +284,7 @@ void DungeonFloor::update(ShaderProgram *program, float time, int maxTries) {
 	//enemy collisions
 	for (int i = 0; i < enemies.size(); ++i) {
 		Enemy &enemy = enemies[i];
-		enemy.update(program, time);
+		enemy.update(program, time, this);
 		//enemy-map collision
 		mapCollision(enemy, program);
 		//enemy-player collision
