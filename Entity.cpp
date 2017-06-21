@@ -3,7 +3,7 @@
 
 Entity::Entity(const char *spriteSheetName, int index, int numx, int numy, Vector3 position, float size, Vector3 velocity, Vector3 acceleration, float rotation) :
 	index(index), numx(numx), numy(numy), position(position), velocity(velocity), acceleration(acceleration), size(size), rotation(rotation),
-	collidedTop(false), collidedBottom(false), collidedLeft(false), collidedRight(false), cliffLeft(false), cliffRight(false), cliffDown(false) {
+	collidedTop(false), collidedBottom(false), collidedLeft(false), collidedRight(false), cliffLeft(false), cliffRight(false), cliffDown(false), lifetime(0.0f) {
 	spriteSheet = LoadTexture(spriteSheetName);
 }
 
@@ -16,6 +16,8 @@ void Entity::update(ShaderProgram *program, float time) {
 
 	position.y += velocity.y * time;
 	position.x += velocity.x * time;
+
+	lifetime += time;
 }
 
 void Entity::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix) {

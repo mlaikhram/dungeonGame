@@ -1,6 +1,8 @@
 #include <vector>
 #include "DungeonFloorGenerator.h"
 #include "DungeonFloor.h"
+#include "Enemy.h"
+#include "WanderAI.h"
 
 DungeonFloorGenerator::DungeonFloorGenerator(int mapSize, int minRoomSize, float tileSize, Entity *player, int maxTries) : 
 	mapSize(mapSize), minRoomSize(minRoomSize), tileSize(tileSize), player(player), maxTries(maxTries) {
@@ -260,7 +262,21 @@ DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, const
 		else
 			delete chest;
 	}
-	//spawn enemies
+	//spawn enemies (not REAL)
+	std::vector<Enemy> enemies = std::vector<Enemy>();
+	MoveAI *wander = new WanderAI();
+	for (int i = 0; i < 10; ++i) {
+		Enemy *enemy = new Enemy("tiles.png", 52, 20, 20, wander, player, Vector3(), 0.75 * TILE_SIZE);
+		if (spawnEntity(enemy, 0, 0)) {
+			int gridX, gridY;
+			worldToTileCoordinates(enemy->position.x, enemy->position.y, gridX, gridY, mapSize);
+			//ofs << "count: " << countNearbyObstructions(gridX, gridY) << std::endl;
+			enemies.push_back(*enemy);
+			//tileMap[gridY][gridX] = O1;
+		}
+		else
+			delete enemy;
+	}
 	//delete tiles in radius form exit tile
 	deleteOpenTilesR(exitCoords.x, exitCoords.y, 2.5 * minRoomSize);
 	spawnEntity(player); //if no suitable, replace enemy with player
@@ -269,6 +285,6 @@ DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, const
 	worldToTileCoordinates(player->position.x, player->position.y, x, y, mapSize);
 	tileMap[y][x] = enter;
 
-	DungeonFloor *floor = new DungeonFloor(mapSize, tileSize, tileMap, spriteSheetName, miniMapSheetName, numx, numy, player, chests);
+	DungeonFloor *floor = new DungeonFloor(mapSize, tileSize, tileMap, spriteSheetName, miniMapSheetName, numx, numy, player, chests, enemies);
 	return floor;
 }

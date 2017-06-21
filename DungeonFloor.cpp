@@ -1,8 +1,8 @@
 #include "Util.h"
 #include "DungeonFloor.h"
 
-DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, const char *miniMapSheetName, int numx, int numy, Entity *player, std::vector<Chest> chests) :
-	mapSize(mapSize), tileSize(tileSize), numx(numx), numy(numy), player(player), chests(chests) {
+DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, const char *miniMapSheetName, int numx, int numy, Entity *player, std::vector<Chest> chests, std::vector<Enemy> enemies) :
+	mapSize(mapSize), tileSize(tileSize), numx(numx), numy(numy), player(player), chests(chests), enemies(enemies) {
 	tileMap = new unsigned char*[mapSize];
 	for (int i = 0; i < mapSize; ++i) {
 		tileMap[i] = new unsigned char[mapSize];
@@ -253,6 +253,7 @@ bool DungeonFloor::tileCollision(ShaderProgram *program, int x, int y) {
 void DungeonFloor::update(ShaderProgram *program, float time, int maxTries) {
 	int tries = 0;
 	player->update(program, time);
+	//player-chest collision
 	for (int i = 0; i < chests.size(); ++i) {
 		while (player->collidesWith(chests[i])) {
 			if (tries > maxTries) break;
@@ -260,10 +261,25 @@ void DungeonFloor::update(ShaderProgram *program, float time, int maxTries) {
 			++tries;
 		}
 	}
+	//player-map collision
 	mapCollision(*player, program);
+	//chest-map collision
 	for (int i = 0; i < chests.size(); ++i) {
 		chests[i].update(program, time);
 		mapCollision(chests[i], program);
+	}
+	//enemy-map collision
+	for (int i = 0; i < enemies.size(); ++i) {
+		enemies[i].update(program, time);
+		mapCollision(enemies[i], program);
+	}
+	//enemy-player collision
+	for (int i = 0; i < enemies.size(); ++i) {
+		while (player->collidesWith(enemies[i])) {
+			if (tries > maxTries) break;
+			player->nudge(enemies[i], 0.5f);
+			++tries;
+		}
 	}
 
 	//minimap
@@ -293,6 +309,9 @@ void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix
 
 	for (Chest &chest : chests)
 		chest.draw(program, projectionMatrix, modelMatrix, viewMatrix);
+
+	for (Enemy &enemy : enemies)
+		enemy.draw(program, projectionMatrix, modelMatrix, viewMatrix);
 
 	player->draw(program, projectionMatrix,	modelMatrix, viewMatrix);
 

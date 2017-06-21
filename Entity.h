@@ -30,6 +30,7 @@ protected:
 	int index;
 	int numx;
 	int numy;
+	float lifetime;
 };
 
 #endif MKL_ENTITY
