@@ -4,6 +4,7 @@ Enemy::Enemy(const char *spriteSheetName, int index, int numx, int numy, MoveAI 
 	Entity(spriteSheetName, index, numx, numy, position, size, velocity, acceleration, rotation), ai(ai) {}
 
 void Enemy::update(ShaderProgram *program, float time) {
+	ai->update(time);
 	ai->move(acceleration, position, target->position, false, 0);
 
 	Entity::update(program, time);

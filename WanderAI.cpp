@@ -1,7 +1,15 @@
 #include "WanderAI.h"
 
-WanderAI::WanderAI(float moveAccel, int wanderBuffer) : MoveAI(moveAccel, wanderBuffer) {}
+WanderAI::WanderAI(float moveAccel, float timeCycle, int wanderInterval) : MoveAI(moveAccel, timeCycle, wanderInterval) {}
 
 void WanderAI::move(Vector3 &accel, Vector3 &pos, Vector3 &dest, bool obstructed, float maxR, float minR) {
-	wander(accel);
+	if (timer == 0.0f) {
+		if (accel.isZero())
+			wander(accel);
+		else {
+			accel.x = 0.0f;
+			accel.y = 0.0f;
+			accel.z = 0.0f;
+		}
+	}
 }

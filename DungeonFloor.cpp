@@ -269,16 +269,45 @@ void DungeonFloor::update(ShaderProgram *program, float time, int maxTries) {
 		mapCollision(chests[i], program);
 	}
 	//enemy-map collision
-	for (int i = 0; i < enemies.size(); ++i) {
+	/*for (int i = 0; i < enemies.size(); ++i) {
 		enemies[i].update(program, time);
 		mapCollision(enemies[i], program);
-	}
+	}*/
 	//enemy-player collision
-	for (int i = 0; i < enemies.size(); ++i) {
+	/*for (int i = 0; i < enemies.size(); ++i) {
 		while (player->collidesWith(enemies[i])) {
 			if (tries > maxTries) break;
 			player->nudge(enemies[i], 0.5f);
 			++tries;
+		}
+	}*/
+	//enemy collisions
+	for (int i = 0; i < enemies.size(); ++i) {
+		Enemy &enemy = enemies[i];
+		enemy.update(program, time);
+		//enemy-map collision
+		mapCollision(enemy, program);
+		//enemy-player collision
+		while (player->collidesWith(enemy)) {
+			if (tries > maxTries) break;
+			player->nudge(enemy, 0.5f);
+			++tries;
+		}
+		//enemy-chest collision
+		for (int j = 0; j < chests.size(); ++j) {
+			while (enemy.collidesWith(chests[j])) {
+				if (tries > maxTries) break;
+				enemy.nudge(chests[j], 0.0f);
+				++tries;
+			}
+		}
+		//enemy-enemy collision
+		for (int j = i + 1; j < enemies.size(); ++j) {
+			while (enemy.collidesWith(enemies[j])) {
+				if (tries > maxTries) break;
+				enemy.nudge(enemies[j], 0.5f);
+				++tries;
+			}
 		}
 	}
 
