@@ -265,7 +265,7 @@ DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, const
 	}
 	//spawn enemies (not REAL)
 	std::vector<Enemy> enemies = std::vector<Enemy>();
-	MoveAI *wander = new ChaseAI(-10.0f);
+	MoveAI *wander = new ChaseAI(5.0f);
 	for (int i = 0; i < 20; ++i) {
 		Enemy *enemy = new Enemy("tiles.png", 52, 20, 20, wander, player, Vector3(), 0.75 * TILE_SIZE);
 		if (spawnEntity(enemy, 1)) {

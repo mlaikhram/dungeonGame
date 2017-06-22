@@ -69,3 +69,7 @@ void tileToWorldCoordinates(int gridX, int gridY, float &worldX, float &worldY, 
 	worldX = (float)(gridX * TILE_SIZE);
 	worldY = (float)((-gridY + mapSize - 1) * TILE_SIZE);
 }
+
+float distance(Vector3 a, Vector3 b) {
+	return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+}

@@ -5,7 +5,14 @@ Enemy::Enemy(const char *spriteSheetName, int index, int numx, int numy, MoveAI 
 
 void Enemy::update(ShaderProgram *program, float time, DungeonFloor *floor) {
 	ai->update(time);
-	ai->move(floor, acceleration, position, target->position, 5.0f * TILE_SIZE);
+
+	float offset = (TILE_SIZE) / 2;
+
+	Vector3 positionf(position.x + offset, position.y - offset, position.z);
+	Vector3 target_positionf(target->position.x + offset, target->position.y - offset, target->position.z);
+	ai->move(floor, acceleration, positionf, target_positionf, 5.0f * TILE_SIZE);
+
+	//ai->move(floor, acceleration, position, target->position, 5.0f * TILE_SIZE);
 
 	Entity::update(program, time);
 }

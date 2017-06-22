@@ -60,4 +60,6 @@ void worldToTileCoordinates(float worldX, float worldY, int &gridX, int &gridY, 
 
 void tileToWorldCoordinates(int gridX, int gridY, float &worldX, float &worldY, int mapSize);
 
+float distance(Vector3 a, Vector3 b);
+
 #endif MKL_UTIL
