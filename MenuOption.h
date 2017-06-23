@@ -9,7 +9,7 @@
 class MenuOption {
 public:
 	//MenuOption(); // Constructors
-	MenuOption(std::string p, Vector3 position, const char *spriteSheetName, int numx, int numy, float minSize, float maxSize);
+	MenuOption(std::string p, Vector3 position, const char *spriteSheetName, int numx, int numy, float minSize, float maxSize, float spacing = 0.4f);
 	float getWidth();
 	float getHeight();
 	bool pointCollision(float mousex, float mousey);
@@ -27,6 +27,7 @@ private:
 	GLuint spriteSheet;
 	int numx;
 	int numy;
+	float spacing;
 };
 
 #endif MENUOPTION
