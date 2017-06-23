@@ -63,8 +63,10 @@ int main(int argc, char *argv[])
 	DungeonFloor *floor = dfg.generate("tilemap_dungeon1.png", "tilemap_minimap.png", 10, 10);
 
 	MenuOption menu1("HELLO.", Vector3(), "letters.png", 16, 16, 0.2f, 0.5f);
-	MenuOption menu2("WORLD.", Vector3(0.0f, 0.8f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
-	MenuOption menu3("GAY.", Vector3(0.0f, 1.6f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
+	MenuOption menu2("WORLD.", Vector3(1.5f, 0.8f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
+	MenuOption menu3("GAY.", Vector3(-1.0f, 1.6f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
+	Entity cursor("tiles.png", 52, 20, 20, Vector3(), 0.25f * TILE_SIZE);
+
 	std::vector<MenuOption> stuff;
 	stuff.push_back(menu1);
 	stuff.push_back(menu2);
@@ -112,13 +114,18 @@ int main(int argc, char *argv[])
 			while (fixedElapsed >= FIXED_TIMESTEP) {
 				fixedElapsed -= FIXED_TIMESTEP;
 				menuS.update(&program, FIXED_TIMESTEP, m_x, m_y);
+				cursor.position.x = m_x;
+				cursor.position.y = m_y;
 			}
 			menuS.update(&program, fixedElapsed, m_x, m_y);
+			cursor.position.x = m_x;
+			cursor.position.y = m_y;
 
 			// draw
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			menuS.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+			cursor.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 
 			viewMatrix.identity();
 			//viewMatrix.Translate(-player.position.x, (-1.0f * player.position.y), 0);

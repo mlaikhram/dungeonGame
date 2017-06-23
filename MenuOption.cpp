@@ -26,7 +26,7 @@ float MenuOption::getHeight() {
 
 bool MenuOption::pointCollision(float mousex, float mousey) { // TODO: IDK IF THIS WORKS
 	float left = position.x - tileSize / 2.0f;
-	float right = left + lengthOfPhrase * tileSize;
+	float right = left + lengthOfPhrase * tileSize - (.4f * tileSize * lengthOfPhrase); //subtract for spacing
 	float top = position.y + tileSize / 2.0f;
 	float bottom = top - tileSize;
 	return (mousex > left && mousex < right && mousey > bottom && mousey < top);
@@ -35,7 +35,7 @@ bool MenuOption::pointCollision(float mousex, float mousey) { // TODO: IDK IF TH
 void MenuOption::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix) {
 	for (int i = 0; i < lengthOfPhrase; ++i) {
 		modelMatrix.identity();
-		modelMatrix.Translate((position.x + i*tileSize) * 0.6f, position.y, 0.0f);
+		modelMatrix.Translate((position.x + i*tileSize - (.4f * tileSize * i)), position.y, 0.0f); //subtract for spacing
 		program->setModelMatrix(modelMatrix);
 		program->setProjectionMatrix(projectionMatrix);
 		program->setViewMatrix(viewMatrix);
