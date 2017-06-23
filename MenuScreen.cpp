@@ -5,14 +5,14 @@ MenuScreen::MenuScreen(std::vector<MenuOption> &menuOptions) : menuOptions(menuO
 }
 
 void MenuScreen::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix) {
-	for (MenuOption m : menuOptions) {
+	for (MenuOption &m : menuOptions) {
 		m.draw(program, projectionMatrix, modelMatrix, viewMatrix);
 	}
 }
 
 void MenuScreen::update(ShaderProgram *program, float time, float mousex, float mousey) {
 	int option;
-	for (MenuOption m : menuOptions) {
+	for (MenuOption &m : menuOptions) {
 		m.update(program, mousex, mousey);
 	}
 }

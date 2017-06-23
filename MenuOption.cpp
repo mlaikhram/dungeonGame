@@ -25,8 +25,11 @@ float MenuOption::getHeight() {
 }
 
 bool MenuOption::pointCollision(float mousex, float mousey) { // TODO: IDK IF THIS WORKS
-	return ((position.x < mousex && mousex < (position.x + width)) && 
-		(position.y < mousey && mousey < (position.y + height)));
+	float left = position.x - tileSize / 2.0f;
+	float right = left + lengthOfPhrase * tileSize;
+	float top = position.y + tileSize / 2.0f;
+	float bottom = top - tileSize;
+	return (mousex > left && mousex < right && mousey > bottom && mousey < top);
 }
 
 void MenuOption::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix) {
