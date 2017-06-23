@@ -43,5 +43,5 @@ void MainMenu::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &mo
 }
 
 int MainMenu::update(ShaderProgram *program, float time, float mousex, float mousey) {
-
+	return -1;
 }
