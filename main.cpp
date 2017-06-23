@@ -63,9 +63,11 @@ int main(int argc, char *argv[])
 	DungeonFloorGenerator dfg(50, 5, TILE_SIZE, &player);
 	DungeonFloor *floor = dfg.generate("tilemap_dungeon1.png", "tilemap_minimap.png", 10, 10);
 
+	Entity cursor("tiles.png", 52, 20, 20, Vector3(), 0.05f * TILE_SIZE);
+
 	MainMenu mainMenu;
-	float m_x = 0.0f;
-	float m_y = 0.0f;
+	//float m_x = 0.0f;
+	//float m_y = 0.0f;
 	int gameState = STATE_MAINMENU;
 
 	SDL_Event event;
@@ -80,6 +82,7 @@ int main(int argc, char *argv[])
 			// draw
 			glClear(GL_COLOR_BUFFER_BIT);
 			mainMenu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+			cursor.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			viewMatrix.identity();
 			//viewMatrix.Translate(-player.position.x, (-1.0f * player.position.y), 0);
 			break;

@@ -17,16 +17,18 @@ MenuOption::MenuOption(std::string p, Vector3 position, const char *spriteSheetN
 	spriteSheet = LoadTexture(spriteSheetName);
 }
 
-float MenuOption::getWidth() {
-	return width;
-}
+//float MenuOption::getWidth() {
+//	return width;
+//}
+//
+//float MenuOption::getHeight() {
+//	return height;
+//}
 
-float MenuOption::getHeight() {
-	return height;
-}
+bool MenuOption::pointCollision(float mousex, float mousey) {
+	float width = lengthOfPhrase * (tileSize - spacing * tileSize) - tileSize / 2;
 
-bool MenuOption::pointCollision(float mousex, float mousey) { // TODO: IDK IF THIS WORKS
-	float left = position.x - tileSize / 2.0f;
+	float left = position.x - tileSize / 2.0f - width / 2;
 	float right = left + lengthOfPhrase * tileSize - (spacing * tileSize * lengthOfPhrase); //subtract for spacing
 	float top = position.y + tileSize / 2.0f;
 	float bottom = top - tileSize;
@@ -34,9 +36,13 @@ bool MenuOption::pointCollision(float mousex, float mousey) { // TODO: IDK IF TH
 }
 
 void MenuOption::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix) {
+
+	//float width = (position.x + (lengthOfPhrase - 1) * tileSize * spacing + tileSize / 2) - (position.x - tileSize / 2);
+	float width = lengthOfPhrase * (tileSize - spacing * tileSize) - tileSize / 2;
+
 	for (int i = 0; i < lengthOfPhrase; ++i) {
 		modelMatrix.identity();
-		modelMatrix.Translate((position.x + i*tileSize - (spacing * tileSize * i)), position.y, 0.0f); //subtract for spacing
+		modelMatrix.Translate((position.x + i*tileSize - (spacing * tileSize * i)) - width / 2, position.y, 0.0f); //subtract for spacing
 		program->setModelMatrix(modelMatrix);
 		program->setProjectionMatrix(projectionMatrix);
 		program->setViewMatrix(viewMatrix);
