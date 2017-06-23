@@ -1,6 +1,12 @@
 #ifndef MKL_UTIL
 #define MKL_UTIL
 
+#ifdef _WINDOWS
+#include <GL/glew.h>
+#endif
+#include <SDL.h>
+#include <SDL_opengl.h>
+#include <SDL_image.h>
 #include "ShaderProgram.h"
 
 #define FIXED_TIMESTEP 0.0166666f
@@ -8,7 +14,7 @@
 #define TILE_SIZE 0.5f
 #define PI 3.141592653589793238462643383279f
 
-enum states { STATE_MAINMENU, STATE_DUNGEON };
+enum states { STATE_MAINMENU, STATE_DUNGEON, STATE_END };
 enum maptiles { WE, WEFS, WEFN, NS, NSFE, NSFW, NSWE, NSW, NSWFE, NSE,
 				NSEFW, SWE, SWEFN, NWE, NWEFS, NWFSE, NW, NEFSW, NE, SWFNE,
 				SW, SEFNW, SE, N, S, W, E, chestc, chesto, enter,

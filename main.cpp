@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "MenuOption.h"
 #include "MenuScreen.h"
+#include "MainMenu.h"
 
 #ifdef _WINDOWS
 #define RESOURCE_FOLDER ""
@@ -62,16 +63,18 @@ int main(int argc, char *argv[])
 	DungeonFloorGenerator dfg(50, 5, TILE_SIZE, &player);
 	DungeonFloor *floor = dfg.generate("tilemap_dungeon1.png", "tilemap_minimap.png", 10, 10);
 
-	MenuOption menu1("HELLO.", Vector3(), "letters.png", 16, 16, 0.2f, 0.5f);
+	/*MenuOption menu1("HELLO.", Vector3(), "letters.png", 16, 16, 0.2f, 0.5f);
 	MenuOption menu2("WORLD.", Vector3(1.5f, 0.8f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
-	MenuOption menu3("GAY.", Vector3(-1.0f, 1.6f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
+	MenuOption menu3("GAY.", Vector3(-1.0f, 1.6f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);*/
 	Entity cursor("tiles.png", 52, 20, 20, Vector3(), 0.25f * TILE_SIZE);
 
-	std::vector<MenuOption> stuff;
+	/*std::vector<MenuOption> stuff;
 	stuff.push_back(menu1);
 	stuff.push_back(menu2);
 	stuff.push_back(menu3);
-	MenuScreen menuS(stuff);
+	MenuScreen menuS(stuff);*/
+
+	MainMenu mainMenu;
 	float m_x = 0.0f;
 	float m_y = 0.0f;
 	int gameState = STATE_MAINMENU;
@@ -113,18 +116,21 @@ int main(int argc, char *argv[])
 			}
 			while (fixedElapsed >= FIXED_TIMESTEP) {
 				fixedElapsed -= FIXED_TIMESTEP;
-				menuS.update(&program, FIXED_TIMESTEP, m_x, m_y);
+				mainMenu.update(&program, FIXED_TIMESTEP, m_x, m_y, event);
+				//menuS.update(&program, FIXED_TIMESTEP, m_x, m_y);
 				cursor.position.x = m_x;
 				cursor.position.y = m_y;
 			}
-			menuS.update(&program, fixedElapsed, m_x, m_y);
+			mainMenu.update(&program, fixedElapsed, m_x, m_y, event);
+			//menuS.update(&program, fixedElapsed, m_x, m_y);
 			cursor.position.x = m_x;
 			cursor.position.y = m_y;
 
 			// draw
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			menuS.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+			mainMenu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+			//menuS.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			cursor.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 
 			viewMatrix.identity();
