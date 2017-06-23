@@ -5,6 +5,7 @@
 #include "DungeonFloorGenerator.h"
 #include "Entity.h"
 #include "MenuOption.h"
+#include "MenuScreen.h"
 
 #ifdef _WINDOWS
 #define RESOURCE_FOLDER ""
@@ -23,7 +24,7 @@ int main(int argc, char *argv[])
 	SDL_GLContext context = SDL_GL_CreateContext(displayWindow);
 	//SDL_SetWindowFullscreen(displayWindow, SDL_WINDOW_FULLSCREEN);
 	SDL_GL_MakeCurrent(displayWindow, context);
-	SDL_ShowCursor(SDL_DISABLE);
+	//SDL_ShowCursor(SDL_DISABLE);
 #ifdef _WINDOWS
 	glewInit();
 #endif
@@ -61,93 +62,160 @@ int main(int argc, char *argv[])
 	DungeonFloorGenerator dfg(50, 5, TILE_SIZE, &player);
 	DungeonFloor *floor = dfg.generate("tilemap_dungeon1.png", "tilemap_minimap.png", 10, 10);
 
-	MenuOption menu("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG.", Vector3(), "letters.png", 16, 16, 0.2f);
-
+	MenuOption menu1("HELLO.", Vector3(0.0f, 0.2f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
+	MenuOption menu2("WORLD.", Vector3(0.0f, 0.4f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
+	MenuOption menu3("GAY.", Vector3(0.0f, 0.6f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
+	std::vector<MenuOption> stuff;
+	stuff.push_back(menu1);
+	stuff.push_back(menu2);
+	stuff.push_back(menu3);
+	MenuScreen menuS(stuff);
+	float m_x = 0.0f;
+	float m_y = 0.0f;
+	int gameState = STATE_MAINMENU;
 
 	SDL_Event event;
 	bool done = false;
+	const Uint8 *keys;
 	while (!done) {
 
-		// input //////////////////////////////////////////////////////////////////////////////////////////////////
-		player.acceleration.x = 0.0f;
-		player.acceleration.y = 0.0f;
-		const Uint8 *keys = SDL_GetKeyboardState(NULL);
-		if (keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_A] || keys[SDL_SCANCODE_K]) {
-			player.acceleration.x -= accel;
-		}
-		if (keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D] || keys[SDL_SCANCODE_SEMICOLON]) {
-			player.acceleration.x += accel;
-		}
-		if (keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W] || keys[SDL_SCANCODE_O]) {
-			player.acceleration.y += accel;
-		}
-		if (keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S] || keys[SDL_SCANCODE_L]) {
-			player.acceleration.y -= accel;
-		}
-		if (keys[SDL_SCANCODE_SPACE]) {
-			if (floor->tileCollision(&program, X)) {
+		switch (gameState) {
+		case STATE_MAINMENU:
+			// input
+			while (SDL_PollEvent(&event)) {
+				if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE || event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
+					done = true;
+				}
+				else if (event.type == SDL_MOUSEMOTION) {
+					// Convert from pixels to OpenGL units
+					// m_x = (pixel_x / x_resolution) * ortho_width ) - ortho_width / 2.0;
+					m_x = (((float)event.motion.x / 1280) * 7.1f) - 3.55f;
+					// m_x = ((y_resolution - pixel_y) / y_resolution) * ortho_height) - ortho_height / 2.0;
+					m_y = (((float)(720 - event.motion.y) / 720) * 4.0f) - 2.0f;
+				}
+				else if (event.type == SDL_KEYDOWN) {
+					if (event.key.keysym.scancode == SDL_SCANCODE_SPACE) {
+						gameState = STATE_DUNGEON;
+					}
+				}
+			}
+
+			//timestep
+			ticks = (float)SDL_GetTicks() / 1000.0f;
+			elapsed = ticks - lastFrameTicks;
+			lastFrameTicks = ticks;
+
+			fixedElapsed = elapsed;
+			if (fixedElapsed > FIXED_TIMESTEP * MAX_TIMESTEPS) {
+				fixedElapsed = FIXED_TIMESTEP * MAX_TIMESTEPS;
+			}
+			while (fixedElapsed >= FIXED_TIMESTEP) {
+				fixedElapsed -= FIXED_TIMESTEP;
+				menuS.update(&program, FIXED_TIMESTEP, m_x, m_y);
+			}
+			menuS.update(&program, fixedElapsed, m_x, m_y);
+
+			// draw
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			menuS.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+
+			viewMatrix.identity();
+			//viewMatrix.Translate(-player.position.x, (-1.0f * player.position.y), 0);
+
+			SDL_GL_SwapWindow(displayWindow);
+
+			break;
+
+		case STATE_DUNGEON:
+			// input //////////////////////////////////////////////////////////////////////////////////////////////////
+			player.acceleration.x = 0.0f;
+			player.acceleration.y = 0.0f;
+			/*const Uint8 *keys = SDL_GetKeyboardState(NULL);*/
+			keys = SDL_GetKeyboardState(NULL);
+			if (keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_A] || keys[SDL_SCANCODE_K]) {
+				player.acceleration.x -= accel;
+			}
+			if (keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D] || keys[SDL_SCANCODE_SEMICOLON]) {
+				player.acceleration.x += accel;
+			}
+			if (keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W] || keys[SDL_SCANCODE_O]) {
+				player.acceleration.y += accel;
+			}
+			if (keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S] || keys[SDL_SCANCODE_L]) {
+				player.acceleration.y -= accel;
+			}
+			if (keys[SDL_SCANCODE_SPACE]) {
+				if (floor->tileCollision(&program, X)) {
+					delete floor;
+					floor = dfg.generate("tilemap_dungeon1.png", "tilemap_minimap.png", 10, 10);
+				}
+				for (Chest& chest : floor->getChests()) {
+					int gridX, gridY;
+					worldToTileCoordinates(chest.position.x, chest.position.y, gridX, gridY, floor->getMapSize());
+					if (floor->tileCollision(&program, gridX, gridY)) {
+						chest.startOpen(player);
+					}
+				}
+			}
+			// TESTING KEYBIND ONLY //
+			if (keys[SDL_SCANCODE_R]) {
 				delete floor;
 				floor = dfg.generate("tilemap_dungeon1.png", "tilemap_minimap.png", 10, 10);
 			}
-			for (Chest& chest : floor->getChests()) {
-				int gridX, gridY;
-				worldToTileCoordinates(chest.position.x, chest.position.y, gridX, gridY, floor->getMapSize());
-				if (floor->tileCollision(&program, gridX, gridY)) {
-					chest.startOpen(player);
+			while (SDL_PollEvent(&event)) {
+				if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE || event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
+					done = true;
 				}
 			}
-		}
-		// TESTING KEYBIND ONLY //
-		if (keys[SDL_SCANCODE_R]) {
-			delete floor;
-			floor = dfg.generate("tilemap_dungeon1.png", "tilemap_minimap.png", 10, 10);
-		}
-		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE || event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
-				done = true;
+
+			// update /////////////////////////////////////////////////////////////////////////////////////////////////
+
+			//timestep
+			ticks = (float)SDL_GetTicks() / 1000.0f;
+			elapsed = ticks - lastFrameTicks;
+			lastFrameTicks = ticks;
+
+			fixedElapsed = elapsed;
+			if (fixedElapsed > FIXED_TIMESTEP * MAX_TIMESTEPS) {
+				fixedElapsed = FIXED_TIMESTEP * MAX_TIMESTEPS;
 			}
+			while (fixedElapsed >= FIXED_TIMESTEP) {
+				fixedElapsed -= FIXED_TIMESTEP;
+				//player.update(&program, FIXED_TIMESTEP);
+				//floor->mapCollision(player, &program);
+				floor->update(&program, FIXED_TIMESTEP);
+			}
+			//player.update(&program, fixedElapsed);
+			floor->update(&program, fixedElapsed);
+
+			/*for (int i = 0; i < floor->getChests().size(); ++i) {
+				while (player.collidesWith(floor->getChests()[i]))
+					player.nudge(floor->getChests()[i], 0.0f);
+			}
+
+			floor->mapCollision(player, &program);*/
+
+			// draw ///////////////////////////////////////////////////////////////////////////////////////////////////
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			floor->draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+			//player.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+			viewMatrix.identity();
+			viewMatrix.Translate(-player.position.x, (-1.0f * player.position.y), 0);
+
+			//glEnable(GL_BLEND);
+			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			SDL_GL_SwapWindow(displayWindow);
+
+			break;
+
+		default:
+			done = true;
+			break;
 		}
-
-		// update /////////////////////////////////////////////////////////////////////////////////////////////////
-
-		//timestep
-		ticks = (float)SDL_GetTicks() / 1000.0f;
-		elapsed = ticks - lastFrameTicks;
-		lastFrameTicks = ticks;
-
-		fixedElapsed = elapsed;
-		if (fixedElapsed > FIXED_TIMESTEP * MAX_TIMESTEPS) {
-			fixedElapsed = FIXED_TIMESTEP * MAX_TIMESTEPS;
-		}
-		while (fixedElapsed >= FIXED_TIMESTEP) {
-			fixedElapsed -= FIXED_TIMESTEP;
-			//player.update(&program, FIXED_TIMESTEP);
-			//floor->mapCollision(player, &program);
-			floor->update(&program, FIXED_TIMESTEP);
-		}
-		//player.update(&program, fixedElapsed);
-		floor->update(&program, fixedElapsed);
-
-		/*for (int i = 0; i < floor->getChests().size(); ++i) {
-			while (player.collidesWith(floor->getChests()[i]))
-				player.nudge(floor->getChests()[i], 0.0f);
-		}
-
-		floor->mapCollision(player, &program);*/
-
-		// draw ///////////////////////////////////////////////////////////////////////////////////////////////////
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		floor->draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-		menu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-		//player.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-		viewMatrix.identity();
-		viewMatrix.Translate(-player.position.x, (-1.0f * player.position.y), 0);
-
-		//glEnable(GL_BLEND);
-		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		SDL_GL_SwapWindow(displayWindow);
+		
 	}
 	SDL_Quit();
 	/*time_t time;

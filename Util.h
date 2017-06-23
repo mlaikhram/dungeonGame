@@ -8,6 +8,7 @@
 #define TILE_SIZE 0.5f
 #define PI 3.141592653589793238462643383279f
 
+enum states { STATE_MAINMENU, STATE_DUNGEON };
 enum maptiles { WE, WEFS, WEFN, NS, NSFE, NSFW, NSWE, NSW, NSWFE, NSE,
 				NSEFW, SWE, SWEFN, NWE, NWEFS, NWFSE, NW, NEFSW, NE, SWFNE,
 				SW, SEFNW, SE, N, S, W, E, chestc, chesto, enter,

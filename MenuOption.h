@@ -9,16 +9,19 @@
 class MenuOption {
 public:
 	//MenuOption(); // Constructors
-	MenuOption(std::string p, Vector3 position, const char *spriteSheetName, int numx, int numy, float scale);
+	MenuOption(std::string p, Vector3 position, const char *spriteSheetName, int numx, int numy, float minSize, float maxSize);
 	float getWidth();
 	float getHeight();
 	bool pointCollision(float mousex, float mousey);
 	void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
+	void update(ShaderProgram *program, float mousex, float mouesy);
 
 private:
 	Vector3 position;
 	float width, height;
 	float tileSize;
+	float minSize;
+	float maxSize;
 	char* phrase;
 	int lengthOfPhrase;
 	GLuint spriteSheet;
