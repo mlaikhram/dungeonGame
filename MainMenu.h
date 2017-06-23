@@ -11,7 +11,9 @@ class MainMenu {
 public:
 	MainMenu();
 	void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
-	int update(ShaderProgram *program, float time, float mousex, float mousey, SDL_Event &event);
+	int update(ShaderProgram *program, float time, float mousex, float mousey, int mousedOption);
+	int pollAndUpdate(ShaderProgram *program, float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed, SDL_Event &event);
+
 private:
 	std::vector<MenuScreen> menuScreens;
 	int activeScreen;

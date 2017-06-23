@@ -63,17 +63,6 @@ int main(int argc, char *argv[])
 	DungeonFloorGenerator dfg(50, 5, TILE_SIZE, &player);
 	DungeonFloor *floor = dfg.generate("tilemap_dungeon1.png", "tilemap_minimap.png", 10, 10);
 
-	/*MenuOption menu1("HELLO.", Vector3(), "letters.png", 16, 16, 0.2f, 0.5f);
-	MenuOption menu2("WORLD.", Vector3(1.5f, 0.8f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
-	MenuOption menu3("GAY.", Vector3(-1.0f, 1.6f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);*/
-	Entity cursor("tiles.png", 52, 20, 20, Vector3(), 0.25f * TILE_SIZE);
-
-	/*std::vector<MenuOption> stuff;
-	stuff.push_back(menu1);
-	stuff.push_back(menu2);
-	stuff.push_back(menu3);
-	MenuScreen menuS(stuff);*/
-
 	MainMenu mainMenu;
 	float m_x = 0.0f;
 	float m_y = 0.0f;
@@ -86,58 +75,13 @@ int main(int argc, char *argv[])
 
 		switch (gameState) {
 		case STATE_MAINMENU:
-			// input
-			while (SDL_PollEvent(&event)) {
-				if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE || event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
-					done = true;
-				}
-				else if (event.type == SDL_MOUSEMOTION) {
-					// Convert from pixels to OpenGL units
-					// m_x = (pixel_x / x_resolution) * ortho_width ) - ortho_width / 2.0;
-					m_x = (((float)event.motion.x / 1280) * 7.1f) - 3.55f;
-					// m_x = ((y_resolution - pixel_y) / y_resolution) * ortho_height) - ortho_height / 2.0;
-					m_y = (((float)(720 - event.motion.y) / 720) * 4.0f) - 2.0f;
-				}
-				else if (event.type == SDL_KEYDOWN) {
-					if (event.key.keysym.scancode == SDL_SCANCODE_SPACE) {
-						gameState = STATE_DUNGEON;
-					}
-				}
-			}
 
-			//timestep
-			ticks = (float)SDL_GetTicks() / 1000.0f;
-			elapsed = ticks - lastFrameTicks;
-			lastFrameTicks = ticks;
-
-			fixedElapsed = elapsed;
-			if (fixedElapsed > FIXED_TIMESTEP * MAX_TIMESTEPS) {
-				fixedElapsed = FIXED_TIMESTEP * MAX_TIMESTEPS;
-			}
-			while (fixedElapsed >= FIXED_TIMESTEP) {
-				fixedElapsed -= FIXED_TIMESTEP;
-				mainMenu.update(&program, FIXED_TIMESTEP, m_x, m_y, event);
-				//menuS.update(&program, FIXED_TIMESTEP, m_x, m_y);
-				cursor.position.x = m_x;
-				cursor.position.y = m_y;
-			}
-			mainMenu.update(&program, fixedElapsed, m_x, m_y, event);
-			//menuS.update(&program, fixedElapsed, m_x, m_y);
-			cursor.position.x = m_x;
-			cursor.position.y = m_y;
-
+			gameState = mainMenu.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event);
 			// draw
 			glClear(GL_COLOR_BUFFER_BIT);
-
 			mainMenu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-			//menuS.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-			cursor.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-
 			viewMatrix.identity();
 			//viewMatrix.Translate(-player.position.x, (-1.0f * player.position.y), 0);
-
-			SDL_GL_SwapWindow(displayWindow);
-
 			break;
 
 		case STATE_DUNGEON:
@@ -220,14 +164,14 @@ int main(int argc, char *argv[])
 			//glEnable(GL_BLEND);
 			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-			SDL_GL_SwapWindow(displayWindow);
-
 			break;
 
 		default:
 			done = true;
 			break;
 		}
+
+		SDL_GL_SwapWindow(displayWindow);
 		
 	}
 	SDL_Quit();
