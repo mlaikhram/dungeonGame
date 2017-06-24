@@ -1,6 +1,6 @@
 #include "MainMenu.h"
 
-MainMenu::MainMenu() : activeScreen(0) {
+MainMenu::MainMenu() : Menu() {
 	//mainScreen
 	MenuOption play("play", Vector3(), "letters.png", 16, 16, 0.2f, 0.5f);
 	MenuOption settings("settings", Vector3(0.0f, -0.4f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
@@ -38,10 +38,6 @@ MainMenu::MainMenu() : activeScreen(0) {
 	menuScreens.push_back(settingScreen);
 	menuScreens.push_back(controlsScreen);
 	menuScreens.push_back(creditsScreen);
-}
-
-void MainMenu::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix) {
-	menuScreens[activeScreen].draw(program, projectionMatrix, modelMatrix, viewMatrix);
 }
 
 int MainMenu::update(ShaderProgram *program, float time, float mousex, float mousey, int mousedOption) {
@@ -102,39 +98,4 @@ int MainMenu::update(ShaderProgram *program, float time, float mousex, float mou
 	}
 	return STATE_MAINMENU;
 
-}
-
-int MainMenu::pollAndUpdate(ShaderProgram *program, float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed, SDL_Event &event) {
-
-	int mousedOption = -1;
-	float m_x = (((float)event.motion.x / 1280) * 7.1f) - 3.55f;
-	float m_y = (((float)(720 - event.motion.y) / 720) * 4.0f) - 2.0f;
-
-	while (SDL_PollEvent(&event)) {
-		if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE || event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
-			return STATE_END;
-		}
-		else if (event.type == SDL_MOUSEBUTTONDOWN) {
-			mousedOption = menuScreens[activeScreen].mousedOption(m_x, m_y);
-		}
-	}
-
-	//timestep
-	ticks = (float)SDL_GetTicks() / 1000.0f;
-	elapsed = ticks - lastFrameTicks;
-	lastFrameTicks = ticks;
-
-	fixedElapsed = elapsed;
-	if (fixedElapsed > FIXED_TIMESTEP * MAX_TIMESTEPS) {
-		fixedElapsed = FIXED_TIMESTEP * MAX_TIMESTEPS;
-	}
-	/*while (fixedElapsed >= FIXED_TIMESTEP) {
-		fixedElapsed -= FIXED_TIMESTEP;
-		update(program, FIXED_TIMESTEP, m_x, m_y, mousedOption);
-		//cursor.position.x = m_x;
-		//cursor.position.y = m_y;
-	}*/
-	return update(program, fixedElapsed, m_x, m_y, mousedOption);
-	//cursor.position.x = m_x;
-	//cursor.position.y = m_y;
 }
