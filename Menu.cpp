@@ -16,7 +16,8 @@ int Menu::pollAndUpdate(ShaderProgram *program, float &elapsed, float &lastFrame
 		if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE || event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
 			return STATE_END;
 		}
-		else if (event.type == SDL_MOUSEBUTTONDOWN) {
+		else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
+		//else if (event.type == SDL_BUTTON_LEFT) {
 			mousedOption = menuScreens[activeScreen].mousedOption(m_x, m_y);
 		}
 	}
