@@ -4,25 +4,26 @@
 #include <string>
 #include "Matrix.h"
 #include "ShaderProgram.h"
+#include "Text.h"
 #include "Util.h"
 
-class MenuOption {
+class MenuOption : public Text {
 public:
-	MenuOption(std::string phrase, Vector3 position, const char *spriteSheetName, int numx, int numy, float minSize, float maxSize, float spacing = 0.4f);
+	MenuOption(std::string phrase, Vector3 position, const char *spriteSheetName, int numx, int numy, float minSize, float maxSize, int alignment = CENTERED, float spacing = 0.4f);
 	bool pointCollision(float mousex, float mousey);
-	void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
+	//void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
 	void update(ShaderProgram *program, float mousex, float mouesy);
 
 private:
-	Vector3 position;
-	float tileSize;
+	//Vector3 position;
+	//float tileSize;
 	float minSize;
 	float maxSize;
-	std::string phrase;
-	GLuint spriteSheet;
-	int numx;
-	int numy;
-	float spacing;
+	//std::string phrase;
+	//GLuint spriteSheet;
+	//int numx;
+	//int numy;
+	//float spacing;
 };
 
 #endif MENUOPTION
