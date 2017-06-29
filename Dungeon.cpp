@@ -20,44 +20,6 @@ int Dungeon::update(ShaderProgram *program, float time) {
 }
 
 int Dungeon::pollAndUpdate(ShaderProgram *program, float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed, SDL_Event &event, const Uint8 *keys) {
-	float accel = 10.0f;
-	player->acceleration.x = 0.0f;
-	player->acceleration.y = 0.0f;
-	keys = SDL_GetKeyboardState(NULL);
-	if (keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_A] || keys[SDL_SCANCODE_K]) {
-		player->acceleration.x -= accel;
-	}
-	if (keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D] || keys[SDL_SCANCODE_SEMICOLON]) {
-		player->acceleration.x += accel;
-	}
-	if (keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W] || keys[SDL_SCANCODE_O]) {
-		player->acceleration.y += accel;
-	}
-	if (keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S] || keys[SDL_SCANCODE_L]) {
-		player->acceleration.y -= accel;
-	}
-
-	while (SDL_PollEvent(&event)) {
-		if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE || event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
-			return STATE_END;
-		}
-		else if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_SPACE) {
-			if (currentFloor->tileCollision(program, X)) {
-				//nextFloor();
-				transition.position.x = player->position.x;
-				transition.position.y = player->position.y;
-				transitionPhase = 0;
-				break;
-			}
-			for (Chest& chest : currentFloor->getChests()) {
-				int gridX, gridY;
-				worldToTileCoordinates(chest.position.x, chest.position.y, gridX, gridY, currentFloor->getMapSize());
-				if (currentFloor->tileCollision(program, gridX, gridY)) {
-					chest.startOpen(*player);
-				}
-			}
-		}
-	}
 	switch (transitionPhase) {
 	case 0:
 		transition.size += (0.1f * 7.1f);
@@ -77,6 +39,44 @@ int Dungeon::pollAndUpdate(ShaderProgram *program, float &elapsed, float &lastFr
 		}
 		break;
 	default:
+		float accel = 10.0f;
+		player->acceleration.x = 0.0f;
+		player->acceleration.y = 0.0f;
+		keys = SDL_GetKeyboardState(NULL);
+		if (keys[SDL_SCANCODE_LEFT] || keys[SDL_SCANCODE_A] || keys[SDL_SCANCODE_K]) {
+			player->acceleration.x -= accel;
+		}
+		if (keys[SDL_SCANCODE_RIGHT] || keys[SDL_SCANCODE_D] || keys[SDL_SCANCODE_SEMICOLON]) {
+			player->acceleration.x += accel;
+		}
+		if (keys[SDL_SCANCODE_UP] || keys[SDL_SCANCODE_W] || keys[SDL_SCANCODE_O]) {
+			player->acceleration.y += accel;
+		}
+		if (keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S] || keys[SDL_SCANCODE_L]) {
+			player->acceleration.y -= accel;
+		}
+
+		while (SDL_PollEvent(&event)) {
+			if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE || event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
+				return STATE_END;
+			}
+			else if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_SPACE) {
+				if (currentFloor->tileCollision(program, X)) {
+					//nextFloor();
+					transition.position.x = player->position.x;
+					transition.position.y = player->position.y;
+					transitionPhase = 0;
+					break;
+				}
+				for (Chest& chest : currentFloor->getChests()) {
+					int gridX, gridY;
+					worldToTileCoordinates(chest.position.x, chest.position.y, gridX, gridY, currentFloor->getMapSize());
+					if (currentFloor->tileCollision(program, gridX, gridY)) {
+						chest.startOpen(*player);
+					}
+				}
+			}
+		}
 		//timestep
 		ticks = (float)SDL_GetTicks() / 1000.0f;
 		elapsed = ticks - lastFrameTicks;
