@@ -18,6 +18,8 @@ private:
 	int difficulty;
 	//int merchantFloor;
 	//Entity merchant;
+	Entity transition;
+	int transitionPhase;
 	DungeonFloorGenerator dfg;
 	DungeonFloor *currentFloor;
 	Entity *player;

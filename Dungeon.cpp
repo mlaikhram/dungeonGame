@@ -1,7 +1,8 @@
 #include "Dungeon.h"
 #include "Util.h"
 
-Dungeon::Dungeon(int id, int floorCounter, int difficulty, Entity *player) : id(id), floorCounter(floorCounter), difficulty(difficulty), dfg(50, 5, TILE_SIZE, player), player(player) {
+Dungeon::Dungeon(int id, int floorCounter, int difficulty, Entity *player) : id(id), floorCounter(floorCounter), difficulty(difficulty), dfg(50, 5, TILE_SIZE, player), player(player),
+transition("tiles.png", 52, 20, 20, Vector3(), 0.0f), transitionPhase(-1) {
 	std::string sheet = "tilemap_dungeon" + std::to_string(id) + ".png";
 	currentFloor = dfg.generate(sheet.c_str(), "tilemap_minimap.png", 10, 10);
 }
@@ -42,7 +43,10 @@ int Dungeon::pollAndUpdate(ShaderProgram *program, float &elapsed, float &lastFr
 		}
 		else if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_SPACE) {
 			if (currentFloor->tileCollision(program, X)) {
-				nextFloor();
+				//nextFloor();
+				transition.position.x = player->position.x;
+				transition.position.y = player->position.y;
+				transitionPhase = 0;
 				break;
 			}
 			for (Chest& chest : currentFloor->getChests()) {
@@ -54,23 +58,45 @@ int Dungeon::pollAndUpdate(ShaderProgram *program, float &elapsed, float &lastFr
 			}
 		}
 	}
+	switch (transitionPhase) {
+	case 0:
+		transition.size += (0.1f * 7.1f);
+		if (transition.size >= 7.1f) transitionPhase = 1;
+		break;
+	case 1:
+		nextFloor();
+		transition.position.x = player->position.x;
+		transition.position.y = player->position.y;
+		transitionPhase = 2;
+		break;
+	case 2:
+		transition.size -= (0.1f * 7.1f);
+		if (transition.size <= 0.0f) {
+			transition.size = 0.0f;
+			transitionPhase = -1;
+		}
+		break;
+	default:
+		//timestep
+		ticks = (float)SDL_GetTicks() / 1000.0f;
+		elapsed = ticks - lastFrameTicks;
+		lastFrameTicks = ticks;
 
-	//timestep
-	ticks = (float)SDL_GetTicks() / 1000.0f;
-	elapsed = ticks - lastFrameTicks;
-	lastFrameTicks = ticks;
-
-	fixedElapsed = elapsed;
-	if (fixedElapsed > FIXED_TIMESTEP * MAX_TIMESTEPS) {
-		fixedElapsed = FIXED_TIMESTEP * MAX_TIMESTEPS;
+		fixedElapsed = elapsed;
+		if (fixedElapsed > FIXED_TIMESTEP * MAX_TIMESTEPS) {
+			fixedElapsed = FIXED_TIMESTEP * MAX_TIMESTEPS;
+		}
+		while (fixedElapsed >= FIXED_TIMESTEP) {
+			fixedElapsed -= FIXED_TIMESTEP;
+			update(program, FIXED_TIMESTEP);
+		}
+		update(program, fixedElapsed);
+		break;
 	}
-	while (fixedElapsed >= FIXED_TIMESTEP) {
-		fixedElapsed -= FIXED_TIMESTEP;
-		update(program, FIXED_TIMESTEP);
-	}
-	update(program, fixedElapsed);
+	return STATE_DUNGEON;
 }
 
 void Dungeon::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix) {
 	currentFloor->draw(program, projectionMatrix, modelMatrix, viewMatrix);
+	transition.draw(program, projectionMatrix, modelMatrix, viewMatrix);
 }
