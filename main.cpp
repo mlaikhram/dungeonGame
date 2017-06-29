@@ -5,6 +5,7 @@
 #include "DungeonFloorGenerator.h"
 #include "Dungeon.h"
 #include "Entity.h"
+#include "Text.h"
 #include "MenuOption.h"
 #include "MenuScreen.h"
 #include "MainMenu.h"
@@ -63,6 +64,7 @@ int main(int argc, char *argv[])
 	Dungeon dungeon(1, 1, 1, &player);
 
 	Entity cursor("tiles.png", 52, 20, 20, Vector3(), 0.05f * TILE_SIZE);
+	Text t("hello", Vector3(0.0f, 1.6f, 0.0f), "letters.png", 16, 16, 0.2f, CENTERED);
 
 	MainMenu mainMenu;
 	//float m_x = 0.0f;
@@ -84,6 +86,7 @@ int main(int argc, char *argv[])
 			glClear(GL_COLOR_BUFFER_BIT);
 			mainMenu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			cursor.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+			t.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			viewMatrix.identity();
 			//viewMatrix.Translate(-player.position.x, (-1.0f * player.position.y), 0);
 			break;
