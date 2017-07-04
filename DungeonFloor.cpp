@@ -20,7 +20,11 @@ DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap
 		}
 	}
 	spriteSheet = LoadTexture(spriteSheetName);
-	miniMapSheet = LoadTexture(miniMapSheetName);
+	if (strcmp(miniMapSheetName, "none") == 0) {
+		miniMapSheet = 0;
+	}
+	else 
+		miniMapSheet = LoadTexture(miniMapSheetName);
 }
 
 bool DungeonFloor::testOutOfBounds(int gridX, int gridY) {
@@ -312,12 +316,14 @@ void DungeonFloor::update(ShaderProgram *program, float time, int maxTries) {
 	}
 
 	//minimap
-	int radius = 3;
-	int x, y;
-	worldToTileCoordinates(player->position.x, player->position.y, x, y, mapSize);
-	for (int i = x - radius; i <= x + radius; ++i) {
-		for (int j = y - radius; j <= y + radius; ++j) {
-			if (i >= 0 && j >= 0 && i < mapSize && j < mapSize && !miniMap[j][i]) miniMap[j][i] = true;
+	if (miniMapSheet != 0) {
+		int radius = 3;
+		int x, y;
+		worldToTileCoordinates(player->position.x, player->position.y, x, y, mapSize);
+		for (int i = x - radius; i <= x + radius; ++i) {
+			for (int j = y - radius; j <= y + radius; ++j) {
+				if (i >= 0 && j >= 0 && i < mapSize && j < mapSize && !miniMap[j][i]) miniMap[j][i] = true;
+			}
 		}
 	}
 }
@@ -345,39 +351,41 @@ void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix
 	player->draw(program, projectionMatrix,	modelMatrix, viewMatrix);
 
 	//minimap tiles
-	for (int y = 0; y < mapSize; ++y) {
-		for (int x = 0; x < mapSize; ++x) {
-			if ((!floorTile(x, y) || tileMap[y][x] == X || tileMap[y][x] == enter) && miniMap[y][x]) {
+	if (miniMapSheet != 0) {
+		for (int y = 0; y < mapSize; ++y) {
+			for (int x = 0; x < mapSize; ++x) {
+				if ((!floorTile(x, y) || tileMap[y][x] == X || tileMap[y][x] == enter) && miniMap[y][x]) {
+					modelMatrix.identity();
+					modelMatrix.Translate(float(x)*0.05f*tileSize + player->position.x - 3.0f, (mapSize - float(y) - 1.0f)*0.05f*tileSize + player->position.y + 0.6f, 0.0f);
+					program->setModelMatrix(modelMatrix);
+					program->setProjectionMatrix(projectionMatrix);
+					program->setViewMatrix(viewMatrix);
+					DrawSpriteSheetSprite(program, tileMap[y][x], numx, numy, miniMapSheet, 0.05f*tileSize);
+				}
+			}
+		}
+
+
+		int x, y;
+		for (Chest &chest : chests) {
+			worldToTileCoordinates(chest.position.x, chest.position.y, x, y, mapSize);
+			if (miniMap[y][x]) {
 				modelMatrix.identity();
-				modelMatrix.Translate(float(x)*0.05f*tileSize + player->position.x - 3.0f, (mapSize - float(y) - 1.0f)*0.05f*tileSize + player->position.y + 0.6f, 0.0f);
+				modelMatrix.Translate(0.05f*chest.position.x + player->position.x - 3.0f, 0.05f*chest.position.y + player->position.y + 0.6f, 0.0f);
 				program->setModelMatrix(modelMatrix);
 				program->setProjectionMatrix(projectionMatrix);
 				program->setViewMatrix(viewMatrix);
-				DrawSpriteSheetSprite(program, tileMap[y][x], numx, numy, miniMapSheet, 0.05f*tileSize);
+				DrawSpriteSheetSprite(program, chestc, numx, numy, miniMapSheet, 0.05f*tileSize);
 			}
 		}
-	}
 
-	int x, y;
-	for (Chest &chest : chests) {
-		worldToTileCoordinates(chest.position.x, chest.position.y, x, y, mapSize);
-		if (miniMap[y][x]) {
-			modelMatrix.identity();
-			modelMatrix.Translate(0.05f*chest.position.x + player->position.x - 3.0f, 0.05f*chest.position.y + player->position.y + 0.6f, 0.0f);
-			program->setModelMatrix(modelMatrix);
-			program->setProjectionMatrix(projectionMatrix);
-			program->setViewMatrix(viewMatrix);
-			DrawSpriteSheetSprite(program, chestc, numx, numy, miniMapSheet, 0.05f*tileSize);
-		}
+		modelMatrix.identity();
+		modelMatrix.Translate(0.05f*player->position.x + player->position.x - 3.0f, 0.05f*player->position.y + player->position.y + 0.6f, 0.0f);
+		program->setModelMatrix(modelMatrix);
+		program->setProjectionMatrix(projectionMatrix);
+		program->setViewMatrix(viewMatrix);
+		DrawSpriteSheetSprite(program, playerm, numx, numy, miniMapSheet, 0.05f*tileSize);
 	}
-
-	modelMatrix.identity();
-	modelMatrix.Translate(0.05f*player->position.x + player->position.x - 3.0f, 0.05f*player->position.y + player->position.y + 0.6f, 0.0f);
-	program->setModelMatrix(modelMatrix);
-	program->setProjectionMatrix(projectionMatrix);
-	program->setViewMatrix(viewMatrix);
-	DrawSpriteSheetSprite(program, playerm, numx, numy, miniMapSheet, 0.05f*tileSize);
-		
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

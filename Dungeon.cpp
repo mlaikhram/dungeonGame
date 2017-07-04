@@ -3,7 +3,7 @@
 
 Dungeon::Dungeon(int id, int floorCounter, int difficulty, Entity *player) : id(id), floorCounter(floorCounter), difficulty(difficulty), dfg(50, 5, TILE_SIZE, player), player(player),
 transition("tiles.png", 52, 20, 20, Vector3(), 0.0f), transitionPhase(-1), bossFloor(false), 
-floorCountHUD("FLOOR" + std::to_string(floorCounter), Vector3(player->position.x - 3.0f, player->position.y + 1.9f, 0.0f), "letters.png", 16, 16, 0.2f * TILE_SIZE, LEFT_JUST) {
+floorCountHUD("FLOOR " + std::to_string(floorCounter), Vector3(player->position.x - 3.0f, player->position.y + 1.9f, 0.0f), "letters.png", 16, 16, 0.2f * TILE_SIZE, LEFT_JUST) {
 	std::string sheet = "tilemap_dungeon" + std::to_string(id) + ".png";
 	currentFloor = dfg.generate(sheet.c_str(), "tilemap_minimap.png", 10, 10);
 }
@@ -15,13 +15,14 @@ void Dungeon::nextFloor() {
 		bossFloor = !bossFloor;
 	}
 	if (bossFloor) {
+		dfg.generate(sheet.c_str(), "tilemap_minimap.png", 10, 10); //this is purely to stay consistent with transition time since boss floors take less time to load
 		currentFloor = generateBossFloor(floorCounter / 10 - 1, sheet);
 		floorCountHUD.setText("BOSS " + std::to_string((int)(floorCounter / 10)));
 	}
 	else {
 		currentFloor = dfg.generate(sheet.c_str(), "tilemap_minimap.png", 10, 10);
 		//++floorCounter;
-		floorCountHUD.setText("FLOOR" + std::to_string(++floorCounter));
+		floorCountHUD.setText("FLOOR " + std::to_string(++floorCounter));
 	}
 }
 
@@ -60,7 +61,7 @@ DungeonFloor* Dungeon::generateBossFloor(int index, std::string spriteSheetName)
 	tileMap[mapSize / 2][mapSize / 2] = X;
 	//spawn boss on exit
 
-	DungeonFloor *floor = new DungeonFloor(mapSize, TILE_SIZE, tileMap, spriteSheetName.c_str(), "tilemap_minimap.png", 10, 10, player); //need an empty spritesheet to not generate minimap or keyword none
+	DungeonFloor *floor = new DungeonFloor(mapSize, TILE_SIZE, tileMap, spriteSheetName.c_str(), "none", 10, 10, player); //need an empty spritesheet to not generate minimap or keyword none
 	return floor;
 }
 
