@@ -7,7 +7,7 @@
 
 class Dungeon {
 public:
-	Dungeon(int id, int floorCounter, int difficulty, Entity *player);
+	Dungeon(int id, int floorCounter, int difficulty, std::vector<Enemy> *bosses, Entity *player);
 	void nextFloor();
 	DungeonFloor* generateBossFloor(int index, std::string spriteSheetName);
 	int update(ShaderProgram *program, float time);
@@ -28,6 +28,7 @@ private:
 	Entity *player;
 	//int collectedMoney;
 	Text floorCountHUD;
+	std::vector<Enemy> *bosses;
 };
 
 #endif MKL_DUNGEON

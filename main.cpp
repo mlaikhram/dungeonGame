@@ -9,6 +9,7 @@
 #include "MenuOption.h"
 #include "MenuScreen.h"
 #include "MainMenu.h"
+#include "WanderAI.h"
 
 #ifdef _WINDOWS
 #define RESOURCE_FOLDER ""
@@ -61,9 +62,15 @@ int main(int argc, char *argv[])
 	std::ofstream ofs("output.txt");
 
 	Entity player("tiles.png", 52, 20, 20, Vector3(), 0.75 * TILE_SIZE);
-	Dungeon dungeon(1, 1, 1, &player);
+	std::vector<std::vector<Enemy>> bosses(1);
+	MoveAI *staticAI = new WanderAI(0.0f);
+	for (int i = 0; i < 10; ++i) {
+		bosses[0].push_back(Enemy("tiles.png", i + 112, 20, 20, staticAI, &player, Vector3(), 3.0f * TILE_SIZE));
+	}
 
-	Entity cursor("tiles.png", 52, 20, 20, Vector3(), 0.05f * TILE_SIZE);
+	Dungeon dungeon(1, 1, 1, &(bosses.at(0)), &player);
+
+	//Entity cursor("tiles.png", 52, 20, 20, Vector3(), 0.05f * TILE_SIZE);
 	Text t("hello", Vector3(0.0f, 1.6f, 0.0f), "letters.png", 16, 16, 0.2f, CENTERED);
 
 	MainMenu mainMenu;
@@ -85,7 +92,7 @@ int main(int argc, char *argv[])
 			// draw
 			glClear(GL_COLOR_BUFFER_BIT);
 			mainMenu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-			cursor.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+			//cursor.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			t.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			viewMatrix.identity();
 			//viewMatrix.Translate(-player.position.x, (-1.0f * player.position.y), 0);

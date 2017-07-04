@@ -280,7 +280,12 @@ DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, const
 	}
 	//delete tiles in radius form exit tile
 	deleteOpenTilesR(exitCoords.x, exitCoords.y, 2.5 * minRoomSize);
-	spawnEntity(player); //if no suitable, replace enemy with player
+
+	//if no suitable, replace enemy with player
+	if (!spawnEntity(player)) {
+		player->position = enemies[enemies.size() - 1].position;
+		enemies.pop_back();
+	}
 	//spawn entrance tile
 	int x, y;
 	worldToTileCoordinates(player->position.x, player->position.y, x, y, mapSize);
