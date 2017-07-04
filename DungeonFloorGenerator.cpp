@@ -96,7 +96,7 @@ void DungeonFloorGenerator::generateMap() {
 	tileMap[mapSize - 1][0] = NEFSW;
 	tileMap[mapSize - 1][mapSize - 1] = NWFSE;
 
-	//init otpe and bottom rows
+	//init top and bottom rows
 	for (int x = 1; x < mapSize-1; ++x) {
 		tileMap[0][x] = WEFN;
 		tileMap[mapSize - 1][x] = WEFS;

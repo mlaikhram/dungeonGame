@@ -45,6 +45,7 @@ private:
 	Entity *player;
 	std::vector<Chest> chests;
 	std::vector<Enemy> enemies;
+	//int collectedMoney;
 
 };
 
