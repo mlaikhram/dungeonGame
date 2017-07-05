@@ -26,7 +26,7 @@ private:
 	int transitionPhase;
 	DungeonFloorGenerator dfg;
 	DungeonFloor *currentFloor;
-	Entity *player;
+	Entity *player; //shallow
 	//int collectedMoney;
 	Text floorCountHUD;
 	std::vector<Enemy> *bosses;

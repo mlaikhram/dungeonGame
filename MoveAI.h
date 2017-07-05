@@ -10,6 +10,7 @@ public:
 	void update(float time);
 	void wander(Vector3 &accel);
 	virtual void move(DungeonFloor *floor, Vector3 &accel, Vector3 &pos, Vector3 &dest, float maxR, float minR = 0.0f) = 0;
+	virtual MoveAI* clone() = 0;
 
 protected:
 	float moveAccel;

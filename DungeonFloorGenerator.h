@@ -31,7 +31,7 @@ private:
 	int minRoomSize;
 	float tileSize;
 	unsigned char **tileMap;
-	Entity *player;
+	Entity *player; //shallow
 	int maxTries;
 	std::set<Pair<int, int>> openTiles;
 };

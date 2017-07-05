@@ -46,3 +46,7 @@ void ChaseAI::move(DungeonFloor *floor, Vector3 &accel, Vector3 &pos, Vector3 &d
 		}
 	}
 }
+
+MoveAI* ChaseAI::clone() {
+	return new ChaseAI(*this);
+}

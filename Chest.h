@@ -12,7 +12,7 @@ public:
 private:
 	bool open;
 	float openTime;
-	Entity *opener;
+	Entity *opener; //shallow
 };
 
 #endif MKL_CHEST

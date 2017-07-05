@@ -42,7 +42,7 @@ private:
 	GLuint miniMapSheet;
 	int numx;
 	int numy;
-	Entity *player;
+	Entity *player; //shallow
 	std::vector<Chest> chests;
 	std::vector<Enemy> enemies;
 	//int collectedMoney;

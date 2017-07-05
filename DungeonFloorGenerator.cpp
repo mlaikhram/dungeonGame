@@ -248,7 +248,7 @@ DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, const
 	generateMap();
 	fixTileConnections();
 	findOpenTiles();
-	randomizeOpenTiles(mapSize * mapSize * 0.01);
+	randomizeOpenTiles(int(mapSize * mapSize * 0.01));
 	//spawn exit
 	//select random open tile
 	int index = (int)(rand() % openTiles.size());
@@ -277,8 +277,8 @@ DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, const
 	//spawn enemies (not REAL)
 	std::vector<Enemy> enemies = std::vector<Enemy>();
 	for (int i = 0; i < 20; ++i) {
-		MoveAI *wander = new ChaseAI(5.0f);
-		Enemy enemy = Enemy("tiles.png", 52, 20, 20, wander, player, Vector3(), 0.75 * TILE_SIZE);
+		MoveAI *ai = new ChaseAI(5.0f);
+		Enemy enemy = Enemy("tiles.png", 52, 20, 20, ai, player, Vector3(), 0.75 * TILE_SIZE);
 		if (spawnEntity(&enemy, 1)) {
 			int gridX, gridY;
 			worldToTileCoordinates(enemy.position.x, enemy.position.y, gridX, gridY, mapSize);
@@ -292,7 +292,7 @@ DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, const
 	//delete wander;
 
 	//delete tiles in radius form exit tile
-	deleteOpenTilesR(exitCoords.x, exitCoords.y, 2.5 * minRoomSize);
+	deleteOpenTilesR(exitCoords.x, exitCoords.y, int(2.5 * minRoomSize));
 
 	//if no suitable, replace enemy with player
 	if (!spawnEntity(player)) {

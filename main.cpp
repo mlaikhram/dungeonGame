@@ -63,8 +63,8 @@ int main(int argc, char *argv[])
 
 	Entity player("tiles.png", 52, 20, 20, Vector3(), 0.75 * TILE_SIZE);
 	std::vector<std::vector<Enemy>> bosses(1);
-	MoveAI *staticAI = new WanderAI(0.0f);
 	for (int i = 0; i < 10; ++i) {
+		MoveAI *staticAI = new WanderAI(0.0f);
 		bosses[0].push_back(Enemy("tiles.png", i + 112, 20, 20, staticAI, &player, Vector3(), 3.0f * TILE_SIZE));
 	}
 

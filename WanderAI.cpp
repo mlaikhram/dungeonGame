@@ -13,3 +13,7 @@ void WanderAI::move(DungeonFloor *floor, Vector3 &accel, Vector3 &pos, Vector3 &
 		}
 	}
 }
+
+MoveAI* WanderAI::clone() {
+	return new WanderAI(*this);
+}
