@@ -8,7 +8,7 @@
 class DungeonFloorGenerator {
 public:
 	DungeonFloorGenerator(int mapSize, int minRoomSize, float tileSize, Entity *player, int maxTries = 10);
-
+	~DungeonFloorGenerator();
 	//x: x pos of the top left FLOOR TILE
 	//y: y pos of the top left FLOOR TILE
 	//width/height of room EXCLUDING BORDERING WALL TILES

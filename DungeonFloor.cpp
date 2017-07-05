@@ -27,6 +27,16 @@ DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap
 		miniMapSheet = LoadTexture(miniMapSheetName);
 }
 
+DungeonFloor::~DungeonFloor() {
+	//cleanup arrays
+	for (int i = 0; i < mapSize; ++i) {
+		delete tileMap[i];
+		delete miniMap[i];
+	}
+	delete tileMap;
+	delete miniMap;
+}
+
 bool DungeonFloor::testOutOfBounds(int gridX, int gridY) {
 	if (gridX < 0 || gridX >= mapSize || gridY < 0 || gridY >= mapSize) {
 		return true;
@@ -341,17 +351,18 @@ void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix
 			DrawSpriteSheetSprite(program, tileMap[y][x], numx, numy, spriteSheet, tileSize);
 		}
 	}
-
+	//chests
 	for (Chest &chest : chests)
 		chest.draw(program, projectionMatrix, modelMatrix, viewMatrix);
-
+	//enemies
 	for (Enemy &enemy : enemies)
 		enemy.draw(program, projectionMatrix, modelMatrix, viewMatrix);
-
+	//player
 	player->draw(program, projectionMatrix,	modelMatrix, viewMatrix);
 
-	//minimap tiles
+	//minimap
 	if (miniMapSheet != 0) {
+		//tiles
 		for (int y = 0; y < mapSize; ++y) {
 			for (int x = 0; x < mapSize; ++x) {
 				if ((!floorTile(x, y) || tileMap[y][x] == X || tileMap[y][x] == enter) && miniMap[y][x]) {
@@ -365,7 +376,7 @@ void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix
 			}
 		}
 
-
+		//chests
 		int x, y;
 		for (Chest &chest : chests) {
 			worldToTileCoordinates(chest.position.x, chest.position.y, x, y, mapSize);
@@ -379,6 +390,10 @@ void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix
 			}
 		}
 
+		//enemies
+		/*...*/
+
+		//player
 		modelMatrix.identity();
 		modelMatrix.Translate(0.05f*player->position.x + player->position.x - 3.0f, 0.05f*player->position.y + player->position.y + 0.6f, 0.0f);
 		program->setModelMatrix(modelMatrix);

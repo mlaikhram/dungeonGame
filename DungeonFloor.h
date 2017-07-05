@@ -16,7 +16,7 @@ class Enemy;
 class DungeonFloor {
 public:
 	DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, const char *miniMapSheetName, int numx, int numy, Entity *player, std::vector<Chest> chests = std::vector<Chest>(), std::vector<Enemy> enemies = std::vector<Enemy>());
-
+	~DungeonFloor();
 	bool testOutOfBounds(int gridX, int gridY);
 	bool floorTile(int x, int y);
 	void mapCollision(Entity &entity, ShaderProgram *program);

@@ -8,6 +8,7 @@
 class Dungeon {
 public:
 	Dungeon(int id, int floorCounter, int difficulty, std::vector<Enemy> *bosses, Entity *player);
+	~Dungeon();
 	void nextFloor();
 	DungeonFloor* generateBossFloor(int index, std::string spriteSheetName);
 	int update(ShaderProgram *program, float time);
