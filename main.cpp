@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
 			glClear(GL_COLOR_BUFFER_BIT);
 			levelSelectMenu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			//cursor.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-			t.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+			//t.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			//viewMatrix.identity();
 			//viewMatrix.Translate(-player.position.x, (-1.0f * player.position.y), 0);
 			break;
