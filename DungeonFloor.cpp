@@ -359,6 +359,8 @@ void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix
 		enemy.draw(program, projectionMatrix, modelMatrix, viewMatrix);
 	//player
 	player->draw(program, projectionMatrix,	modelMatrix, viewMatrix);
+	viewMatrix.identity();
+	viewMatrix.Translate(-player->position.x, (-1.0f * player->position.y), 0);
 
 	//minimap
 	if (miniMapSheet != 0) {
