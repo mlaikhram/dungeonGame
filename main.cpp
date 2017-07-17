@@ -9,6 +9,7 @@
 #include "MenuOption.h"
 #include "MenuScreen.h"
 #include "MainMenu.h"
+#include "LevelSelectMenu.h"
 #include "WanderAI.h"
 
 #ifdef _WINDOWS
@@ -74,6 +75,7 @@ int main(int argc, char *argv[])
 	Text t("hello", Vector3(0.0f, 1.6f, 0.0f), "letters.png", 16, 16, 0.2f, CENTERED);
 
 	MainMenu mainMenu;
+	LevelSelectMenu levelSelectMenu;
 	//float m_x = 0.0f;
 	//float m_y = 0.0f;
 	int gameState = STATE_MAINMENU;
@@ -94,7 +96,19 @@ int main(int argc, char *argv[])
 			mainMenu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			//cursor.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			t.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-			viewMatrix.identity();
+			//viewMatrix.identity();
+			//viewMatrix.Translate(-player.position.x, (-1.0f * player.position.y), 0);
+			break;
+
+		case STATE_LEVELSELECT:
+			
+			gameState = levelSelectMenu.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event);
+			// draw
+			glClear(GL_COLOR_BUFFER_BIT);
+			levelSelectMenu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+			//cursor.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+			t.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+			//viewMatrix.identity();
 			//viewMatrix.Translate(-player.position.x, (-1.0f * player.position.y), 0);
 			break;
 
