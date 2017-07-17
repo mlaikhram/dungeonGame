@@ -6,15 +6,19 @@ void Menu::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelM
 	menuScreens[activeScreen].draw(program, projectionMatrix, modelMatrix, viewMatrix);
 }
 
-int Menu::pollAndUpdate(ShaderProgram *program, float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed, SDL_Event &event) {
+int Menu::pollAndUpdate(ShaderProgram *program, float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed, SDL_Event &event, float &m_x, float &m_y) {
 
 	int mousedOption = -1;
-	float m_x = (((float)event.motion.x / 1280) * 7.1f) - 3.55f;
-	float m_y = (((float)(720 - event.motion.y) / 720) * 4.0f) - 2.0f;
+	//m_x = (((float)event.motion.x / 1280) * 7.1f) - 3.55f;
+    //m_y = (((float)(720 - event.motion.y) / 720) * 4.0f) - 2.0f;
 
 	while (SDL_PollEvent(&event)) {
 		if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE || event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
 			return STATE_END;
+		}
+		else if (event.type == SDL_MOUSEMOTION) {
+			m_x = (((float)event.motion.x / 1280) * 7.1f) - 3.55f;
+			m_y = (((float)(720 - event.motion.y) / 720) * 4.0f) - 2.0f;
 		}
 		else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
 		//else if (event.type == SDL_BUTTON_LEFT) {

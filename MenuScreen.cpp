@@ -16,6 +16,12 @@ void MenuScreen::update(ShaderProgram *program, float time, float mousex, float 
 	}
 }
 
+void MenuScreen::reset() {
+	for (MenuOption &m : menuOptions) {
+		m.reset();
+	}
+}
+
 int MenuScreen::mousedOption(float mousex, float mousey) {
 	for (int i = 0; i < menuOptions.size(); ++i) {
 		if (menuOptions[i].pointCollision(mousex, mousey))

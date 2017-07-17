@@ -40,7 +40,6 @@ LevelSelectMenu::LevelSelectMenu() : Menu() {
 }
 
 int LevelSelectMenu::update(ShaderProgram *program, float time, float mousex, float mousey, int mousedOption) {
-	menuScreens[activeScreen].update(program, time, mousex, mousey);
 
 	// if they clicked on a menuOption, determine which option they clicked on
 	switch (activeScreen) {
@@ -86,6 +85,8 @@ int LevelSelectMenu::update(ShaderProgram *program, float time, float mousex, fl
 	default:
 		break;
 	}
+
+	menuScreens[activeScreen].update(program, time, mousex, mousey);
 	return STATE_LEVELSELECT;
 
 }

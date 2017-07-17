@@ -10,7 +10,7 @@ public:
 	Menu();
 	void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
 	virtual int update(ShaderProgram *program, float time, float mousex, float mousey, int mousedOption) = 0;
-	int pollAndUpdate(ShaderProgram *program, float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed, SDL_Event &event);
+	int pollAndUpdate(ShaderProgram *program, float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed, SDL_Event &event, float &m_x, float &m_y);
 
 protected:
 	std::vector<MenuScreen> menuScreens;

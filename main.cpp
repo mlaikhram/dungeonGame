@@ -76,8 +76,8 @@ int main(int argc, char *argv[])
 
 	MainMenu mainMenu;
 	LevelSelectMenu levelSelectMenu;
-	//float m_x = 0.0f;
-	//float m_y = 0.0f;
+	float m_x = 0.0f;
+	float m_y = 0.0f;
 	int gameState = STATE_MAINMENU;
 
 	SDL_Event event;
@@ -90,26 +90,20 @@ int main(int argc, char *argv[])
 		switch (gameState) {
 		case STATE_MAINMENU:
 
-			gameState = mainMenu.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event);
+			gameState = mainMenu.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, m_x, m_y);
 			// draw
 			glClear(GL_COLOR_BUFFER_BIT);
 			mainMenu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			//cursor.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			t.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-			//viewMatrix.identity();
-			//viewMatrix.Translate(-player.position.x, (-1.0f * player.position.y), 0);
 			break;
 
 		case STATE_LEVELSELECT:
 			
-			gameState = levelSelectMenu.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event);
+			gameState = levelSelectMenu.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, m_x, m_y);
 			// draw
 			glClear(GL_COLOR_BUFFER_BIT);
 			levelSelectMenu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-			//cursor.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-			//t.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-			//viewMatrix.identity();
-			//viewMatrix.Translate(-player.position.x, (-1.0f * player.position.y), 0);
 			break;
 
 		case STATE_DUNGEON:
@@ -118,9 +112,6 @@ int main(int argc, char *argv[])
 			// draw
 			glClear(GL_COLOR_BUFFER_BIT);
 			dungeon.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-			//player.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-			//viewMatrix.identity();
-			//viewMatrix.Translate(-player.position.x, (-1.0f * player.position.y), 0);
 
 			//glEnable(GL_BLEND);
 			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

@@ -21,3 +21,7 @@ void MenuOption::update(ShaderProgram *program, float mousex, float mousey) {
 	else
 		tileSize = minSize;
 }
+
+void MenuOption::reset() {
+	tileSize = minSize;
+}

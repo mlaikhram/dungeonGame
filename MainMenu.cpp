@@ -41,7 +41,6 @@ MainMenu::MainMenu() : Menu() {
 }
 
 int MainMenu::update(ShaderProgram *program, float time, float mousex, float mousey, int mousedOption) {
-	menuScreens[activeScreen].update(program, time, mousex, mousey);
 
 	// if they clicked on a menuOption, determine which option they clicked on
 	switch (activeScreen) {
@@ -96,6 +95,8 @@ int MainMenu::update(ShaderProgram *program, float time, float mousex, float mou
 	default:
 		break;
 	}
+
+	menuScreens[activeScreen].update(program, time, mousex, mousey);
 	return STATE_MAINMENU;
 
 }
