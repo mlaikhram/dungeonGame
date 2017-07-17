@@ -113,6 +113,10 @@ int main(int argc, char *argv[])
 
 			break;
 
+		case STATE_ENCOUNTER:
+
+			break;
+
 		default:
 			done = true;
 			break;

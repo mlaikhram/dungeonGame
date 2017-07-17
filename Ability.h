@@ -5,8 +5,11 @@
 
 class Ability {
 public:
-	Ability(std::string filename, int attack, int speed, int repetitions, int hpCost, int staminaCost, int manaCost, int userStance = -1, int victimStance = -1);
+	Ability(int id, std::string name, std::string filename, int attack, int speed, int repetitions, int hpCost, int staminaCost, int manaCost, int userStance = -1, int victimStance = -1);
 	~Ability();
+
+	int id;
+	std::string name;
 
 	std::ifstream script;
 
