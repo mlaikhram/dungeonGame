@@ -78,7 +78,9 @@ int main(int argc, char *argv[])
 	LevelSelectMenu levelSelectMenu;
 	float m_x = 0.0f;
 	float m_y = 0.0f;
+	int prevState = STATE_MAINMENU;
 	int gameState = STATE_MAINMENU;
+	int nextState = STATE_MAINMENU;
 
 	SDL_Event event;
 	bool done = false;
@@ -90,25 +92,37 @@ int main(int argc, char *argv[])
 		switch (gameState) {
 		case STATE_MAINMENU:
 
-			gameState = mainMenu.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, m_x, m_y);
+			nextState = mainMenu.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, m_x, m_y);
 			// draw
 			glClear(GL_COLOR_BUFFER_BIT);
 			mainMenu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			//cursor.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			t.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+
+			if (nextState == -1) nextState = prevState;
+			if (nextState != gameState) {
+				prevState = gameState;
+				//case switch based on what the next gamestate will be
+			}
 			break;
 
 		case STATE_LEVELSELECT:
 			
-			gameState = levelSelectMenu.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, m_x, m_y);
+			nextState = levelSelectMenu.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, m_x, m_y);
 			// draw
 			glClear(GL_COLOR_BUFFER_BIT);
 			levelSelectMenu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+
+			if (nextState == -1) nextState = prevState;
+			if (nextState != gameState) {
+				prevState = gameState;
+				//case switch based on what the next gamestate will be
+			}
 			break;
 
 		case STATE_DUNGEON:
 
-			gameState = dungeon.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, keys);
+			nextState = dungeon.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, keys);
 			// draw
 			glClear(GL_COLOR_BUFFER_BIT);
 			dungeon.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
@@ -116,10 +130,20 @@ int main(int argc, char *argv[])
 			//glEnable(GL_BLEND);
 			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+			if (nextState == -1) nextState = prevState;
+			if (nextState != gameState) {
+				prevState = gameState;
+				//case switch based on what the next gamestate will be
+			}
 			break;
 
 		case STATE_ENCOUNTER:
 
+			if (nextState == -1) nextState = prevState;
+			if (nextState != gameState) {
+				prevState = gameState;
+				//case switch based on what the next gamestate will be
+			}
 			break;
 
 		default:
@@ -127,6 +151,7 @@ int main(int argc, char *argv[])
 			break;
 		}
 
+		gameState = nextState;
 		SDL_GL_SwapWindow(displayWindow);
 		
 	}
