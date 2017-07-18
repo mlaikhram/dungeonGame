@@ -2,11 +2,11 @@
 
 MainMenu::MainMenu() : Menu() {
 	//mainScreen
-	MenuOption play("play", Vector3(), "letters.png", 16, 16, 0.2f, 0.5f);
-	MenuOption settings("settings", Vector3(0.0f, -0.4f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
-	MenuOption controls("controls", Vector3(0.0f, -0.8f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
-	MenuOption credits("credits", Vector3(0.0f, -1.2f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
-	MenuOption exit("exit", Vector3(0.0f, -1.6f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
+	MenuOption play("Play", Vector3(), "letters.png", 16, 16, 0.2f, 0.5f);
+	MenuOption settings("Settings", Vector3(0.0f, -0.4f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
+	MenuOption controls("Controls", Vector3(0.0f, -0.8f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
+	MenuOption credits("Credits", Vector3(0.0f, -1.2f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
+	MenuOption exit("Exit", Vector3(0.0f, -1.6f, 0.0f), "letters.png", 16, 16, 0.2f, 0.5f);
 	std::vector<MenuOption> vec1;
 	vec1.push_back(play);
 	vec1.push_back(settings);

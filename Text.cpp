@@ -6,6 +6,10 @@ Text::Text(std::string text, Vector3 position, const char *spriteSheetName, int 
 	spriteSheet = LoadTexture(spriteSheetName);
 }
 
+float Text::getTileSize() {
+	return tileSize;
+}
+
 void Text::setText(std::string newText) {
 	text = newText;
 }

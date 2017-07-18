@@ -2,11 +2,13 @@
 
 LevelSelectMenu::LevelSelectMenu() : Menu() {
 	//dungeonSelectScreen
+	MenuOption back("Back", Vector3(0, 1.8f - 3.5f, 0), "letters.png", 16, 16, 0.2f, 0.5f);
+
 	std::vector<MenuOption> vec1;
-	MenuOption back("back", Vector3(0, -2.0f + 1.1f  * TILE_SIZE, 0), "letters.png", 16, 16, 0.2f, 0.5f);
 	vec1.push_back(back);
-	for (int i = 0; i < 1; ++i) {
-		vec1.push_back(MenuOption("dungeon1", Vector3(), "letters.png", 16, 16, 0.2f, 0.5f));
+	std::vector<std::string> dungeons = { "The Caves" };
+	for (int i = 0; i < dungeons.size(); ++i) {
+		vec1.push_back(MenuOption(dungeons[i], Vector3(0, 1.8f - i * 0.35f - 1.8f, 0), "letters.png", 16, 16, 0.2f, 0.5f));
 	}
 	MenuScreen dungeonSelectScreen(vec1);
 
@@ -16,19 +18,19 @@ LevelSelectMenu::LevelSelectMenu() : Menu() {
 	vec2.push_back(back);
 	for (int i = 0; i < 10; ++i) {
 		// 1.9f is the starting point for the MenuOptions
-		vec2.push_back(MenuOption("f" + std::to_string(i * 10 + 1), Vector3(0, 1.9f - i * TILE_SIZE, 0), "letters.png", 16, 16, 0.2f, 0.5f));
+		vec2.push_back(MenuOption("Floor " + std::to_string(i * 10 + 1), Vector3(0, 1.8f - i * 0.35f, 0), "letters.png", 16, 16, 0.2f, 0.5f));
 	}
 	MenuScreen floorSelectScreen(vec2);
 
 	//difficultySelectSscreen
 	std::vector<MenuOption> vec3;
 	//MenuOption back("back", Vector3(), "letters.png", 16, 16, 0.2f, 0.5f);
-	MenuOption normal("normal", Vector3(), "letters.png", 16, 16, 0.2f, 0.5f);
+	//MenuOption normal("Normal", Vector3(), "letters.png", 16, 16, 0.2f, 0.5f);
 	vec3.push_back(back);
-	std::vector<std::string> difficulties = {"normal", "hard", "expert"};
-	for (int i = 0; i < 3; ++i) {
+	std::vector<std::string> difficulties = {"Normal", "Hard", "Expert"};
+	for (int i = 0; i < difficulties.size(); ++i) {
 		// 1.9f is the starting point for the MenuOptions
-		vec3.push_back(MenuOption(difficulties[i], Vector3(0, 1.9f - i * TILE_SIZE, 0), "letters.png", 16, 16, 0.2f, 0.5f));
+		vec3.push_back(MenuOption(difficulties[i], Vector3(0, 1.8f - i * 0.35f - 1.45f, 0), "letters.png", 16, 16, 0.2f, 0.5f));
 	}
 
 	MenuScreen difficultySelectScreen(vec3);
