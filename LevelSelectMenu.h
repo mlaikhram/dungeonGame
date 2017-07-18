@@ -10,7 +10,10 @@ class LevelSelectMenu : public Menu {
 public:
 	LevelSelectMenu();
 	int update(ShaderProgram *program, float time, float mousex, float mousey, int mousedOption);
-	int dungeonSelected, floorSelected, difficultySelected;
+
+	int dungeonSelected;
+	int floorSelected;
+	int difficultySelected;
 };
 
 #endif LEVELSELECTMENU

@@ -63,13 +63,13 @@ int main(int argc, char *argv[])
 	std::ofstream ofs("output.txt");
 
 	Entity player("tiles.png", 52, 20, 20, Vector3(), 0.75 * TILE_SIZE);
-	std::vector<std::vector<Enemy>> bosses(1);
+	std::vector<std::vector<Enemy>> bosses(2);
 	for (int i = 0; i < 10; ++i) {
 		MoveAI *staticAI = new WanderAI(0.0f);
-		bosses[0].push_back(Enemy("tiles.png", i + 112, 20, 20, staticAI, &player, Vector3(), 3.0f * TILE_SIZE));
+		bosses[1].push_back(Enemy("tiles.png", i + 112, 20, 20, staticAI, &player, Vector3(), 3.0f * TILE_SIZE));
 	}
 
-	Dungeon dungeon(1, 1, 1, &(bosses.at(0)), &player);
+	Dungeon *dungeon = nullptr;// (1, 1, 1, &(bosses.at(0)), &player);
 
 	//Entity cursor("tiles.png", 52, 20, 20, Vector3(), 0.05f * TILE_SIZE);
 	Text t("hello", Vector3(0.0f, 1.6f, 0.0f), "letters.png", 16, 16, 0.2f, CENTERED);
@@ -117,15 +117,23 @@ int main(int argc, char *argv[])
 			if (nextState != gameState) {
 				prevState = gameState;
 				//case switch based on what the next gamestate will be
+				switch (nextState) {
+				case STATE_DUNGEON:
+					dungeon = new Dungeon(levelSelectMenu.dungeonSelected, levelSelectMenu.floorSelected, levelSelectMenu.difficultySelected, &(bosses.at(levelSelectMenu.dungeonSelected)), &player);
+					break;
+
+				default:
+					break;
+				}
 			}
 			break;
 
 		case STATE_DUNGEON:
 
-			nextState = dungeon.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, keys);
+			nextState = dungeon->pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, keys);
 			// draw
 			glClear(GL_COLOR_BUFFER_BIT);
-			dungeon.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+			dungeon->draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 
 			//glEnable(GL_BLEND);
 			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

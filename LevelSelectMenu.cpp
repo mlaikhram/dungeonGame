@@ -66,7 +66,7 @@ int LevelSelectMenu::update(ShaderProgram *program, float time, float mousex, fl
 			activeScreen = 0;
 			break;
 		default:
-			floorSelected = mousedOption;
+			floorSelected = (mousedOption-1) * 10 + 1;
 			activeScreen = 2;
 			break;
 		}
