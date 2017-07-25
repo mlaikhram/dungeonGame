@@ -29,7 +29,7 @@ private:
 	Entity *player; //shallow
 	//int collectedMoney;
 	Text floorCountHUD;
-	std::vector<Enemy> *bosses;
+	std::vector<Enemy> *bosses; //shallow
 };
 
 #endif MKL_DUNGEON

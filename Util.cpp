@@ -11,6 +11,7 @@ GLuint LoadTexture(const char *image_path)
 	GLuint textureID;
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface->w, surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface->w, surface->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, surface->pixels);
 	glGenerateMipmap(GL_TEXTURE_2D);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
@@ -44,12 +45,26 @@ void DrawSpriteSheetSprite(ShaderProgram *program, int index, int spriteCountX, 
 	glVertexAttribPointer(program->texCoordAttribute, 2, GL_FLOAT, false, 0, texCoords);
 	glEnableVertexAttribArray(program->texCoordAttribute);
 
+	/*float colors[] = {
+		1.0f, 0.0f, 0.0f, 0.5f,
+		1.0f, 0.0f, 0.0f, 0.5f,
+		1.0f, 0.0f, 0.0f, 0.5f,
+		1.0f, 0.0f, 0.0f, 0.5f,
+		1.0f, 0.0f, 0.0f, 0.5f,
+		1.0f, 0.0f, 0.0f, 0.5f
+	};
+
+	glVertexAttribPointer(program->vertexShader, 2, GL_FLOAT, false, 0, colors);
+	glEnableVertexAttribArray(program->vertexShader);*/
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glDisableVertexAttribArray(program->positionAttribute);
 	glDisableVertexAttribArray(program->texCoordAttribute);
+	//glDisableVertexAttribArray(program->vertexShader);
+
 
 }
 
