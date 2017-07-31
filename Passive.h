@@ -5,12 +5,14 @@
 
 class Passive {
 public:
-	Passive(int id, std::string name, std::string description, std::string filename, int unlockLevel);
+	Passive(int id, std::string name, std::string description, int timing, std::string filename, int unlockLevel);
 	~Passive();
 
 	int id;
 	std::string name;
 	std::string description;
+
+	int timing;
 
 	std::ifstream script;
 

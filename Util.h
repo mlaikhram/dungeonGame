@@ -20,7 +20,7 @@ enum maptiles { WE, WEFS, WEFN, NS, NSFE, NSFW, NSWE, NSW, NSWFE, NSE,
 				NSEFW, SWE, SWEFN, NWE, NWEFS, NWFSE, NW, NEFSW, NE, SWFNE,
 				SW, SEFNW, SE, N, S, W, E, chestc, chesto, enter,
 				X, O1, O2, O3, O4, O5, playerm };
-
+enum passiveTiming { PRE_ATK, POST_ATK, PRE_DEF, POST_DEF, END };
 class DungeonFloor;
 
 class Vector3 {
