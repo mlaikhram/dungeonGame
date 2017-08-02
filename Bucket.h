@@ -8,7 +8,7 @@
 
 class Bucket {
 public:
-	Bucket(int id, std::string name, std::vector<Ability> abilities, std::vector<Passive> passives, std::vector<Buff> buffs, int currentSp = 0);
+	Bucket(int id, std::string name, std::vector<Ability*> abilities, std::vector<Passive*> passives, std::vector<Buff*> buffs, int currentSP = 0);
 
 
 
@@ -18,9 +18,9 @@ private:
 
 	int currentSP;
 
-	std::vector<Ability> abilities;
-	std::vector<Passive> passives;
-	std::vector<Buff> buffs;
+	std::vector<Ability*> abilities;
+	std::vector<Passive*> passives;
+	std::vector<Buff*> buffs;
 };
 
 #endif MKL_BUCKET

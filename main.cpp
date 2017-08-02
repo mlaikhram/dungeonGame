@@ -7,6 +7,7 @@
 #include "Entity.h"
 #include "Text.h"
 #include "MenuOption.h"
+#include "DetailedOption.h"
 #include "MenuScreen.h"
 #include "MainMenu.h"
 #include "LevelSelectMenu.h"
@@ -73,6 +74,7 @@ int main(int argc, char *argv[])
 
 	//Entity cursor("tiles.png", 52, 20, 20, Vector3(), 0.05f * TILE_SIZE);
 	Text t("hello", Vector3(0.0f, 1.6f, 0.0f), "letters.png", 16, 16, 0.2f, CENTERED);
+	DetailedOption option("Hover for more!", Vector3(), "here's more stuff", Vector3(0.0f, -0.5f, 0.0f), "letters.png", 16, 16, 0.2f);
 
 	MainMenu mainMenu;
 	LevelSelectMenu levelSelectMenu;
@@ -81,6 +83,12 @@ int main(int argc, char *argv[])
 	int prevState = STATE_MAINMENU;
 	int gameState = STATE_MAINMENU;
 	int nextState = STATE_MAINMENU;
+
+	//TESTING (UNCOMMENT IF NOT TESTING)
+	//prevState = STATE_TEST;
+	//gameState = STATE_TEST;
+	//nextState = STATE_TEST;
+	//TESTING (UNCOMMENT IF NOT TESTING)
 
 	SDL_Event event;
 	bool done = false;
@@ -152,6 +160,39 @@ int main(int argc, char *argv[])
 				prevState = gameState;
 				//case switch based on what the next gamestate will be
 			}
+			break;
+
+		case STATE_TEST:
+
+			while (SDL_PollEvent(&event)) {
+				if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE || event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
+					return STATE_END;
+				}
+				else if (event.type == SDL_MOUSEMOTION) {
+					m_x = (((float)event.motion.x / 1280) * 7.1f) - 3.55f;
+					m_y = (((float)(720 - event.motion.y) / 720) * 4.0f) - 2.0f;
+				}
+				else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
+					//else if (event.type == SDL_BUTTON_LEFT) {
+					/*mousedOption = menuScreens[activeScreen].mousedOption(m_x, m_y);*/
+				}
+			}
+
+			//timestep
+			ticks = (float)SDL_GetTicks() / 1000.0f;
+			elapsed = ticks - lastFrameTicks;
+			lastFrameTicks = ticks;
+
+			fixedElapsed = elapsed;
+			if (fixedElapsed > FIXED_TIMESTEP * MAX_TIMESTEPS) {
+				fixedElapsed = FIXED_TIMESTEP * MAX_TIMESTEPS;
+			}
+
+			option.update(&program, m_x, m_y);
+
+			glClear(GL_COLOR_BUFFER_BIT);
+			option.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+
 			break;
 
 		default:

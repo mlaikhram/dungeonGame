@@ -11,7 +11,7 @@ class MenuOption : public Text {
 public:
 	MenuOption(std::string phrase, Vector3 position, const char *spriteSheetName, int numx, int numy, float minSize, float maxSize, int alignment = CENTERED, float spacing = 0.4f);
 	bool pointCollision(float mousex, float mousey);
-	void update(ShaderProgram *program, float mousex, float mouesy);
+	virtual void update(ShaderProgram *program, float mousex, float mousey);
 	void reset();
 
 private:
