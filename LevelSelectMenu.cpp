@@ -50,6 +50,7 @@ int LevelSelectMenu::update(ShaderProgram *program, float time, float mousex, fl
 		case -1: // anytime the user hovers but doesn't click
 			break;
 		case 0: // back
+			menuScreens[activeScreen].reset();
 			return STATE_MAINMENU;
 			break;
 		default: // if they choose an option, store it and move to next screen
@@ -80,6 +81,7 @@ int LevelSelectMenu::update(ShaderProgram *program, float time, float mousex, fl
 			break;
 		default:
 			difficultySelected = mousedOption;
+			menuScreens[activeScreen].reset();
 			return STATE_DUNGEON;
 			break;
 		}

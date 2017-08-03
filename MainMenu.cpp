@@ -47,6 +47,7 @@ int MainMenu::update(ShaderProgram *program, float time, float mousex, float mou
 	case 0: // mainScreen
 		switch (mousedOption) {
 		case 0: // play
+			menuScreens[activeScreen].reset();
 			return STATE_LEVELSELECT;
 			break;
 		case 1: // switch to settingScreen

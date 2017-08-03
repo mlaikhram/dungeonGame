@@ -12,6 +12,7 @@
 #include "MainMenu.h"
 #include "LevelSelectMenu.h"
 #include "WanderAI.h"
+#include "ExpandTransition.h"
 
 #ifdef _WINDOWS
 #define RESOURCE_FOLDER ""
@@ -72,9 +73,10 @@ int main(int argc, char *argv[])
 
 	Dungeon *dungeon = nullptr;// (1, 1, 1, &(bosses.at(0)), &player);
 
-	//Entity cursor("tiles.png", 52, 20, 20, Vector3(), 0.05f * TILE_SIZE);
+	Entity cursor("tiles.png", 52, 20, 20, Vector3(), 0.0f);
 	Text t("hello", Vector3(0.0f, 1.6f, 0.0f), "letters.png", 16, 16, 0.2f, CENTERED);
 	DetailedOption option("Hover for more!", Vector3(), "here's more stuff", Vector3(0.0f, -0.5f, 0.0f), "letters.png", 16, 16, 0.2f);
+	ExpandTransition trans(&player, cursor, 0.1f * 7.2f, 7.2f);
 
 	MainMenu mainMenu;
 	LevelSelectMenu levelSelectMenu;
@@ -99,30 +101,41 @@ int main(int argc, char *argv[])
 
 		switch (gameState) {
 		case STATE_MAINMENU:
-
-			nextState = mainMenu.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, m_x, m_y);
+			if (!trans.shrink(elapsed, lastFrameTicks, ticks, fixedElapsed)) {
+				nextState = mainMenu.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, m_x, m_y);
+			}
 			// draw
 			glClear(GL_COLOR_BUFFER_BIT);
 			mainMenu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			//cursor.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			t.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 
+			if (trans.active) trans.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+
 			if (nextState == -1) nextState = prevState;
 			if (nextState != gameState) {
+				trans.active = true;
+				if (trans.grow(elapsed, lastFrameTicks, ticks, fixedElapsed)) break;
 				prevState = gameState;
 				//case switch based on what the next gamestate will be
+				gameState = nextState;
 			}
 			break;
 
 		case STATE_LEVELSELECT:
-			
-			nextState = levelSelectMenu.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, m_x, m_y);
+			if (!trans.shrink(elapsed, lastFrameTicks, ticks, fixedElapsed)) {
+				nextState = levelSelectMenu.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, m_x, m_y);
+			}
 			// draw
 			glClear(GL_COLOR_BUFFER_BIT);
 			levelSelectMenu.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 
+			if (trans.active) trans.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+
 			if (nextState == -1) nextState = prevState;
 			if (nextState != gameState) {
+				trans.active = true;
+				if (trans.grow(elapsed, lastFrameTicks, ticks, fixedElapsed)) break;
 				prevState = gameState;
 				//case switch based on what the next gamestate will be
 				switch (nextState) {
@@ -133,12 +146,14 @@ int main(int argc, char *argv[])
 				default:
 					break;
 				}
+				gameState = nextState;
 			}
 			break;
 
 		case STATE_DUNGEON:
-
-			nextState = dungeon->pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, keys);
+			if (!trans.shrink(elapsed, lastFrameTicks, ticks, fixedElapsed)) {
+				nextState = dungeon->pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, keys);
+			}
 			// draw
 			glClear(GL_COLOR_BUFFER_BIT);
 			dungeon->draw(&program, projectionMatrix, modelMatrix, viewMatrix);
@@ -146,10 +161,16 @@ int main(int argc, char *argv[])
 			//glEnable(GL_BLEND);
 			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+			if (trans.active) trans.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+
 			if (nextState == -1) nextState = prevState;
 			if (nextState != gameState) {
+				trans.active = true;
+				if (trans.grow(elapsed, lastFrameTicks, ticks, fixedElapsed)) break;
 				prevState = gameState;
 				//case switch based on what the next gamestate will be
+
+				gameState = nextState;
 			}
 			break;
 
@@ -159,6 +180,8 @@ int main(int argc, char *argv[])
 			if (nextState != gameState) {
 				prevState = gameState;
 				//case switch based on what the next gamestate will be
+
+				gameState = nextState;
 			}
 			break;
 
@@ -195,12 +218,47 @@ int main(int argc, char *argv[])
 
 			break;
 
+		////////////////////////////////// USE THIS AS A TEMPLATE WHEN ADDING A GAME STATE //////////////////////////////////////////////////////////////////////
+		case STATE_EXAMPLE:
+			if (!trans.shrink(elapsed, lastFrameTicks, ticks, fixedElapsed)) {
+				//poll and update if you are not in a transition
+				//nextState = <game state>.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, m_x, m_y);
+			}
+			// draw
+			glClear(GL_COLOR_BUFFER_BIT);
+			//<game state>.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+
+			if (trans.active) trans.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+
+			//check what the next state is and how to react to it
+			if (nextState == -1) nextState = prevState;
+			if (nextState != gameState) {
+				trans.active = true;
+				if (trans.grow(elapsed, lastFrameTicks, ticks, fixedElapsed)) break;
+				prevState = gameState;
+
+				//case switch based on what the next gamestate will be
+				switch (nextState) {/*
+				case <some state>:
+					<stufF>
+					break;
+				case <some other state>:
+					<stuff>
+					break;
+				default:
+					break;
+				*/}
+				gameState = nextState;
+			}
+			break;
+		////////////////////////////////////// TEMPLATE ENDS HERE //////////////////////////////////////////////////////////////////////////////////////////////////
+
 		default:
 			done = true;
 			break;
 		}
 
-		gameState = nextState;
+		//gameState = nextState;
 		SDL_GL_SwapWindow(displayWindow);
 		
 	}

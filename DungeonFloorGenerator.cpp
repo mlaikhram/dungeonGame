@@ -248,7 +248,7 @@ DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, const
 	generateMap();
 	fixTileConnections();
 	findOpenTiles();
-	randomizeOpenTiles(int(mapSize * mapSize * 0.01));
+	randomizeOpenTiles(int(mapSize * mapSize * 0.05));
 	//spawn exit
 	//select random open tile
 	int index = (int)(rand() % openTiles.size());
