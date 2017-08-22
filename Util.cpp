@@ -86,3 +86,19 @@ void tileToWorldCoordinates(int gridX, int gridY, float &worldX, float &worldY, 
 float distance(Vector3 a, Vector3 b) {
 	return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
 }
+
+std::vector<std::string> parseText(std::string &text) {
+	std::vector<std::string> ans = std::vector<std::string>();
+	int begin = 0;
+	int end = 1;
+	while (end < text.size()) {
+		if (text[end] == '.') {
+			ans.push_back(text.substr(begin, end - begin));
+			begin = end + 1;
+			++end;
+		}
+		++end;
+	}
+	ans.push_back(text.substr(begin));
+	return ans;
+}

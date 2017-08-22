@@ -7,6 +7,8 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <SDL_image.h>
+#include <vector>
+#include <string>
 #include "ShaderProgram.h"
 
 #define FIXED_TIMESTEP 0.0166666f
@@ -69,5 +71,7 @@ void worldToTileCoordinates(float worldX, float worldY, int &gridX, int &gridY, 
 void tileToWorldCoordinates(int gridX, int gridY, float &worldX, float &worldY, int mapSize);
 
 float distance(Vector3 a, Vector3 b);
+
+std::vector<std::string> parseText(std::string &text);
 
 #endif MKL_UTIL
