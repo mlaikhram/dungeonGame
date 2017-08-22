@@ -87,9 +87,9 @@ int main(int argc, char *argv[])
 	//DetailedOption option("Hover for more!", Vector3(), sList, Vector3(0.0f, -0.5f, 0.0f), "letters.png", 16, 16, 0.2f, LEFT_JUST, LEFT_JUST);
 	ExpandTransition trans(&player, cursor, 0.1f * 7.2f, 7.2f);
 
-	Buff hc(0, "Heavy Cannon", "", 10, 0, 0, 5, 0, 10, 15, 25);
-	Buff sw(1, "Skilled Wizard", "", 0, 0, 20, 0, 25, 0, 0, 24);
-	Buff atk(2, "Attack Plus", "", 0, 0, 0, 0, 0, 5, 0, 1);
+	Buff hc(0, "Heavy Cannon", 10, 0, 0, 5, 0, 10, 15, 25);
+	Buff sw(1, "Skilled Wizard", 0, 0, 20, 0, 25, 0, 0, 24);
+	Buff atk(2, "Attack Plus", 0, 0, 0, 0, 0, 5, 0, 1);
 	DetailedOption option(hc, Vector3(), "letters.png", 16, 16, 0.1f);
 	DetailedOption option2(sw, Vector3(0, -1 * 0.1f, 0), "letters.png", 16, 16, 0.1f);
 	DetailedOption option3(atk, Vector3(0, -2 * 0.1f, 0), "letters.png", 16, 16, 0.1f);

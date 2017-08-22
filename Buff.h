@@ -5,13 +5,10 @@
 
 class Buff {
 public:
-	Buff(int id, std::string name, std::string description, int hp, int stamina, int mana, int blockPercent, int manaReduction, int attack, int defense, int unlockLevel);
-
-	//void format(DetailedOption &option);
+	Buff(int id, std::string name, int hp, int stamina, int mana, int blockPercent, int manaReduction, int attack, int defense, int unlockLevel);
 
 	int id;
 	std::string name;
-	std::string description;
 
 	int hp;
 	int stamina;
