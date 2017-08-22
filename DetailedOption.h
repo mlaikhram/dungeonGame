@@ -19,6 +19,8 @@ public:
 	DetailedOption(Buff &buff, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, int alignment = CENTERED, float spacing = 0.4f);
 	//passive
 	DetailedOption(Passive &passive, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, int alignment = CENTERED, float spacing = 0.4f);
+	//ability
+	DetailedOption(Ability &ability, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, int alignment = CENTERED, float spacing = 0.4f);
 
 	void setDetails(int index, std::string newtext);
 	void update(ShaderProgram *program, float mousex, float mousey);

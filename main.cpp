@@ -93,11 +93,16 @@ int main(int argc, char *argv[])
 
 	Passive je(0, "Jagged Edge", "Opposing player takes damage.any time they initiate combat.Damage is equal to 5% of your.defense", POST_DEF, "output.txt", 4);
 
-	DetailedOption option(hc, Vector3(), "letters.png", 16, 16, 0.1f);
-	DetailedOption option2(sw, Vector3(0, -1 * 0.1f, 0), "letters.png", 16, 16, 0.1f);
-	DetailedOption option3(atk, Vector3(0, -2 * 0.1f, 0), "letters.png", 16, 16, 0.1f);
+	Ability sc(0, "Shield Charge", "Charges at the enemy and.rams them with your shield", "output.txt", 50, 20, 1, 0, 45, 0, 10, STANCE_SHIELD);
 
-	DetailedOption option4(je, Vector3(0, -3 * 0.1f, 0), "letters.png", 16, 16, 0.1f);
+	int optionNum = 0;
+	DetailedOption option(hc, Vector3(0, -optionNum++ * 0.1f, 0), "letters.png", 16, 16, 0.1f);
+	DetailedOption option2(sw, Vector3(0, -optionNum++ * 0.1f, 0), "letters.png", 16, 16, 0.1f);
+	DetailedOption option3(atk, Vector3(0, -optionNum++ * 0.1f, 0), "letters.png", 16, 16, 0.1f);
+
+	DetailedOption option4(je, Vector3(0, -optionNum++ * 0.1f, 0), "letters.png", 16, 16, 0.1f);
+
+	DetailedOption option5(sc, Vector3(0, -optionNum++ * 0.1f, 0), "letters.png", 16, 16, 0.1f);
 	//end test stuff
 
 	MainMenu mainMenu;
@@ -237,12 +242,14 @@ int main(int argc, char *argv[])
 			option2.update(&program, m_x, m_y);
 			option3.update(&program, m_x, m_y);
 			option4.update(&program, m_x, m_y);
+			option5.update(&program, m_x, m_y);
 
 			glClear(GL_COLOR_BUFFER_BIT);
 			option.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			option2.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			option3.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 			option4.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+			option5.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 
 			break;
 
