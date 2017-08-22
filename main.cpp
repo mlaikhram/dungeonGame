@@ -13,6 +13,9 @@
 #include "LevelSelectMenu.h"
 #include "WanderAI.h"
 #include "ExpandTransition.h"
+#include "Buff.h"
+#include "Ability.h"
+#include "Passive.h"
 
 #ifdef _WINDOWS
 #define RESOURCE_FOLDER ""
@@ -73,10 +76,24 @@ int main(int argc, char *argv[])
 
 	Dungeon *dungeon = nullptr;// (1, 1, 1, &(bosses.at(0)), &player);
 
+	//test stuff
 	Entity cursor("tiles.png", 52, 20, 20, Vector3(), 0.0f);
 	Text t("hello", Vector3(0.0f, 1.6f, 0.0f), "letters.png", 16, 16, 0.2f, CENTERED);
-	DetailedOption option("Hover for more!", Vector3(), "here's more stuff", Vector3(0.0f, -0.5f, 0.0f), "letters.png", 16, 16, 0.2f);
+	std::vector<std::string> sList = std::vector<std::string>();
+	sList.push_back("hello");
+	sList.push_back("there");
+	sList.push_back("friend");
+
+	//DetailedOption option("Hover for more!", Vector3(), sList, Vector3(0.0f, -0.5f, 0.0f), "letters.png", 16, 16, 0.2f, LEFT_JUST, LEFT_JUST);
 	ExpandTransition trans(&player, cursor, 0.1f * 7.2f, 7.2f);
+
+	Buff hc(0, "Heavy Cannon", "", 10, 0, 0, 5, 0, 10, 15, 25);
+	Buff sw(1, "Skilled Wizard", "", 0, 0, 20, 0, 25, 0, 0, 24);
+	Buff atk(2, "Attack Plus", "", 0, 0, 0, 0, 0, 5, 0, 1);
+	DetailedOption option(hc, Vector3(), "letters.png", 16, 16, 0.1f);
+	DetailedOption option2(sw, Vector3(0, -1 * 0.1f, 0), "letters.png", 16, 16, 0.1f);
+	DetailedOption option3(atk, Vector3(0, -2 * 0.1f, 0), "letters.png", 16, 16, 0.1f);
+	//end test stuff
 
 	MainMenu mainMenu;
 	LevelSelectMenu levelSelectMenu;
@@ -212,9 +229,13 @@ int main(int argc, char *argv[])
 			}
 
 			option.update(&program, m_x, m_y);
+			option2.update(&program, m_x, m_y);
+			option3.update(&program, m_x, m_y);
 
 			glClear(GL_COLOR_BUFFER_BIT);
 			option.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+			option2.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+			option3.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 
 			break;
 
@@ -246,8 +267,8 @@ int main(int argc, char *argv[])
 					<stuff>
 					break;
 				default:
-					break;
-				*/}
+					break;*/
+				}
 				gameState = nextState;
 			}
 			break;

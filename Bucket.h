@@ -5,6 +5,7 @@
 #include "Ability.h"
 #include "Passive.h"
 #include "Buff.h"
+#include "DetailedOption.h"
 
 class Bucket {
 public:
@@ -21,6 +22,8 @@ private:
 	std::vector<Ability*> abilities;
 	std::vector<Passive*> passives;
 	std::vector<Buff*> buffs;
+
+	std::vector<DetailedOption> displayContents;
 };
 
 #endif MKL_BUCKET
