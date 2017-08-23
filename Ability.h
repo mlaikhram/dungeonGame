@@ -5,7 +5,10 @@
 
 class Ability {
 public:
-	Ability(int id, std::string name, std::string description, std::string filename, int attack, int speed, int repetitions, int hpCost, int staminaCost, int manaCost, int unlockLevel, int userStance = -1, int victimStance = -1);
+	Ability(int id, std::string name, std::string description, std::string filename, int attack, int speed, int repetitions, int hpCost, int staminaCost, int manaCost, int unlockLevel, int unlockSP, int userStance = -1, int victimStance = -1);
+	
+	bool operator<(const Ability &rhs) const;
+
 	~Ability();
 
 	int id;
@@ -24,6 +27,7 @@ public:
 	int manaCost;
 	
 	int unlockLevel;
+	int unlockSP;
 
 	//what stance to put the respective entity in after the ability is used (-1 if no stance change)
 	int userStance;

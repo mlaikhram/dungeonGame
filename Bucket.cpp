@@ -1,4 +1,4 @@
 #include "Bucket.h"
 
-Bucket::Bucket(int id, std::string name, std::vector<Ability*> abilities, std::vector<Passive*> passives, std::vector<Buff*> buffs, int currentSP) : 
-	id(id), name(name), abilities(abilities), passives(passives), buffs(buffs), currentSP(currentSP) {}
+Bucket::Bucket(int id, std::string name, int currentSP) : 
+	id(id), name(name), currentSP(currentSP), abilities(), passives(), buffs(), displayContents() {}

@@ -5,7 +5,9 @@
 
 class Buff {
 public:
-	Buff(int id, std::string name, int hp, int stamina, int mana, int blockPercent, int manaReduction, int attack, int defense, int unlockLevel);
+	Buff(int id, std::string name, int hp, int stamina, int mana, int blockPercent, int manaReduction, int attack, int defense, int unlockLevel, int unlockSP);
+
+	bool operator<(const Buff &rhs) const;
 
 	int id;
 	std::string name;
@@ -21,6 +23,7 @@ public:
 	int defense;
 
 	int unlockLevel;
+	int unlockSP;
 
 };
 

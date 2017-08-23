@@ -62,6 +62,14 @@ public:
 	obj2 y;
 };
 
+template<class comparable>
+struct PointerComp {
+	bool operator() (const comparable *lhs, const comparable *rhs) const
+	{
+		return *lhs < *rhs;
+	}
+};
+
 GLuint LoadTexture(const char *image_path);
 
 void DrawSpriteSheetSprite(ShaderProgram *program, int index, int spriteCountX, int spriteCountY, GLuint textureID, float tileSize);
