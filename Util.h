@@ -15,6 +15,7 @@
 #define MAX_TIMESTEPS 6
 #define TILE_SIZE 0.5f
 #define PI 3.141592653589793238462643383279f
+#define MAX_NAME_LENGTH 20
 
 enum alignment { LEFT_JUST, CENTERED, RIGHT_JUST };
 enum states { STATE_MAINMENU, STATE_LEVELSELECT, STATE_DUNGEON, STATE_ENCOUNTER, STATE_END, STATE_TEST, STATE_EXAMPLE };
@@ -83,5 +84,7 @@ void tileToWorldCoordinates(int gridX, int gridY, float &worldX, float &worldY, 
 float distance(Vector3 a, Vector3 b);
 
 std::vector<std::string> parseText(std::string &text);
+
+std::string padZeroes(int num, int maxDigits = 3);
 
 #endif MKL_UTIL

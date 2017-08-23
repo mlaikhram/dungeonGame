@@ -16,6 +16,7 @@
 #include "Buff.h"
 #include "Ability.h"
 #include "Passive.h"
+#include "Bucket.h"
 
 #ifdef _WINDOWS
 #define RESOURCE_FOLDER ""
@@ -95,14 +96,13 @@ int main(int argc, char *argv[])
 
 	Ability sc(0, "Shield Charge", "Charges at the enemy and.rams them with your shield", "output.txt", 50, 20, 1, 0, 45, 0, 10, 30, STANCE_SHIELD);
 
-	int optionNum = 0;
-	DetailedOption option(hc, Vector3(0, -optionNum++ * 0.1f, 0), "letters.png", 16, 16, 0.1f);
-	DetailedOption option2(sw, Vector3(0, -optionNum++ * 0.1f, 0), "letters.png", 16, 16, 0.1f);
-	DetailedOption option3(atk, Vector3(0, -optionNum++ * 0.1f, 0), "letters.png", 16, 16, 0.1f);
+	Bucket b(0, "Noob");
 
-	DetailedOption option4(je, Vector3(0, -optionNum++ * 0.1f, 0), "letters.png", 16, 16, 0.1f);
-
-	DetailedOption option5(sc, Vector3(0, -optionNum++ * 0.1f, 0), "letters.png", 16, 16, 0.1f);
+	b.add(hc);
+	b.add(sw);
+	b.add(atk);
+	b.add(je);
+	b.add(sc);
 	//end test stuff
 
 	MainMenu mainMenu;
@@ -238,18 +238,10 @@ int main(int argc, char *argv[])
 				fixedElapsed = FIXED_TIMESTEP * MAX_TIMESTEPS;
 			}
 
-			option.update(&program, m_x, m_y);
-			option2.update(&program, m_x, m_y);
-			option3.update(&program, m_x, m_y);
-			option4.update(&program, m_x, m_y);
-			option5.update(&program, m_x, m_y);
+			b.update(&program, m_x, m_y);
 
 			glClear(GL_COLOR_BUFFER_BIT);
-			option.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-			option2.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-			option3.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-			option4.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
-			option5.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+			b.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 
 			break;
 

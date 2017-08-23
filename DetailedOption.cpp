@@ -12,10 +12,10 @@ DetailedOption::DetailedOption(std::string phrase, Vector3 position, std::vector
 		details.push_back(Text(detailList[i], Vector3(detailPos.x, detailPos.y + (tileSize - spacing) * i, detailPos.z), spriteSheetName, numx, numy, tileSize, detailedAlign, spacing));
 }
 
-DetailedOption::DetailedOption(Buff &buff, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, int alignment, float spacing) : 
+DetailedOption::DetailedOption(Buff &buff, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, bool showLevel, int alignment, float spacing) :
 	MenuOption(buff.name, position, spriteSheetName, numx, numy, tileSize, tileSize, alignment, spacing), details(), displayDetails(false) {
 	int lineNum = 0;
-	float x = position.x + ((1 - alignment / 2.0) * 20) * (tileSize * (1 - spacing)) + tileSize;
+	float x = position.x + ((1 - alignment / 2.0) * MAX_NAME_LENGTH) * (tileSize * (1 - spacing)) + tileSize;
 	if (buff.hp > 0) details.push_back(Text("hp +" + std::to_string(buff.hp), Vector3(x, position.y - (lineNum++ * (tileSize * (1 - spacing) * 1.5)), 0.0), spriteSheetName, numx, numy, tileSize, LEFT_JUST));
 	if (buff.stamina > 0) details.push_back(Text("stamina +" + std::to_string(buff.stamina), Vector3(x, position.y - (lineNum++ * (tileSize * (1 - spacing) * 1.5)), 0.0), spriteSheetName, numx, numy, tileSize, LEFT_JUST));
 	if (buff.mana > 0) details.push_back(Text("mana +" + std::to_string(buff.mana), Vector3(x, position.y - (lineNum++ * (tileSize * (1 - spacing) * 1.5)), 0.0), spriteSheetName, numx, numy, tileSize, LEFT_JUST));
@@ -24,24 +24,26 @@ DetailedOption::DetailedOption(Buff &buff, Vector3 position, const char *spriteS
 	if (buff.blockPercent > 0) details.push_back(Text("block +" + std::to_string(buff.blockPercent) + "%", Vector3(x, position.y - (lineNum++ * (tileSize * (1 - spacing) * 1.5)), 0.0), spriteSheetName, numx, numy, tileSize, LEFT_JUST));
 	if (buff.manaReduction > 0) details.push_back(Text("mana cost -" + std::to_string(buff.manaReduction) + "%", Vector3(x, position.y - (lineNum++ * (tileSize * (1 - spacing) * 1.5)), 0.0), spriteSheetName, numx, numy, tileSize, LEFT_JUST));
 	
-	details.push_back(Text("Usable at level " + std::to_string(buff.unlockLevel), Vector3(x, position.y - (lineNum++ * (tileSize * (1 - spacing) * 1.5)), 0.0), spriteSheetName, numx, numy, tileSize, LEFT_JUST));
+	if (showLevel)
+		details.push_back(Text("Usable at level " + std::to_string(buff.unlockLevel), Vector3(x, position.y - (lineNum++ * (tileSize * (1 - spacing) * 1.5)), 0.0), spriteSheetName, numx, numy, tileSize, LEFT_JUST));
 }
 
-DetailedOption::DetailedOption(Passive &passive, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, int alignment, float spacing) : 
+DetailedOption::DetailedOption(Passive &passive, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, bool showLevel, int alignment, float spacing) :
 	MenuOption(passive.name, position, spriteSheetName, numx, numy, tileSize, tileSize, alignment, spacing), details(), displayDetails(false) {
 	int lineNum = 0;
-	float x = position.x + ((1 - alignment / 2.0) * 20) * (tileSize * (1 - spacing)) + tileSize;
+	float x = position.x + ((1 - alignment / 2.0) * MAX_NAME_LENGTH) * (tileSize * (1 - spacing)) + tileSize;
 	std::vector<std::string> detailList = parseText(passive.description);
 	for (int i = 0; i < detailList.size(); ++i)
 		details.push_back(Text(detailList[i], Vector3(x, position.y - (lineNum++ * (tileSize * (1 - spacing) * 1.5)), 0.0), spriteSheetName, numx, numy, tileSize, LEFT_JUST));
 
-	details.push_back(Text("Usable at level " + std::to_string(passive.unlockLevel), Vector3(x, position.y - (lineNum++ * (tileSize * (1 - spacing) * 1.5)), 0.0), spriteSheetName, numx, numy, tileSize, LEFT_JUST));
+	if (showLevel)
+		details.push_back(Text("Usable at level " + std::to_string(passive.unlockLevel), Vector3(x, position.y - (lineNum++ * (tileSize * (1 - spacing) * 1.5)), 0.0), spriteSheetName, numx, numy, tileSize, LEFT_JUST));
 }
 
-DetailedOption::DetailedOption(Ability &ability, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, int alignment, float spacing) :
+DetailedOption::DetailedOption(Ability &ability, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, bool showLevel, int alignment, float spacing) :
 	MenuOption(ability.name, position, spriteSheetName, numx, numy, tileSize, tileSize, alignment, spacing), details(), displayDetails(false) {
 	int lineNum = 0;
-	float x = position.x + ((1 - alignment / 2.0) * 20) * (tileSize * (1 - spacing)) + tileSize;
+	float x = position.x + ((1 - alignment / 2.0) * MAX_NAME_LENGTH) * (tileSize * (1 - spacing)) + tileSize;
 	details.push_back(Text("attack: " + std::to_string(ability.attack) + " speed: " + std::to_string(ability.speed), Vector3(x, position.y - (lineNum++ * (tileSize * (1 - spacing) * 1.5)), 0.0), spriteSheetName, numx, numy, tileSize, LEFT_JUST));
 	
 	std::string cost = "cost:";
@@ -74,12 +76,29 @@ DetailedOption::DetailedOption(Ability &ability, Vector3 position, const char *s
 	for (int i = 0; i < detailList.size(); ++i)
 		details.push_back(Text(detailList[i], Vector3(x, position.y - (lineNum++ * (tileSize * (1 - spacing) * 1.5)), 0.0), spriteSheetName, numx, numy, tileSize, LEFT_JUST));
 
-	details.push_back(Text("Usable at level " + std::to_string(ability.unlockLevel), Vector3(x, position.y - (lineNum++ * (tileSize * (1 - spacing) * 1.5)), 0.0), spriteSheetName, numx, numy, tileSize, LEFT_JUST));
+	if (showLevel)
+		details.push_back(Text("Usable at level " + std::to_string(ability.unlockLevel), Vector3(x, position.y - (lineNum++ * (tileSize * (1 - spacing) * 1.5)), 0.0), spriteSheetName, numx, numy, tileSize, LEFT_JUST));
 }
 
 
 void DetailedOption::setDetails(int index, std::string newtext) {
 	details[index].setText(newtext);
+}
+
+void DetailedOption::setX(float x) {
+	float diff = position.x - x;
+	position.x = x;
+	for (Text &t : details) {
+		t.position.x -= diff;
+	}
+}
+
+void DetailedOption::setY(float y) {
+	float diff = position.y - y;
+	position.y = y;
+	for (Text &t : details) {
+		t.position.y -= diff;
+	}
 }
 
 void DetailedOption::update(ShaderProgram *program, float mousex, float mousey) {

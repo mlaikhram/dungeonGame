@@ -16,13 +16,16 @@ public:
 	//multiple lines of text
 	DetailedOption(std::string phrase, Vector3 position, std::vector<std::string> detailList, Vector3 detailPos, const char *spriteSheetName, int numx, int numy, float size, int alignment = CENTERED, int detailedAlign = CENTERED, float spacing = 0.4f);
 	//buff
-	DetailedOption(Buff &buff, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, int alignment = CENTERED, float spacing = 0.4f);
+	DetailedOption(Buff &buff, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, bool showLevel = true, int alignment = CENTERED, float spacing = 0.4f);
 	//passive
-	DetailedOption(Passive &passive, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, int alignment = CENTERED, float spacing = 0.4f);
+	DetailedOption(Passive &passive, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, bool showLevel = true, int alignment = CENTERED, float spacing = 0.4f);
 	//ability
-	DetailedOption(Ability &ability, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, int alignment = CENTERED, float spacing = 0.4f);
+	DetailedOption(Ability &ability, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, bool showLevel = true, int alignment = CENTERED, float spacing = 0.4f);
 
 	void setDetails(int index, std::string newtext);
+	void setX(float x);
+	void setY(float y);
+
 	void update(ShaderProgram *program, float mousex, float mousey);
 	void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
 

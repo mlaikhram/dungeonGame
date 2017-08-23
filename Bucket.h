@@ -14,7 +14,14 @@ class Bucket {
 public:
 	Bucket(int id, std::string name, int currentSP = 0);
 
+	void add(Ability &ability);
+	void add(Passive &passive);
+	void add(Buff &buff);
 
+	int operator++();
+
+	void update(ShaderProgram *program, float mousex, float mousey);
+	void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
 
 private:
 	int id;

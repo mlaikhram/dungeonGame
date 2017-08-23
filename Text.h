@@ -10,15 +10,15 @@ public:
 	void setText(std::string newtext);
 	virtual void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
 
+	std::string text;
 	Vector3 position;
+	float tileSize;
+	float spacing;
 
 protected:
-	float tileSize;
-	std::string text;
 	GLuint spriteSheet;
 	int numx;
 	int numy;
-	float spacing;
 	int alignment;
 };
 

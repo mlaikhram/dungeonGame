@@ -102,3 +102,12 @@ std::vector<std::string> parseText(std::string &text) {
 	ans.push_back(text.substr(begin));
 	return ans;
 }
+
+std::string padZeroes(int num, int maxDigits) {
+	std::string ans = std::to_string(num);
+
+	while (ans.length() < maxDigits) {
+		ans = "0" + ans;
+	}
+	return ans;
+}
