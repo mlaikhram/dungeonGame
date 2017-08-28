@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
 
 	Ability sc(0, "Shield Charge", "Charges at the enemy and.rams them with your shield", "output.txt", 50, 20, 1, 0, 45, 0, 10, 30, STANCE_SHIELD);
 
-	Bucket b(0, "Noob");
+	Bucket b(0, "Noob", Vector3(), "letters.png", 16, 16, 0.1f);
 
 	b.add(hc);
 	b.add(sw);
@@ -114,9 +114,9 @@ int main(int argc, char *argv[])
 	int nextState = STATE_MAINMENU;
 
 	//TESTING (UNCOMMENT IF NOT TESTING)
-	prevState = STATE_TEST;
-	gameState = STATE_TEST;
-	nextState = STATE_TEST;
+	//prevState = STATE_TEST;
+	//gameState = STATE_TEST;
+	//nextState = STATE_TEST;
 	//TESTING (UNCOMMENT IF NOT TESTING)
 
 	SDL_Event event;

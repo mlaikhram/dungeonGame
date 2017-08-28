@@ -9,6 +9,7 @@
 #include <SDL_image.h>
 #include <vector>
 #include <string>
+//#include "Text.h"
 #include "ShaderProgram.h"
 
 #define FIXED_TIMESTEP 0.0166666f
@@ -27,6 +28,7 @@ enum passiveTiming { PRE_ATK, POST_ATK, PRE_DEF, POST_DEF, END };
 enum stance {STANCE_COMBAT, STANCE_SHIELD, STANCE_AGILE, STANCE_MEDITATE, STANCE_STUN};
 
 class DungeonFloor;
+class Text;
 
 class Vector3 {
 public:
@@ -68,6 +70,14 @@ struct PointerComp {
 	bool operator() (const comparable *lhs, const comparable *rhs) const
 	{
 		return *lhs < *rhs;
+	}
+};
+
+template<class comparable>
+struct TextIntComp {
+	bool operator() (const Text &lhs, const Text &rhs) const
+	{
+		return atoi(lhs.text) < atoi(rhs.text);
 	}
 };
 

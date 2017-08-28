@@ -1,21 +1,24 @@
 #include "Bucket.h"
 
-Bucket::Bucket(int id, std::string name, int currentSP) : 
-	id(id), name(name), currentSP(currentSP), abilities(), passives(), buffs(), displayContents() {}
+Bucket::Bucket(int id, std::string name, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, int currentSP, int alignment, float spacing) :
+	id(id), name(name), position(position), spriteSheetName(spriteSheetName), numx(numx), numy(numy), tileSize(tileSize), currentSP(currentSP), alignment(alignment), spacing(spacing), abilities(), passives(), buffs(), displayContents() {
+	// Load the spritesheet
+	//spriteSheet = LoadTexture(spriteSheetName);
+}
 
 void Bucket::add(Ability &ability) {
 	abilities.insert(&ability);
-	displayContents.insert(std::pair<int, DetailedOption>(ability.unlockSP, DetailedOption(ability, Vector3(), "letters.png", 16, 16, 0.1f)));
+	displayContents.insert(std::pair<int, DetailedOption>(ability.unlockSP, DetailedOption(ability, Vector3(), spriteSheetName.c_str(), numx, numy, tileSize, true, alignment, spacing)));
 }
 
 void Bucket::add(Passive &passive) {
 	passives.insert(&passive);
-	displayContents.insert(std::pair<int, DetailedOption>(passive.unlockSP, DetailedOption(passive, Vector3(), "letters.png", 16, 16, 0.1f)));
+	displayContents.insert(std::pair<int, DetailedOption>(passive.unlockSP, DetailedOption(passive, Vector3(), spriteSheetName.c_str(), numx, numy, tileSize, true, alignment, spacing)));
 }
 
 void Bucket::add(Buff &buff) {
 	buffs.insert(&buff);
-	displayContents.insert(std::pair<int, DetailedOption>(buff.unlockSP, DetailedOption(buff, Vector3(), "letters.png", 16, 16, 0.1f)));
+	displayContents.insert(std::pair<int, DetailedOption>(buff.unlockSP, DetailedOption(buff, Vector3(), spriteSheetName.c_str(), numx, numy, tileSize, true, alignment, spacing)));
 }
 
 int Bucket::operator++() {

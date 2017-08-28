@@ -12,7 +12,7 @@
 
 class Bucket {
 public:
-	Bucket(int id, std::string name, int currentSP = 0);
+	Bucket(int id, std::string name, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, int currentSP = 0, int alignment = CENTERED, float spacing = 0.4f);
 
 	void add(Ability &ability);
 	void add(Passive &passive);
@@ -34,6 +34,15 @@ private:
 	std::set<Buff*,PointerComp<Buff>> buffs;
 
 	std::map<int,DetailedOption> displayContents;
+
+	Vector3 position;
+	float tileSize;
+	float spacing;
+	const std::string spriteSheetName;
+	//GLuint spriteSheet;
+	int numx;
+	int numy;
+	int alignment;
 };
 
 #endif MKL_BUCKET
