@@ -4,6 +4,12 @@
 
 #include "Util.h"
 #include "DungeonFloor.h"
+#include "Text.h"
+
+bool TextIntComp::operator() (const Text &lhs, const Text &rhs) const
+{
+	return atoi(lhs.text.c_str()) < atoi(rhs.text.c_str());
+}
 
 GLuint LoadTexture(const char *image_path)
 {

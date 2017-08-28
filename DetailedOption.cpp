@@ -15,7 +15,7 @@ DetailedOption::DetailedOption(std::string phrase, Vector3 position, std::vector
 DetailedOption::DetailedOption(Buff &buff, Vector3 position, const char *spriteSheetName, int numx, int numy, float tileSize, bool showLevel, int alignment, float spacing) :
 	MenuOption(buff.name, position, spriteSheetName, numx, numy, tileSize, tileSize, alignment, spacing), details(), displayDetails(false) {
 	int lineNum = 0;
-	float x = position.x + ((1 - alignment / 2.0) * MAX_NAME_LENGTH) * (tileSize * (1 - spacing)) + tileSize;
+	float x = position.x + ((1 - alignment / 2.0) * MAX_NAME_LENGTH) * (tileSize * (1.0 - spacing)) + tileSize;
 	if (buff.hp > 0) details.push_back(Text("hp +" + std::to_string(buff.hp), Vector3(x, position.y - (lineNum++ * (tileSize * (1 - spacing) * 1.5)), 0.0), spriteSheetName, numx, numy, tileSize, LEFT_JUST));
 	if (buff.stamina > 0) details.push_back(Text("stamina +" + std::to_string(buff.stamina), Vector3(x, position.y - (lineNum++ * (tileSize * (1 - spacing) * 1.5)), 0.0), spriteSheetName, numx, numy, tileSize, LEFT_JUST));
 	if (buff.mana > 0) details.push_back(Text("mana +" + std::to_string(buff.mana), Vector3(x, position.y - (lineNum++ * (tileSize * (1 - spacing) * 1.5)), 0.0), spriteSheetName, numx, numy, tileSize, LEFT_JUST));

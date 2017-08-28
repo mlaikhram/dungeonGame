@@ -14,7 +14,7 @@ void Text::setText(std::string newText) {
 	text = newText;
 }
 
-void Text::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix) {
+void Text::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix) const {
 	//float width = (position.x + (lengthOfPhrase - 1) * tileSize * spacing + tileSize / 2) - (position.x - tileSize / 2);
 	float width = text.length() * (tileSize - spacing * tileSize) - tileSize / 2;
 

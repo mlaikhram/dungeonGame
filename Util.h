@@ -73,12 +73,8 @@ struct PointerComp {
 	}
 };
 
-template<class comparable>
 struct TextIntComp {
-	bool operator() (const Text &lhs, const Text &rhs) const
-	{
-		return atoi(lhs.text) < atoi(rhs.text);
-	}
+	bool operator() (const Text &lhs, const Text &rhs) const;
 };
 
 GLuint LoadTexture(const char *image_path);

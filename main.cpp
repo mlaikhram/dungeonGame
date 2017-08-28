@@ -89,14 +89,16 @@ int main(int argc, char *argv[])
 	ExpandTransition trans(&player, cursor, 0.1f * 7.2f, 7.2f);
 
 	Buff hc(0, "Heavy Cannon", 10, 0, 0, 5, 0, 10, 15, 25, 50);
-	Buff sw(1, "Skilled Wizard", 0, 0, 20, 0, 25, 0, 0, 24, 45);
+	Buff sw(1, "Skilled Wizard567890", 0, 0, 20, 0, 25, 0, 0, 24, 45);
 	Buff atk(2, "Attack Plus", 0, 0, 0, 0, 0, 5, 0, 1, 5);
 
 	Passive je(0, "Jagged Edge", "Opposing player takes damage.any time they initiate combat.Damage is equal to 5% of your.defense", POST_DEF, "output.txt", 4, 15);
 
 	Ability sc(0, "Shield Charge", "Charges at the enemy and.rams them with your shield", "output.txt", 50, 20, 1, 0, 45, 0, 10, 30, STANCE_SHIELD);
 
-	Bucket b(0, "Noob", Vector3(), "letters.png", 16, 16, 0.1f);
+	Bucket b(0, "Noob", Vector3(), "letters.png", 16, 16, 0.1f, 0);
+	++b;
+	++b;
 
 	b.add(hc);
 	b.add(sw);

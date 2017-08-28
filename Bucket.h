@@ -26,14 +26,15 @@ public:
 private:
 	int id;
 	std::string name;
+	Text displayName;
 
 	int currentSP;
 
-	std::set<Ability*,PointerComp<Ability>> abilities;
-	std::set<Passive*,PointerComp<Passive>> passives;
-	std::set<Buff*,PointerComp<Buff>> buffs;
+	std::set<Ability*, PointerComp<Ability>> abilities;
+	std::set<Passive*, PointerComp<Passive>> passives;
+	std::set<Buff*, PointerComp<Buff>> buffs;
 
-	std::map<int,DetailedOption> displayContents;
+	std::map<Text, DetailedOption, TextIntComp> displayContents;
 
 	Vector3 position;
 	float tileSize;
