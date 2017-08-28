@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
 
 	Ability sc(0, "Shield Charge", "Charges at the enemy and.rams them with your shield", "output.txt", 50, 20, 1, 0, 45, 0, 10, 30, STANCE_SHIELD);
 
-	Bucket b(0, "Noob", Vector3(), "letters.png", 16, 16, 0.1f, 0);
+	Bucket b(0, "Noob", Vector3(0.4, -1.0, 0.0), "letters.png", 16, 16, 0.1f, 0);
 	++b;
 	++b;
 

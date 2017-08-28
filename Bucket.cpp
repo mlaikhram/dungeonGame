@@ -51,8 +51,8 @@ void Bucket::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &mode
 		(it->first).position.y = position.y + itemNum * (it->second).tileSize;
 		(it->first).draw(program, projectionMatrix, modelMatrix, viewMatrix);
 
-		(it->second).setX(0.0f);
-		(it->second).setY(itemNum++ * (it->second).tileSize);
+		(it->second).setX(position.x);
+		(it->second).setY(position.y + itemNum++ * (it->second).tileSize);
 		(it->second).draw(program, projectionMatrix, modelMatrix, viewMatrix);
 	}
 }
