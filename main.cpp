@@ -130,7 +130,8 @@ int main(int argc, char *argv[])
 
 		switch (gameState) {
 		case STATE_MAINMENU:
-			if (!trans.shrink(elapsed, lastFrameTicks, ticks, fixedElapsed)) {
+			if (trans.active && !trans.growing) trans.shrink(elapsed, lastFrameTicks, ticks, fixedElapsed);
+			else if (!trans.active) {
 				nextState = mainMenu.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, m_x, m_y);
 			}
 			// draw
@@ -143,8 +144,10 @@ int main(int argc, char *argv[])
 
 			if (nextState == -1) nextState = prevState;
 			if (nextState != gameState) {
-				trans.active = true;
-				if (trans.grow(elapsed, lastFrameTicks, ticks, fixedElapsed)) break;
+				if (trans.growing) {
+					trans.grow(elapsed, lastFrameTicks, ticks, fixedElapsed);
+					break;
+				}
 				prevState = gameState;
 				//case switch based on what the next gamestate will be
 				gameState = nextState;
@@ -152,7 +155,8 @@ int main(int argc, char *argv[])
 			break;
 
 		case STATE_LEVELSELECT:
-			if (!trans.shrink(elapsed, lastFrameTicks, ticks, fixedElapsed)) {
+			if (trans.active && !trans.growing) trans.shrink(elapsed, lastFrameTicks, ticks, fixedElapsed);
+			else if (!trans.active) {
 				nextState = levelSelectMenu.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, m_x, m_y);
 			}
 			// draw
@@ -163,8 +167,10 @@ int main(int argc, char *argv[])
 
 			if (nextState == -1) nextState = prevState;
 			if (nextState != gameState) {
-				trans.active = true;
-				if (trans.grow(elapsed, lastFrameTicks, ticks, fixedElapsed)) break;
+				if (trans.growing) {
+					trans.grow(elapsed, lastFrameTicks, ticks, fixedElapsed);
+					break;
+				}
 				prevState = gameState;
 				//case switch based on what the next gamestate will be
 				switch (nextState) {
@@ -180,7 +186,8 @@ int main(int argc, char *argv[])
 			break;
 
 		case STATE_DUNGEON:
-			if (!trans.shrink(elapsed, lastFrameTicks, ticks, fixedElapsed)) {
+			if (trans.active && !trans.growing) trans.shrink(elapsed, lastFrameTicks, ticks, fixedElapsed);
+			else if (!trans.active) {
 				nextState = dungeon->pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, keys);
 			}
 			// draw
@@ -194,8 +201,10 @@ int main(int argc, char *argv[])
 
 			if (nextState == -1) nextState = prevState;
 			if (nextState != gameState) {
-				trans.active = true;
-				if (trans.grow(elapsed, lastFrameTicks, ticks, fixedElapsed)) break;
+				if (trans.growing) {
+					trans.grow(elapsed, lastFrameTicks, ticks, fixedElapsed);
+					break;
+				}
 				prevState = gameState;
 				//case switch based on what the next gamestate will be
 
@@ -249,7 +258,8 @@ int main(int argc, char *argv[])
 
 		////////////////////////////////// USE THIS AS A TEMPLATE WHEN ADDING A GAME STATE //////////////////////////////////////////////////////////////////////
 		case STATE_EXAMPLE:
-			if (!trans.shrink(elapsed, lastFrameTicks, ticks, fixedElapsed)) {
+			if (trans.active && !trans.growing) trans.shrink(elapsed, lastFrameTicks, ticks, fixedElapsed);
+			else if (!trans.active) {
 				//poll and update if you are not in a transition
 				//nextState = <game state>.pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, m_x, m_y);
 			}
@@ -263,7 +273,10 @@ int main(int argc, char *argv[])
 			if (nextState == -1) nextState = prevState;
 			if (nextState != gameState) {
 				trans.active = true;
-				if (trans.grow(elapsed, lastFrameTicks, ticks, fixedElapsed)) break;
+				if (trans.growing) {
+					trans.grow(elapsed, lastFrameTicks, ticks, fixedElapsed);
+					break;
+				}
 				prevState = gameState;
 
 				//case switch based on what the next gamestate will be

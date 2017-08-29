@@ -6,13 +6,21 @@ void ExpandTransition::recenter() {
 	expander.position = player->position;
 }
 
-bool ExpandTransition::grow(float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed) {
-	if (!active || expander.size >= maxSize) {
+void ExpandTransition::grow(float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed) {
+	/*if (!active || expander.size >= maxSize) {
 		expander.size = maxSize;
 		growing = false;
 		return false;
 	}
-	if (!growing) return true;
+	if (!growing) return true;*/
+
+	if (expander.size >= maxSize) {
+		growing = false;
+		return;
+	}
+
+	active = true;
+	growing = true;
 
 	recenter();
 
@@ -29,19 +37,26 @@ bool ExpandTransition::grow(float &elapsed, float &lastFrameTicks, float &ticks,
 		fixedElapsed -= FIXED_TIMESTEP;
 		expander.size += growthRate;
 	}*/
-	expander.size += growthRate;// *fixedElapsed;
-
-	return true;
+	expander.size += growthRate;// * fixedElapsed;
 }
 
-bool ExpandTransition::shrink(float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed) {
-	if (!active || expander.size <= 0.0f) {
+void ExpandTransition::shrink(float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed) {
+	/*if (!active || expander.size <= 0.0f) {
 		expander.size = 0.0f;
 		growing = true;
 		active = false;
 		return false;
 	}
-	if (growing) return true;
+	if (growing) return true;*/
+
+	if (expander.size <= 0.0f) {
+		active = false;
+		growing = true;
+		return;
+	}
+
+	active = true;
+	growing = false;
 
 	recenter();
 
@@ -59,8 +74,6 @@ bool ExpandTransition::shrink(float &elapsed, float &lastFrameTicks, float &tick
 	expander.size += growthRate;
 	}*/
 	expander.size -= growthRate;// * fixedElapsed;
-
-	return true;
 }
 
 void ExpandTransition::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix) {

@@ -9,9 +9,9 @@ public:
 	ExpandTransition(Entity *player, Entity expander, float growthRate = 0.1f, float maxSize = 8.0f);
 
 	//return false if reached max growth or inactive
-	virtual bool grow(float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed);
+	virtual void grow(float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed);
 	//return false if reached min shrink or inactive
-	virtual bool shrink(float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed);
+	virtual void shrink(float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed);
 
 	virtual void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
 
