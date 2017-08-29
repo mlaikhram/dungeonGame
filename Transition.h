@@ -6,12 +6,20 @@
 
 class Transition {
 public:
-	Transition(Entity *player) : active(false), growing(true), player(player) {}
+	Transition(Entity *player);
 
 	//return false if reached max growth or inactive
-	virtual void grow(float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed) = 0;
+	void grow(float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed);
 	//return false if reached min shrink or inactive
-	virtual void shrink(float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed) = 0;
+	void shrink(float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed);
+
+	//determines if the transition fully covers the screen / is completely invisible
+	virtual bool fullGrow() = 0;
+	virtual bool fullShrink() = 0;
+
+	//determines one incrememnt of grow/shrink
+	virtual void growStep(float &fixedElapsed) = 0;
+	virtual void shrinkStep(float &fixedElapsed) = 0;
 
 	virtual void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix) = 0;
 

@@ -8,10 +8,11 @@ class ExpandTransition : public Transition {
 public:
 	ExpandTransition(Entity *player, Entity expander, float growthRate = 0.1f, float maxSize = 8.0f);
 
-	//return false if reached max growth or inactive
-	virtual void grow(float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed);
-	//return false if reached min shrink or inactive
-	virtual void shrink(float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed);
+	virtual bool fullGrow();
+	virtual bool fullShrink();
+
+	virtual void growStep(float &fixedElapsed);
+	virtual void shrinkStep(float &fixedElapsed);
 
 	virtual void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
 
