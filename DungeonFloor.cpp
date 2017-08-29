@@ -393,7 +393,17 @@ void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix
 		}
 
 		//enemies
-		/*...*/
+		for (Enemy &enemy : enemies) {
+			worldToTileCoordinates(enemy.position.x, enemy.position.y, x, y, mapSize);
+			if (miniMap[y][x]) {
+				modelMatrix.identity();
+				modelMatrix.Translate(0.05f*enemy.position.x + player->position.x - 3.0f, 0.05f*enemy.position.y + player->position.y + 0.6f, 0.0f);
+				program->setModelMatrix(modelMatrix);
+				program->setProjectionMatrix(projectionMatrix);
+				program->setViewMatrix(viewMatrix);
+				DrawSpriteSheetSprite(program, enemym, numx, numy, miniMapSheet, 0.05f*tileSize);
+			}
+		}
 
 		//player
 		modelMatrix.identity();
