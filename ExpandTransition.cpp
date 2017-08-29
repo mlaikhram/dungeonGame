@@ -37,7 +37,7 @@ void ExpandTransition::grow(float &elapsed, float &lastFrameTicks, float &ticks,
 		fixedElapsed -= FIXED_TIMESTEP;
 		expander.size += growthRate;
 	}*/
-	expander.size += growthRate;// * fixedElapsed;
+	expander.size += growthRate * fixedElapsed;
 }
 
 void ExpandTransition::shrink(float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed) {
@@ -73,7 +73,7 @@ void ExpandTransition::shrink(float &elapsed, float &lastFrameTicks, float &tick
 	fixedElapsed -= FIXED_TIMESTEP;
 	expander.size += growthRate;
 	}*/
-	expander.size -= growthRate;// * fixedElapsed;
+	expander.size -= growthRate * fixedElapsed;
 }
 
 void ExpandTransition::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix) {

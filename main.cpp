@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
 	sList.push_back("friend");
 
 	//DetailedOption option("Hover for more!", Vector3(), sList, Vector3(0.0f, -0.5f, 0.0f), "letters.png", 16, 16, 0.2f, LEFT_JUST, LEFT_JUST);
-	ExpandTransition trans(&player, cursor, 0.1f * 7.2f, 7.2f);
+	ExpandTransition trans(&player, cursor, 25.0f, 7.2f);
 
 	Buff hc(0, "Heavy Cannon", 10, 0, 0, 5, 0, 10, 15, 25, 50);
 	Buff sw(1, "Skilled Wizard567890", 0, 0, 20, 0, 25, 0, 0, 24, 45);
