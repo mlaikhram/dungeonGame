@@ -22,8 +22,8 @@ enum alignment { LEFT_JUST, CENTERED, RIGHT_JUST };
 enum states { STATE_MAINMENU, STATE_LEVELSELECT, STATE_DUNGEON, STATE_ENCOUNTER, STATE_END, STATE_TEST, STATE_EXAMPLE };
 enum maptiles { WE, WEFS, WEFN, NS, NSFE, NSFW, NSWE, NSW, NSWFE, NSE,
 				NSEFW, SWE, SWEFN, NWE, NWEFS, NWFSE, NW, NEFSW, NE, SWFNE,
-				SW, SEFNW, SE, N, S, W, E, chestc, chesto, enter,
-				X, O1, O2, O3, O4, O5, playerm };
+				SW, SEFNW, SE, N, S, W, E, chestc, chesto, playerm,
+				enemym, enter, X, O1, O2, O3, O4, O5 };
 enum passiveTiming { PRE_ATK, POST_ATK, PRE_DEF, POST_DEF, END };
 enum stance {STANCE_COMBAT, STANCE_SHIELD, STANCE_AGILE, STANCE_MEDITATE, STANCE_STUN};
 
