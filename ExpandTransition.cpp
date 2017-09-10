@@ -1,6 +1,6 @@
 #include "ExpandTransition.h"
 
-ExpandTransition::ExpandTransition(Entity *player, Entity expander, float growthRate, float maxSize) : Transition(player), expander(expander), growthRate(growthRate), maxSize(maxSize) {}
+ExpandTransition::ExpandTransition(Player *player, Entity expander, float growthRate, float maxSize) : Transition(player), expander(expander), growthRate(growthRate), maxSize(maxSize) {}
 
 void ExpandTransition::recenter() {
 	expander.position = player->position;

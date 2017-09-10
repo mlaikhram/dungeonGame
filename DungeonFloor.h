@@ -10,12 +10,13 @@
 #include "Entity.h"
 #include "Chest.h"
 #include "Enemy.h"
+#include "Player.h"
 
 class Enemy;
 
 class DungeonFloor {
 public:
-	DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, const char *miniMapSheetName, int numx, int numy, Entity *player, std::vector<Chest> chests = std::vector<Chest>(), std::vector<Enemy> enemies = std::vector<Enemy>());
+	DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, const char *miniMapSheetName, int numx, int numy, Player *player, std::vector<Chest> chests = std::vector<Chest>(), std::vector<Enemy> enemies = std::vector<Enemy>());
 	~DungeonFloor();
 	bool testOutOfBounds(int gridX, int gridY);
 	bool floorTile(int x, int y);
@@ -42,7 +43,7 @@ private:
 	GLuint miniMapSheet;
 	int numx;
 	int numy;
-	Entity *player; //shallow
+	Player *player; //shallow
 	std::vector<Chest> chests;
 	std::vector<Enemy> enemies;
 	//int collectedMoney;

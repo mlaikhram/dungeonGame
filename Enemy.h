@@ -13,6 +13,7 @@ public:
 	Enemy(const Enemy &enemy);
 	~Enemy();
 	void update(ShaderProgram *program, float time, DungeonFloor *floor);
+
 private:
 	MoveAI *ai;
 	Entity *target; //shallow

@@ -4,10 +4,11 @@
 #include <set>
 #include "Util.h"
 #include "Entity.h"
+#include "Player.h"
 
 class DungeonFloorGenerator {
 public:
-	DungeonFloorGenerator(int mapSize, int minRoomSize, float tileSize, Entity *player, int maxTries = 10);
+	DungeonFloorGenerator(int mapSize, int minRoomSize, float tileSize, Player *player, int maxTries = 10);
 	~DungeonFloorGenerator();
 	//x: x pos of the top left FLOOR TILE
 	//y: y pos of the top left FLOOR TILE
@@ -31,7 +32,7 @@ private:
 	int minRoomSize;
 	float tileSize;
 	unsigned char **tileMap;
-	Entity *player; //shallow
+	Player *player; //shallow
 	int maxTries;
 	std::set<Pair<int, int>> openTiles;
 };

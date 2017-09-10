@@ -1,6 +1,6 @@
 #include "Transition.h"
 
-Transition::Transition(Entity *player) : active(false), growing(true), player(player) {}
+Transition::Transition(Player *player) : active(false), growing(true), player(player) {}
 
 void Transition::grow(float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed) {
 

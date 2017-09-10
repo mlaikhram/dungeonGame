@@ -1,7 +1,7 @@
 #include "Dungeon.h"
 #include "Util.h"
 
-Dungeon::Dungeon(int id, int floorCounter, int difficulty, std::vector<Enemy> *bosses, Entity *player) : id(id), floorCounter(floorCounter), difficulty(difficulty), bosses(bosses), 
+Dungeon::Dungeon(int id, int floorCounter, int difficulty, std::vector<Enemy> *bosses, Player *player) : id(id), floorCounter(floorCounter), difficulty(difficulty), bosses(bosses), 
 dfg(50, 5, TILE_SIZE, player), player(player), transition("tiles.png", 52, 20, 20, Vector3(), 0.0f), transitionPhase(-1), bossFloor(false), 
 floorCountHUD("FLOOR " + std::to_string(floorCounter), Vector3(player->position.x - 3.0f, player->position.y + 1.9f, 0.0f), "letters.png", 16, 16, 0.2f * TILE_SIZE, LEFT_JUST) {
 	std::string sheet = "tilemap_dungeon" + std::to_string(id) + ".png";

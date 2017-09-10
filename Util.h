@@ -17,6 +17,8 @@
 #define TILE_SIZE 0.5f
 #define PI 3.141592653589793238462643383279f
 #define MAX_NAME_LENGTH 20
+#define MAX_DUNGEON 1
+#define MAX_MATERIAL 1
 
 enum alignment { LEFT_JUST, CENTERED, RIGHT_JUST };
 enum states { STATE_MAINMENU, STATE_LEVELSELECT, STATE_DUNGEON, STATE_ENCOUNTER, STATE_END, STATE_TEST, STATE_EXAMPLE };
@@ -25,7 +27,8 @@ enum maptiles { WE, WEFS, WEFN, NS, NSFE, NSFW, NSWE, NSW, NSWFE, NSE,
 				SW, SEFNW, SE, N, S, W, E, chestc, chesto, playerm,
 				enemym, enter, X, O1, O2, O3, O4, O5 };
 enum passiveTiming { PRE_ATK, POST_ATK, PRE_DEF, POST_DEF, END };
-enum stance {STANCE_COMBAT, STANCE_SHIELD, STANCE_AGILE, STANCE_MEDITATE, STANCE_STUN};
+enum stance { STANCE_COMBAT, STANCE_SHIELD, STANCE_AGILE, STANCE_MEDITATE, STANCE_STUN };
+enum itemSlot { hand1, hand2, armor, spellbook, badge };
 
 class DungeonFloor;
 class Text;

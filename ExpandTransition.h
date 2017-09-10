@@ -3,10 +3,11 @@
 
 #include "Transition.h"
 #include "Entity.h"
+#include "Player.h"
 
 class ExpandTransition : public Transition {
 public:
-	ExpandTransition(Entity *player, Entity expander, float growthRate = 0.1f, float maxSize = 8.0f);
+	ExpandTransition(Player *player, Entity expander, float growthRate = 0.1f, float maxSize = 8.0f);
 
 	virtual bool fullGrow();
 	virtual bool fullShrink();

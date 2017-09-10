@@ -5,7 +5,7 @@
 #include "WanderAI.h"
 #include "ChaseAI.h"
 
-DungeonFloorGenerator::DungeonFloorGenerator(int mapSize, int minRoomSize, float tileSize, Entity *player, int maxTries) : 
+DungeonFloorGenerator::DungeonFloorGenerator(int mapSize, int minRoomSize, float tileSize, Player *player, int maxTries) : 
 	mapSize(mapSize), minRoomSize(minRoomSize), tileSize(tileSize), player(player), maxTries(maxTries) {
 	openTiles = std::set<Pair<int, int>>();
 

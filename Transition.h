@@ -2,11 +2,11 @@
 #define MKL_TRANSITION
 
 #include "Util.h"
-#include "Entity.h"
+#include "Player.h"
 
 class Transition {
 public:
-	Transition(Entity *player);
+	Transition(Player *player);
 
 	//return false if reached max growth or inactive
 	void grow(float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed);
@@ -30,7 +30,7 @@ protected:
 	//set coordinates of the transition relative to the player
 	virtual void recenter() = 0;
 	
-	Entity *player; //shallow
+	Player *player; //shallow
 
 };
 

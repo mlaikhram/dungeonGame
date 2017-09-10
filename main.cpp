@@ -5,6 +5,7 @@
 #include "DungeonFloorGenerator.h"
 #include "Dungeon.h"
 #include "Entity.h"
+#include "Player.h"
 #include "Text.h"
 #include "MenuOption.h"
 #include "DetailedOption.h"
@@ -68,7 +69,20 @@ int main(int argc, char *argv[])
 	//output file for debugging
 	std::ofstream ofs("output.txt");
 
-	Entity player("tiles.png", 52, 20, 20, Vector3(), 0.75 * TILE_SIZE);
+	//player construction
+	std::vector<int> maxFloor = { 1, 1 };
+	int **materials = new int*[MAX_DUNGEON + 1];
+	for (int i = 0; i < MAX_DUNGEON + 1; ++i) {
+		materials[i] = new int[MAX_MATERIAL];
+	}
+	for (int y = 0; y < MAX_DUNGEON + 1; ++y) {
+		for (int x = 0; x < MAX_MATERIAL; ++x) {
+			materials[y][x] = 0;
+		}
+	}
+	Player player(0, "Matt", "tiles.png", 52, 20, 20, Vector3(), maxFloor, materials, 0, 0.75 * TILE_SIZE);
+	//end
+
 	std::vector<std::vector<Enemy>> bosses(2);
 	for (int i = 0; i < 10; ++i) {
 		MoveAI *staticAI = new WanderAI(0.0f);

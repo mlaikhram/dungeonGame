@@ -4,19 +4,27 @@
 #include <string>
 #include <vector>
 #include "Util.h"
-#include "Buff.h"
 #include "Bucket.h"
 
 class Item {
 public:
-	Item(int id, std::string name, std::string description, std::string type, Buff baseStats, std::vector<Bucket*> buckets, int level = 1, int xp = 0, int sp = 0);
+	Item(int id, std::string name, std::string description, int type, int hp, int stamina, int mana, int blockPercent, int manaReduction, int attack, int defense, std::vector<Bucket*> buckets, int level = 1, int xp = 0, int sp = 0);
 
 private:
 	int id;
 	std::string name;
 	std::string description;
-	std::string type;
-	Buff baseStats;
+	int type;
+	
+	int hp;
+	int stamina;
+	int mana;
+
+	int blockPercent;
+	int manaReduction;
+
+	int attack;
+	int defense;
 
 	int level;
 	int xp;

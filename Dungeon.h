@@ -4,10 +4,11 @@
 #include "DungeonFloorGenerator.h"
 #include "DungeonFloor.h"
 #include "Text.h"
+#include "Player.h"
 
 class Dungeon {
 public:
-	Dungeon(int id, int floorCounter, int difficulty, std::vector<Enemy> *bosses, Entity *player);
+	Dungeon(int id, int floorCounter, int difficulty, std::vector<Enemy> *bosses, Player *player);
 	~Dungeon();
 	void nextFloor();
 	DungeonFloor* generateBossFloor(int index, std::string spriteSheetName);
@@ -26,7 +27,7 @@ private:
 	int transitionPhase;
 	DungeonFloorGenerator dfg;
 	DungeonFloor *currentFloor;
-	Entity *player; //shallow
+	Player *player; //shallow
 	//int collectedMoney;
 	Text floorCountHUD;
 	std::vector<Enemy> *bosses; //shallow
