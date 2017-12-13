@@ -227,9 +227,38 @@ int main(int argc, char *argv[])
 			break;
 
 		case STATE_ENCOUNTER:
+			if (trans.active && !trans.growing) trans.shrink(elapsed, lastFrameTicks, ticks, fixedElapsed);
+			else if (!trans.active) {
+				//nextState = encounter->pollAndUpdate(&program, elapsed, lastFrameTicks, ticks, fixedElapsed, event, keys);
+				while (SDL_PollEvent(&event)) {
+					if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE || event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
+						return STATE_END;
+					}
+					else if (event.type == SDL_MOUSEMOTION) {
+						m_x = (((float)event.motion.x / 1280) * 7.1f) - 3.55f;
+						m_y = (((float)(720 - event.motion.y) / 720) * 4.0f) - 2.0f;
+					}
+					else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
+						//else if (event.type == SDL_BUTTON_LEFT) {
+						/*mousedOption = menuScreens[activeScreen].mousedOption(m_x, m_y);*/
+					}
+				}
+			}
+			// draw
+			glClear(GL_COLOR_BUFFER_BIT);
+			//encounter->draw(&program, projectionMatrix, modelMatrix, viewMatrix);
+
+			//glEnable(GL_BLEND);
+			//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			if (trans.active) trans.draw(&program, projectionMatrix, modelMatrix, viewMatrix);
 
 			if (nextState == -1) nextState = prevState;
 			if (nextState != gameState) {
+				if (trans.growing) {
+					trans.grow(elapsed, lastFrameTicks, ticks, fixedElapsed);
+					break;
+				}
 				prevState = gameState;
 				//case switch based on what the next gamestate will be
 

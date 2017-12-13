@@ -3,6 +3,9 @@
 
 DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, const char *miniMapSheetName, int numx, int numy, Player *player, std::vector<Chest> chests, std::vector<Enemy> enemies) :
 	mapSize(mapSize), tileSize(tileSize), numx(numx), numy(numy), player(player), chests(chests), enemies(enemies) {
+
+	encountered = this->enemies.end();
+
 	tileMap = new unsigned char*[mapSize];
 	for (int i = 0; i < mapSize; ++i) {
 		tileMap[i] = new unsigned char[mapSize];
@@ -46,6 +49,14 @@ bool DungeonFloor::testOutOfBounds(int gridX, int gridY) {
 
 bool DungeonFloor::floorTile(int x, int y) {
 	return tileMap[y][x] == O1 || tileMap[y][x] == O2 || tileMap[y][x] == O3 || tileMap[y][x] == O4 || tileMap[y][x] == O5 || tileMap[y][x] == X || tileMap[y][x] == enter;
+}
+
+std::vector<Enemy>::iterator DungeonFloor::getEncountered() const {
+	return encountered;
+}
+
+bool DungeonFloor::isEncountered() const {
+	return encountered != enemies.end();
 }
 
 void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
@@ -303,9 +314,11 @@ void DungeonFloor::update(ShaderProgram *program, float time, int maxTries) {
 		mapCollision(enemy, program);
 		//enemy-player collision
 		while (player->collidesWith(enemy)) {
-			if (tries > maxTries) break;
+			/*if (tries > maxTries) break;
 			player->nudge(enemy, 0.5f);
-			++tries;
+			++tries;*/
+			encountered = enemies.begin() + i;
+			break;
 		}
 		//enemy-chest collision
 		for (int j = 0; j < chests.size(); ++j) {

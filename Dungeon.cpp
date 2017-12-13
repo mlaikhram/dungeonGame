@@ -81,10 +81,18 @@ DungeonFloor* Dungeon::generateBossFloor(int index, std::string spriteSheetName)
 	return floor;
 }
 
+std::vector<Enemy>::iterator Dungeon::getEncountered() const {
+	return currentFloor->getEncountered();
+}
+
 int Dungeon::update(ShaderProgram *program, float time) {
 	currentFloor->update(program, time);
 	floorCountHUD.position.x = player->position.x - 3.0f;
 	floorCountHUD.position.y = player->position.y + 1.9f;
+
+	if (currentFloor->isEncountered()) {
+		return STATE_ENCOUNTER;
+	}
 	return STATE_DUNGEON;
 }
 
@@ -169,7 +177,7 @@ int Dungeon::pollAndUpdate(ShaderProgram *program, float &elapsed, float &lastFr
 			fixedElapsed -= FIXED_TIMESTEP;
 			update(program, FIXED_TIMESTEP);
 		}
-		update(program, fixedElapsed);
+		return update(program, fixedElapsed);
 		break;
 	}
 	return STATE_DUNGEON;

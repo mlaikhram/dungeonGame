@@ -19,7 +19,9 @@ public:
 	DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, const char *miniMapSheetName, int numx, int numy, Player *player, std::vector<Chest> chests = std::vector<Chest>(), std::vector<Enemy> enemies = std::vector<Enemy>());
 	~DungeonFloor();
 	bool testOutOfBounds(int gridX, int gridY);
-	bool floorTile(int x, int y);
+	bool floorTile(int x, int y); 
+	std::vector<Enemy>::iterator getEncountered() const;
+	bool isEncountered() const;
 	void mapCollision(Entity &entity, ShaderProgram *program);
 	bool tileCollision(ShaderProgram *program, int index);
 	bool tileCollision(ShaderProgram *program, int x, int y);
@@ -46,6 +48,7 @@ private:
 	Player *player; //shallow
 	std::vector<Chest> chests;
 	std::vector<Enemy> enemies;
+	std::vector<Enemy>::iterator encountered;
 	//int collectedMoney;
 
 };
