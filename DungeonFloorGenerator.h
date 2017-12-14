@@ -25,7 +25,7 @@ public:
 	int countNearbyObstructions(int x, int y);
 	bool spawnEntity(Entity *entity, int radius = 0, int maxObstructions = 8);
 
-	DungeonFloor* generate(const char *spriteSheetName, const char *miniMapSheetName, int numx, int numy);
+	DungeonFloor*& generate(const char *spriteSheetName, const char *miniMapSheetName, int numx, int numy);
 
 private:
 	int mapSize;

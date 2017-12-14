@@ -1,7 +1,7 @@
 #include "Util.h"
 #include "DungeonFloor.h"
 
-DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, const char *miniMapSheetName, int numx, int numy, Player *player, std::vector<Chest> chests, std::vector<Enemy> enemies) :
+DungeonFloor::DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, const char *miniMapSheetName, int numx, int numy, Player *player, std::vector<Chest> &chests, std::list<Enemy> &enemies) :
 	mapSize(mapSize), tileSize(tileSize), numx(numx), numy(numy), player(player), chests(chests), enemies(enemies) {
 
 	encountered = this->enemies.end();
@@ -52,10 +52,23 @@ bool DungeonFloor::floorTile(int x, int y) {
 }
 
 void DungeonFloor::eliminateEncountered() {
+	std::ofstream ofs("outputmem.txt");
+	for (Enemy &e : enemies) {
+		ofs << e.getAI() << std::endl;
+	}
+
 	if (encountered != enemies.end()) {
 		enemies.erase(encountered);
 		encountered = enemies.end();
 	}
+
+	std::ofstream ofs2("outputmemafter.txt");
+	for (Enemy &e : enemies) {
+		ofs2 << e.getAI() << std::endl;
+	}
+
+	ofs.close();
+	ofs2.close();
 }
 
 void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
@@ -293,31 +306,33 @@ void DungeonFloor::update(ShaderProgram *program, float time, int maxTries) {
 		mapCollision(chests[i], program);
 	}
 	//enemy collisions
-	for (int i = 0; i < enemies.size(); ++i) {
-		Enemy &enemy = enemies[i];
-		enemy.update(program, time, this);
+	for (std::list<Enemy>::iterator i = enemies.begin(); i != enemies.end(); ++i) {
+		//Enemy &enemy = enemies[i];
+		i->update(program, time, this);
 		//enemy-map collision
-		mapCollision(enemy, program);
+		mapCollision(*i, program);
 		//enemy-player collision
-		if (player->collidesWith(enemy)) {
+		if (player->collidesWith(*i)) {
 			/*if (tries > maxTries) break;
 			player->nudge(enemy, 0.5f);
 			++tries;*/
-			encountered = enemies.begin() + i;
+			encountered = i;
 		}
 		//enemy-chest collision
 		for (int j = 0; j < chests.size(); ++j) {
-			while (enemy.collidesWith(chests[j])) {
+			while (i->collidesWith(chests[j])) {
 				if (tries > maxTries) break;
-				enemy.nudge(chests[j], 0.0f);
+				i->nudge(chests[j], 0.0f);
 				++tries;
 			}
 		}
 		//enemy-enemy collision
-		for (int j = i + 1; j < enemies.size(); ++j) {
-			while (enemy.collidesWith(enemies[j])) {
+		for (std::list<Enemy>::iterator j = i; j != enemies.end(); ++j) {
+			if (j == i) ++j;
+			if (j == enemies.end()) break;
+			while (i->collidesWith(*j)) {
 				if (tries > maxTries) break;
-				enemy.nudge(enemies[j], 0.5f);
+				i->nudge(*j, 0.5f);
 				++tries;
 			}
 		}
@@ -416,12 +431,36 @@ void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
+void DungeonFloor::add(Enemy &e) {
+	if (encountered == enemies.end()) {
+		enemies.push_back(e);
+		encountered = enemies.end();
+	}
+	else {
+		enemies.push_back(e);
+	}
+}
+
+void DungeonFloor::add(Chest &c) {
+	chests.push_back(c);
+}
+
+void DungeonFloor::updateTiles(unsigned char **t) {
+	for (int y = 0; y < mapSize; ++y) {
+		for (int x = 0; x < mapSize; ++x) {
+			tileMap[y][x] = t[y][x];
+			miniMap[y][x] = false;
+		}
+	}
+}
+
 bool DungeonFloor::isEncountered() const { return encountered != enemies.end(); }
-std::vector<Enemy>::iterator DungeonFloor::getEncountered() const { return encountered; }
+std::list<Enemy>::iterator DungeonFloor::getEncountered() const { return encountered; }
 int DungeonFloor::getMapSize() const { return mapSize; }
 float DungeonFloor::getTileSize() const { return tileSize; }
 unsigned char** DungeonFloor::getTileMap() const { return tileMap; }
 GLuint DungeonFloor::getSpriteSheet() const { return spriteSheet; }
 std::vector<Chest>& DungeonFloor::getChests() { return chests; }
+std::list<Enemy>& DungeonFloor::getEnemies() { return enemies; }
 
 void DungeonFloor::setSpriteSheet(const char* name) { spriteSheet = LoadTexture(name); }

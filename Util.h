@@ -8,6 +8,7 @@
 #include <SDL_opengl.h>
 #include <SDL_image.h>
 #include <vector>
+#include <list>
 #include <string>
 //#include "Text.h"
 #include "ShaderProgram.h"
@@ -19,6 +20,7 @@
 #define MAX_NAME_LENGTH 20
 #define MAX_DUNGEON 1
 #define MAX_MATERIAL 1
+
 
 enum alignment { LEFT_JUST, CENTERED, RIGHT_JUST };
 enum states { STATE_MAINMENU, STATE_LEVELSELECT, STATE_DUNGEON, STATE_ENCOUNTER, STATE_END, STATE_TEST, STATE_EXAMPLE };

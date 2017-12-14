@@ -25,7 +25,6 @@
 #define RESOURCE_FOLDER "dungeonGame.app/Contents/Resources/"
 #endif
 
-
 SDL_Window* displayWindow;
 
 int main(int argc, char *argv[])
@@ -67,7 +66,7 @@ int main(int argc, char *argv[])
 	unsigned int seed = unsigned int(time);
 	srand(seed);
 	//output file for debugging
-	std::ofstream ofs("output.txt");
+	//std::ofstream ofs("output.txt");
 
 	//player construction
 	std::vector<int> maxFloor = { 1, 1 };
@@ -393,6 +392,6 @@ int main(int argc, char *argv[])
 		++tl;
 	}
 	*/
-	ofs.close();
+	//ofs.close();
 	return 0;
 }

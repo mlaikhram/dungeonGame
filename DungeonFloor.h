@@ -16,7 +16,7 @@ class Enemy;
 
 class DungeonFloor {
 public:
-	DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, const char *miniMapSheetName, int numx, int numy, Player *player, std::vector<Chest> chests = std::vector<Chest>(), std::vector<Enemy> enemies = std::vector<Enemy>());
+	DungeonFloor(int mapSize, float tileSize, unsigned char **_tileMap, const char *spriteSheetName, const char *miniMapSheetName, int numx, int numy, Player *player, std::vector<Chest> &chests = std::vector<Chest>(), std::list<Enemy> &enemies = std::list<Enemy>());
 	~DungeonFloor();
 	bool testOutOfBounds(int gridX, int gridY);
 	bool floorTile(int x, int y); 
@@ -27,13 +27,18 @@ public:
 	void update(ShaderProgram *program, float time, int maxTries = 10);
 	void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
 
+	void add(Enemy &e);
+	void add(Chest &c);
+
 	bool isEncountered() const;
-	std::vector<Enemy>::iterator getEncountered() const;
+	std::list<Enemy>::iterator getEncountered() const;
 	int getMapSize() const;
 	float getTileSize() const;
 	unsigned char** getTileMap() const;
 	GLuint getSpriteSheet() const;
 	std::vector<Chest>& getChests();
+	std::list<Enemy>& getEnemies();
+	void updateTiles(unsigned char **t);
 
 	void setSpriteSheet(const char* name);
 
@@ -48,8 +53,8 @@ private:
 	int numy;
 	Player *player; //shallow
 	std::vector<Chest> chests;
-	std::vector<Enemy> enemies;
-	std::vector<Enemy>::iterator encountered;
+	std::list<Enemy> enemies;
+	std::list<Enemy>::iterator encountered;
 	//int collectedMoney;
 
 };

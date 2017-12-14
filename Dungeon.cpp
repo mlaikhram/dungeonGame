@@ -66,9 +66,9 @@ DungeonFloor* Dungeon::generateBossFloor(int index, std::string spriteSheetName)
 	//init exit
 	tileMap[mapSize / 2][mapSize / 2] = X;
 	//spawn boss on exit
-	std::vector<Enemy> boss;
+	std::list<Enemy> boss;
 	boss.push_back(bosses->at(index));
-	tileToWorldCoordinates(mapSize / 2, mapSize / 2, boss[0].position.x, boss[0].position.y, mapSize);
+	tileToWorldCoordinates(mapSize / 2, mapSize / 2, boss.begin()->position.x, boss.begin()->position.y, mapSize);
 
 	DungeonFloor *floor = new DungeonFloor(mapSize, TILE_SIZE, tileMap, spriteSheetName.c_str(), "none", 10, 10, player, std::vector<Chest>(), boss); //need an empty spritesheet to not generate minimap
 

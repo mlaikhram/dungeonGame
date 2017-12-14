@@ -13,7 +13,10 @@ public:
 	Enemy(const Enemy &enemy);
 	~Enemy();
 	//MUST IMPLEMENT MOVE CONSTRUCTOR TO FIX AI ISSUE
+	Enemy(Enemy &&enemy);
 	void update(ShaderProgram *program, float time, DungeonFloor *floor);
+
+	MoveAI* getAI() const;
 
 private:
 	MoveAI *ai;

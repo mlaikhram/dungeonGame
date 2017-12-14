@@ -244,7 +244,7 @@ bool DungeonFloorGenerator::spawnEntity(Entity *entity, int radius, int maxObstr
 	return true;
 }
 
-DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, const char *miniMapSheetName, int numx, int numy) {
+DungeonFloor*& DungeonFloorGenerator::generate(const char *spriteSheetName, const char *miniMapSheetName, int numx, int numy) {
 	generateMap();
 	fixTileConnections();
 	findOpenTiles();
@@ -259,23 +259,25 @@ DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, const
 	exitCoords.y = itr->y;
 	tileMap[exitCoords.y][exitCoords.x] = X;
 	openTiles.erase(itr);
+
+	DungeonFloor *floor = new DungeonFloor(mapSize, tileSize, tileMap, spriteSheetName, miniMapSheetName, numx, numy, player);
+
 	//spawn chests (not REAL)
-	std::vector<Chest> chests = std::vector<Chest>();
-	std::ofstream ofs("output.txt");
+	//std::vector<Chest> chests = std::vector<Chest>();
 	for (int i = 0; i < 10; ++i) {
 		Chest chest = Chest("tilemap_dungeon1.png", chestc, 10, 10, Vector3(), 0.7f * TILE_SIZE);
 		if (spawnEntity(&chest, 0, 1)) {
 			int gridX, gridY;
 			worldToTileCoordinates(chest.position.x, chest.position.y, gridX, gridY, mapSize);
 			//ofs << "count: " << countNearbyObstructions(gridX, gridY) << std::endl;
-			chests.push_back(chest);
+			floor->add(chest);
 			tileMap[gridY][gridX] = O1;
 		}
 		else;
 			//delete chest;
 	}
 	//spawn enemies (not REAL)
-	std::vector<Enemy> enemies = std::vector<Enemy>();
+	//std::vector<Enemy> enemies = std::vector<Enemy>();
 	for (int i = 0; i < 20; ++i) {
 		//MoveAI *ai = new WanderAI(5.0f);
 		MoveAI *ai = new ChaseAI(5.0f);
@@ -283,7 +285,8 @@ DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, const
 		if (spawnEntity(&enemy, 1)) {
 			int gridX, gridY;
 			worldToTileCoordinates(enemy.position.x, enemy.position.y, gridX, gridY, mapSize);
-			enemies.push_back(enemy);
+			//enemies.push_back(enemy);
+			floor->add(enemy);
 			//tileMap[gridY][gridX] = O1;
 		}
 		else;
@@ -297,15 +300,16 @@ DungeonFloor* DungeonFloorGenerator::generate(const char *spriteSheetName, const
 
 	//if no suitable, replace enemy with player
 	if (!spawnEntity(player)) {
-		player->position = enemies[enemies.size() - 1].position;
-		enemies.pop_back();
+		std::list<Enemy>::iterator replace = floor->getEnemies().begin();
+		player->position = replace->position;
+		floor->getEnemies().erase(replace);
 	}
 	//spawn entrance tile
 	int x, y;
 	worldToTileCoordinates(player->position.x, player->position.y, x, y, mapSize);
 	tileMap[y][x] = enter;
 
-	DungeonFloor *floor = new DungeonFloor(mapSize, tileSize, tileMap, spriteSheetName, miniMapSheetName, numx, numy, player, chests, enemies);
-
+	floor->updateTiles(tileMap);
+	//DungeonFloor *floor = new DungeonFloor(mapSize, tileSize, tileMap, spriteSheetName, miniMapSheetName, numx, numy, player, chests, enemies);
 	return floor;
 }
