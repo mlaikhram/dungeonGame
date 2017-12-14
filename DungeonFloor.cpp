@@ -51,12 +51,11 @@ bool DungeonFloor::floorTile(int x, int y) {
 	return tileMap[y][x] == O1 || tileMap[y][x] == O2 || tileMap[y][x] == O3 || tileMap[y][x] == O4 || tileMap[y][x] == O5 || tileMap[y][x] == X || tileMap[y][x] == enter;
 }
 
-std::vector<Enemy>::iterator DungeonFloor::getEncountered() const {
-	return encountered;
-}
-
-bool DungeonFloor::isEncountered() const {
-	return encountered != enemies.end();
+void DungeonFloor::eliminateEncountered() {
+	if (encountered != enemies.end()) {
+		enemies.erase(encountered);
+		encountered = enemies.end();
+	}
 }
 
 void DungeonFloor::mapCollision(Entity &entity, ShaderProgram *program) {
@@ -293,19 +292,6 @@ void DungeonFloor::update(ShaderProgram *program, float time, int maxTries) {
 		chests[i].update(program, time);
 		mapCollision(chests[i], program);
 	}
-	//enemy-map collision
-	/*for (int i = 0; i < enemies.size(); ++i) {
-		enemies[i].update(program, time);
-		mapCollision(enemies[i], program);
-	}*/
-	//enemy-player collision
-	/*for (int i = 0; i < enemies.size(); ++i) {
-		while (player->collidesWith(enemies[i])) {
-			if (tries > maxTries) break;
-			player->nudge(enemies[i], 0.5f);
-			++tries;
-		}
-	}*/
 	//enemy collisions
 	for (int i = 0; i < enemies.size(); ++i) {
 		Enemy &enemy = enemies[i];
@@ -313,12 +299,11 @@ void DungeonFloor::update(ShaderProgram *program, float time, int maxTries) {
 		//enemy-map collision
 		mapCollision(enemy, program);
 		//enemy-player collision
-		while (player->collidesWith(enemy)) {
+		if (player->collidesWith(enemy)) {
 			/*if (tries > maxTries) break;
 			player->nudge(enemy, 0.5f);
 			++tries;*/
 			encountered = enemies.begin() + i;
-			break;
 		}
 		//enemy-chest collision
 		for (int j = 0; j < chests.size(); ++j) {
@@ -431,6 +416,8 @@ void DungeonFloor::draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
+bool DungeonFloor::isEncountered() const { return encountered != enemies.end(); }
+std::vector<Enemy>::iterator DungeonFloor::getEncountered() const { return encountered; }
 int DungeonFloor::getMapSize() const { return mapSize; }
 float DungeonFloor::getTileSize() const { return tileSize; }
 unsigned char** DungeonFloor::getTileMap() const { return tileMap; }

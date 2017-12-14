@@ -1,6 +1,6 @@
 #include "ChaseAI.h"
 
-ChaseAI::ChaseAI(float moveAccel, float timeCycle, int wanderInterval) : MoveAI(moveAccel, timeCycle, wanderInterval) {}
+ChaseAI::ChaseAI(float moveAccel, float wanderInterval, int wanderBuffer) : MoveAI(moveAccel, wanderInterval, wanderBuffer) {}
 
 bool ChaseAI::isObstructed(Vector3 start, Vector3 end, DungeonFloor *floor, float spacing) {
 	//calculate midpoint
@@ -48,5 +48,5 @@ void ChaseAI::move(DungeonFloor *floor, Vector3 &accel, Vector3 &pos, Vector3 &d
 }
 
 MoveAI* ChaseAI::clone() {
-	return new ChaseAI(*this);
+	return new ChaseAI(moveAccel, wanderInterval, wanderBuffer);
 }

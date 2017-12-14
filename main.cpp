@@ -234,6 +234,10 @@ int main(int argc, char *argv[])
 					if (event.type == SDL_QUIT || event.type == SDL_WINDOWEVENT_CLOSE || event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) {
 						return STATE_END;
 					}
+					else if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_SPACE) {
+						dungeon->eliminateEncountered();
+						nextState = STATE_DUNGEON;
+					}
 					else if (event.type == SDL_MOUSEMOTION) {
 						m_x = (((float)event.motion.x / 1280) * 7.1f) - 3.55f;
 						m_y = (((float)(720 - event.motion.y) / 720) * 4.0f) - 2.0f;
@@ -243,7 +247,17 @@ int main(int argc, char *argv[])
 						/*mousedOption = menuScreens[activeScreen].mousedOption(m_x, m_y);*/
 					}
 				}
+				//timestep
+				ticks = (float)SDL_GetTicks() / 1000.0f;
+				elapsed = ticks - lastFrameTicks;
+				lastFrameTicks = ticks;
+
+				fixedElapsed = elapsed;
+				if (fixedElapsed > FIXED_TIMESTEP * MAX_TIMESTEPS) {
+					fixedElapsed = FIXED_TIMESTEP * MAX_TIMESTEPS;
+				}
 			}
+
 			// draw
 			glClear(GL_COLOR_BUFFER_BIT);
 			//encounter->draw(&program, projectionMatrix, modelMatrix, viewMatrix);

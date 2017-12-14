@@ -20,14 +20,15 @@ public:
 	~DungeonFloor();
 	bool testOutOfBounds(int gridX, int gridY);
 	bool floorTile(int x, int y); 
-	std::vector<Enemy>::iterator getEncountered() const;
-	bool isEncountered() const;
+	void eliminateEncountered();
 	void mapCollision(Entity &entity, ShaderProgram *program);
 	bool tileCollision(ShaderProgram *program, int index);
 	bool tileCollision(ShaderProgram *program, int x, int y);
 	void update(ShaderProgram *program, float time, int maxTries = 10);
 	void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);
 
+	bool isEncountered() const;
+	std::vector<Enemy>::iterator getEncountered() const;
 	int getMapSize() const;
 	float getTileSize() const;
 	unsigned char** getTileMap() const;

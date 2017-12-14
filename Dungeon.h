@@ -12,7 +12,7 @@ public:
 	~Dungeon();
 	void nextFloor();
 	DungeonFloor* generateBossFloor(int index, std::string spriteSheetName);
-	std::vector<Enemy>::iterator getEncountered() const;
+	void eliminateEncountered();
 	int update(ShaderProgram *program, float time);
 	int pollAndUpdate(ShaderProgram *program, float &elapsed, float &lastFrameTicks, float &ticks, float &fixedElapsed, SDL_Event &event, const Uint8 *keys);
 	void draw(ShaderProgram *program, Matrix &projectionMatrix, Matrix &modelMatrix, Matrix &viewMatrix);

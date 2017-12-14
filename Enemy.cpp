@@ -3,7 +3,7 @@
 Enemy::Enemy(const char *spriteSheetName, int index, int numx, int numy, MoveAI *ai, Entity *target, Vector3 position, float size, Vector3 velocity, Vector3 acceleration, float rotation) : 
 	Entity(spriteSheetName, index, numx, numy, position, size, velocity, acceleration, rotation), ai(ai), target(target) {}
 
-Enemy::Enemy(const Enemy &e) : Enemy("none", e.index, e.numx, e.numy, e.ai->clone(), e.target, e.position, e.size, e.velocity, e.acceleration, e.rotation) {
+Enemy::Enemy(const Enemy &e) : Enemy("none", e.index, e.numx, e.numy, e.ai, e.target, e.position, e.size, e.velocity, e.acceleration, e.rotation) {
 	spriteSheet = e.spriteSheet;
 }
 

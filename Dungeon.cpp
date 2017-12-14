@@ -81,8 +81,8 @@ DungeonFloor* Dungeon::generateBossFloor(int index, std::string spriteSheetName)
 	return floor;
 }
 
-std::vector<Enemy>::iterator Dungeon::getEncountered() const {
-	return currentFloor->getEncountered();
+void Dungeon::eliminateEncountered() {
+	return currentFloor->eliminateEncountered();
 }
 
 int Dungeon::update(ShaderProgram *program, float time) {
