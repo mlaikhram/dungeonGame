@@ -134,6 +134,11 @@ int Dungeon::pollAndUpdate(ShaderProgram *program, float &elapsed, float &lastFr
 		if (keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_S] || keys[SDL_SCANCODE_L]) {
 			player->acceleration.y -= accel;
 		}
+		//limit user accel to 10 if holding multiple directions
+		if (player->acceleration.x != 0.0f && player->acceleration.y != 0.0f) {
+			player->acceleration.x /= 1.41421356f;
+			player->acceleration.y /= 1.41421356f;
+		}
 		//temp for testing
 		bool cheat = false;
 		if (keys[SDL_SCANCODE_DOWN] || keys[SDL_SCANCODE_C]) {

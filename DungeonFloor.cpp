@@ -317,11 +317,11 @@ void DungeonFloor::update(ShaderProgram *program, float time, int maxTries) {
 			player->nudge(enemy, 0.5f);
 			++tries;*/
 			encountered = i;
-			player->acceleration.x = 0.0f;
-			player->acceleration.y = 0.0f;
-			player->velocity.x = 0.0f;
-			player->velocity.y = 0.0f;
-
+			//halt all movement before transition
+			player->halt();
+			for (std::list<Enemy>::iterator j = enemies.begin(); j != enemies.end(); ++j) {
+				j->halt();
+			}
 		}
 		//enemy-chest collision
 		for (int j = 0; j < chests.size(); ++j) {

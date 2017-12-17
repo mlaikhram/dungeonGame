@@ -59,3 +59,10 @@ void Entity::nudge(Entity &entity, float nudgePercent) {
 	entity.position.x -= responseVector.x * 0.008f * nudgePercent;
 	entity.position.y -= responseVector.y * 0.008f * nudgePercent;
 }
+
+void Entity::halt() {
+	velocity.x = 0.0f;
+	velocity.y = 0.0f;
+	acceleration.x = 0.0f;
+	acceleration.y = 0.0f;
+}

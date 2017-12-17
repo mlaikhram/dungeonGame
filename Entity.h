@@ -11,6 +11,7 @@ public:
 
 	bool collidesWith(Entity &entity);
 	void nudge(Entity &entity, float nudgePercent);
+	void halt();
 
 	Vector3 position;
 	Vector3 velocity;
